@@ -1,0 +1,20 @@
+server:
+  port: 8894
+spring:
+  application:
+    name: 'user'
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config
+      username: cs
+      password: 123456
+      profile: dev
+      label: master
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://eureka1:8888/eureka/,http://eureka2:8886/eureka/'
+    healthcheck:
+      enabled: true

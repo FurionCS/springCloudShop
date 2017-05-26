@@ -8,11 +8,6 @@ import lombok.Setter;
  * @Author ErnestCheng
  * @Date 2017/5/26.
  */
-@Setter
-public class Request {
-    // api请求类型
-    protected String action;
-    protected Integer uid;
-    // 令牌
-    protected String token;
+public interface Request {
+
 }
