@@ -1,0 +1,21 @@
+server:
+  port: 8893
+spring:
+  application:
+    name: 'order'
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config
+      username: cs
+      password: 123456
+      profile: dev
+      label: master
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://eureka1:8888/eureka/,http://eureka2:8886/eureka/'
+    healthcheck:
+      enabled: true
+

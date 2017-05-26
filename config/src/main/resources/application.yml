@@ -1,0 +1,36 @@
+server:
+  port: 8889
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://eureka1:8888/eureka/,http://eureka2:8886/eureka/'
+    healthcheck:
+      enabled: true
+spring:
+  application:
+    name: 'config'
+  rabbitmq:
+    host: 115.28.44.238
+    port: 5672
+    username: cs
+    password: 123456
+  cloud:
+    config:
+      server:
+        git:
+          uri: 'https://github.com/FurionCS/SpringcloudConfig'
+          search-paths: 'shop'
+          password: 'cs950211@'
+          username: 'FurionCS'
+      label: master
+encrypt:
+  key: '*&3loa#@9no_0*(!'
+#security:
+#  basic:
+#    enabled: true
+#  user:
+#    name: cs
+#    password: 123456
+management:
+  security:
+    enabled: false

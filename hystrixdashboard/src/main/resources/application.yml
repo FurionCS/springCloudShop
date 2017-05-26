@@ -1,0 +1,15 @@
+server:
+  port: 8892
+spring:
+  application:
+    name: 'hystrixdashboard'
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://eureka1:8888/eureka/,http://eureka2:8886/eureka/'
+    healthcheck:
+      enabled: true
+turbine:
+  app-config: order
+  cluster-name-expression: 'default'
+
