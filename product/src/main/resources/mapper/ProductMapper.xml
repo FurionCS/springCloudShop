@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.persistence.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.spring.domain.model.Product">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+    </resultMap>
+    <insert id="addProduct" parameterType="com.spring.domain.model.Product">
+        INSERT INTO t_product(create_time,update_time,delete_time,name,stock,price)
+        VALUE (
+        #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},
+        #{name,jdbcType=VARCHAR},#{stock,jdbcType=INTEGER},#{price,jdbcType=DECIMAL}
+        )
+    </insert>
+
+</mapper>

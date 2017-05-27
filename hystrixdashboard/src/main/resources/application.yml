@@ -10,6 +10,6 @@ eureka:
     healthcheck:
       enabled: true
 turbine:
-  app-config: order
+  app-config: order,user，product
   cluster-name-expression: 'default'
 

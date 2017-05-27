@@ -16,5 +16,9 @@ eureka:
   client:
     service-url:
       defaultZone: 'http://eureka1:8888/eureka/,http://eureka2:8886/eureka/'
-    healthcheck:
-      enabled: true
+management:
+  security:
+    enabled: false
+mybatis:
+  mapper-locations: 'classpath*:mapper/**/*Mapper.xml'
+  type-aliases-package: 'com.spring.domain.model'

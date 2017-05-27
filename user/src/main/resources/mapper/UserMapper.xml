@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.persistence.UserMapper">
+    <resultMap id="BaseResultMap" type="com.spring.domain.model.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="idCard" jdbcType="VARCHAR" property="idCard"/>
+        <result column="balance" jdbcType="DECIMAL" property="balance"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="leastTime" jdbcType="TIMESTAMP" property="leastTime"/>
+    </resultMap>
+    <insert id="addUser" parameterType="com.spring.domain.model.User">
+        INSERT INTO t_user(user_name,password,idCard,balance,createTime,leastTime)
+        VALUE (
+        #{userName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},
+        #{balance,jdbcType=DECIMAL},#{createTime,jdbcType=TIMESTAMP},#{leastTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+</mapper>
