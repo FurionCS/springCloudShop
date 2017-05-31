@@ -13,4 +13,11 @@ public interface UserService {
      * @param user
      */
     void addUser(User user);
+
+    /**
+     * 通过用户id获得用户信息
+     * @param userId
+     * @return
+     */
+    User getUserById(Integer userId);
 }

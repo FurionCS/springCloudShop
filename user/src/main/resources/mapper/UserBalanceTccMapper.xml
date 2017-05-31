@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.persistence.UserBalanceTccMapper">
+    <resultMap id="BaseResultMap" type="com.spring.domain.model.UserBalanceTcc">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="status" jdbcType="INTEGER" property="status"
+                typeHandler="com.spring.domain.model.type.handler.TccStatusTypeHandler"/>
+    </resultMap>
+    <sql id="base_column">
+        id,expire_time,create_time,update_time,delete_time,amount,user_id,status
+    </sql>
+    <insert id="addUserBalanceTcc" parameterType="com.spring.domain.model.UserBalanceTcc" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user_balance_tcc(expire_time,create_time,update_time,delete_time,amount,user_id,status)
+        VALUE (#{expireTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{amount,jdbcType=DECIMAL},#{userId,jdbcType=INTEGER},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.model.type.handler.TccStatusTypeHandler})
+    </insert>
+
+</mapper>

@@ -5,6 +5,7 @@ import com.spring.domain.model.User;
 import com.spring.persistence.UserMapper;
 import com.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,5 +21,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) {
         userMapper.addUser(user);
+    }
+
+    @Override
+    @Cacheable(value="shop_user",key = "'user_'+#userId")
+    public User getUserById(Integer userId) {
+        return userMapper.getUserById(userId);
     }
 }

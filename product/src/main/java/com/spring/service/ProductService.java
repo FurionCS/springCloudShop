@@ -13,4 +13,11 @@ public interface ProductService {
      * @param product
      */
     void addProduct(Product product);
+
+    /**
+     * 通过产品id获得产品
+     * @param productId
+     * @return
+     */
+    Product getProductById(Integer productId);
 }

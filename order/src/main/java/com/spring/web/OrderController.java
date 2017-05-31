@@ -1,25 +1,22 @@
 package com.spring.web;
 
-import com.spring.common.model.StatusCode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.domain.model.Order;
-import com.spring.domain.model.request.UserOrderRequest;
-import com.spring.domain.model.response.OrderResponse;
+import com.spring.domain.model.User;
+import com.spring.domain.response.ObjectDataResponse;
 import com.spring.service.OrderService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
+import com.spring.web.client.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
  * @Description 订单控制器
  * @Author ErnestCheng
- * @Date 2017/5/26.
+ * @Date 2017/5/31.
  */
 @RestController
 public class OrderController {
@@ -27,16 +24,19 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @ApiOperation(value="获得用户订单列表")
-    @PostMapping(value="/listOrderByUserId")
-    public OrderResponse listOrderByUserId(@RequestBody UserOrderRequest userOrderRequest){
-        OrderResponse orderResponse=new OrderResponse();
-        if(userOrderRequest==null||userOrderRequest.getUserId()<1){
-            orderResponse.setCode(StatusCode.Fail_Code);
-            orderResponse.setMessage("用户id不正确");
-        }
-        List<Order> lo=orderService.listOrderByUserId(userOrderRequest.getUserId());
-        orderResponse.setData(lo);
-        return orderResponse;
+    @Autowired
+    private UserClient userClient;
+
+    @RequestMapping(value="getUserById",method = RequestMethod.POST)
+    public ObjectDataResponse<User> getUserById(Integer userId){
+            return userClient.getUserById(userId);
+    }
+
+    @RequestMapping(value="listOrder",method = RequestMethod.GET)
+    public ObjectDataResponse listOrder(){
+        List<Order> lo=orderService.listOrder();
+        ObjectDataResponse objectDataResponse=new ObjectDataResponse();
+        objectDataResponse.setData(lo);
+        return objectDataResponse;
     }
 }
