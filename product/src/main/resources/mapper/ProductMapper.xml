@@ -27,4 +27,9 @@
         where id=#{productId,jdbcType=INTEGER}
     </select>
 
+    <update id="updateProductStock">
+        update t_product
+        set stock=stock-#{num,jdbcType=INTEGER}
+        where id=#{productId,jdbcType=INTEGER}
+    </update>
 </mapper>

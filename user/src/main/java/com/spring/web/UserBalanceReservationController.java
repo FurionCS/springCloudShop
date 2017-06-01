@@ -22,7 +22,6 @@ import javax.validation.Valid;
  * @Date 2017/5/31.
  */
 @RestController
-@RequestMapping(value="/balances")
 public class UserBalanceReservationController {
 
     @Value("${spring.application.name}")
@@ -38,7 +37,7 @@ public class UserBalanceReservationController {
      * @return
      */
     @ApiOperation(value = "预留余额", notes = "")
-    @RequestMapping(value="/reservation",method = RequestMethod.POST)
+    @RequestMapping(value="/balances/reservation",method = RequestMethod.POST)
     public ReservationResponse reserve(@Valid @RequestBody BalanceReservationRequest balanceReservationRequest, BindingResult result){
        UserBalanceTcc balanceTcc= userBalanceTccService.trying(balanceReservationRequest.getUserId(),balanceReservationRequest.getAmount());
         Participant participant=new Participant("http://"+applicationName+"/balances/reservation/"+balanceTcc.getId(),balanceTcc.getExpireTime());

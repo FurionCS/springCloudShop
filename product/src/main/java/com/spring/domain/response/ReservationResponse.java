@@ -1,7 +1,6 @@
-package com.spring.domain.model.response;
+package com.spring.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.spring.common.model.response.Response;
 import com.spring.common.model.response.RestfulResponse;
 import com.spring.domain.model.Participant;
 import io.swagger.annotations.ApiModelProperty;

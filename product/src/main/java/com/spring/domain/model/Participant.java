@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)

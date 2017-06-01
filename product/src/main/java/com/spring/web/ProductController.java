@@ -44,7 +44,7 @@ public class ProductController {
      */
     @ApiOperation(value="通过产品id获得产品")
     @RequestMapping(value="getProductById",method = RequestMethod.GET)
-    public ObjectDataResponse<Product> getProductById(@RequestParam Integer productId){
+    public ObjectDataResponse<Product> getProductById(@RequestParam("productId") Integer productId){
         ObjectDataResponse objectDataResponse=new ObjectDataResponse();
         if(productId==null||productId<1){
                 objectDataResponse.setCode(StatusCode.Param_Error);

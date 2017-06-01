@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(value = "shop_product",key="'product_'+#productId")
+ //   @Cacheable(value = "shop_product",key="'product_'+#productId")
     public Product getProductById(Integer productId) {
         return productMapper.getProductById(productId);
     }

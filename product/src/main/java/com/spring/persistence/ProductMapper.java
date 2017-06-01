@@ -23,4 +23,11 @@ public interface ProductMapper {
      * @return
      */
     Product getProductById(@Param("productId") Integer productId);
+    /**
+     * 更新产品库存
+     * @param productId
+     * @param num
+     * @return
+     */
+    int updateProductStock(@Param("productId") Integer productId,@Param("num") Integer num);
 }

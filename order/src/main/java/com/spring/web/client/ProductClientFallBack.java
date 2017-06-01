@@ -2,10 +2,13 @@ package com.spring.web.client;
 
 import com.spring.common.model.StatusCode;
 import com.spring.domain.model.Product;
+import com.spring.domain.request.StockReservationRequest;
 import com.spring.domain.response.ObjectDataResponse;
+import com.spring.domain.response.ReservationResponse;
 import feign.hystrix.FallbackFactory;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -28,6 +31,15 @@ public class ProductClientFallBack implements FallbackFactory<ProductClient> {
                 objectDataResponse.setMessage(throwable.getMessage());
                 //TODO 记录到Mongodb
                 return objectDataResponse;
+            }
+            @Override
+            public ReservationResponse reserve(@RequestBody StockReservationRequest stockReservationRequest) {
+                logger.error("调用产品预留库存接口失败："+throwable.getMessage());
+                ReservationResponse reservationResponse=new ReservationResponse();
+                reservationResponse.setCode(StatusCode.API_Fail);
+                reservationResponse.setMessage(throwable.getMessage());
+                //TODO 记录到Mongodb
+                return reservationResponse;
             }
         };
     }

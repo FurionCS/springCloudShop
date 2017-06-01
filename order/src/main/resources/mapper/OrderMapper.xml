@@ -18,4 +18,9 @@
        select <include refid="base_column"/>
         from t_order
     </select>
+    <insert id="addOrder" parameterType="com.spring.domain.model.Order" useGeneratedKeys="true" keyProperty="id">
+        insert into t_order(create_time,update_time,delete_time,user_id,product_id,price,status)
+        value(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{userId,jdbcType=INTEGER},#{productId,jdbcType=INTEGER},#{price,jdbcType=DECIMAL},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.OrderStatusHandler})
+    </insert>
+
 </mapper>
