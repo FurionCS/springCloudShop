@@ -10,6 +10,9 @@
         <result column="stock" jdbcType="INTEGER" property="stock"/>
         <result column="price" jdbcType="DECIMAL" property="price"/>
     </resultMap>
+    <sql id="base_column">
+        id,create_time,update_time,delete_time,name,stock,price
+    </sql>
     <insert id="addProduct" parameterType="com.spring.domain.model.Product">
         INSERT INTO t_product(create_time,update_time,delete_time,name,stock,price)
         VALUE (
@@ -18,4 +21,15 @@
         )
     </insert>
 
+    <select id="getProductById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_product
+        where id=#{productId,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateProductStock">
+        update t_product
+        set stock=stock-#{num,jdbcType=INTEGER}
+        where id=#{productId,jdbcType=INTEGER}
+    </update>
 </mapper>

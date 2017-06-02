@@ -1,6 +1,7 @@
 package com.spring.persistence;
 
 import com.spring.domain.model.Product;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,4 +16,18 @@ public interface ProductMapper {
      * @param product
      */
     void addProduct(Product product);
+
+    /**
+     * 获得产品
+     * @param productId
+     * @return
+     */
+    Product getProductById(@Param("productId") Integer productId);
+    /**
+     * 更新产品库存
+     * @param productId
+     * @param num
+     * @return
+     */
+    int updateProductStock(@Param("productId") Integer productId,@Param("num") Integer num);
 }

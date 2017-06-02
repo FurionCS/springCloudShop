@@ -21,7 +21,6 @@ public class RestfulResponse implements Response {
     //参数
 //    @JsonIgnore
     private Object[] args;
-    //返回数据
-    private Object data;
+
 
 }

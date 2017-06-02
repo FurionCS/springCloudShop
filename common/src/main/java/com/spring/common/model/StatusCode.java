@@ -73,8 +73,10 @@ public enum StatusCode {
      * 3193 外部接口调用异常*
      */
     API_Call_Fail(3193),
-
-
+    /**
+     * 3194更新失败
+     */
+    Update_Fail(3194),
     // # 33xx 数据有误相关
     /**
      * 3300 输入的代码有误*
@@ -119,6 +121,7 @@ public enum StatusCode {
      * 3502 上传文件失败*
      */
     File_Upload_Fail(3502),
+
     /**
      * 3503 图片格式不对*
      */

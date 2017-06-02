@@ -10,6 +10,9 @@
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="leastTime" jdbcType="TIMESTAMP" property="leastTime"/>
     </resultMap>
+    <sql id="base_column">
+        id,user_name,password,idCard,balance,createTime,leastTime
+    </sql>
     <insert id="addUser" parameterType="com.spring.domain.model.User">
         INSERT INTO t_user(user_name,password,idCard,balance,createTime,leastTime)
         VALUE (
@@ -17,5 +20,17 @@
         #{balance,jdbcType=DECIMAL},#{createTime,jdbcType=TIMESTAMP},#{leastTime,jdbcType=TIMESTAMP}
         )
     </insert>
+
+    <select id="getUserById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column" />
+        from t_user
+        where id=#{userId,jdbcType=INTEGER}
+    </select>
+    
+    <update id="consumeBalance">
+        update t_user
+        set balance=balance-#{amount,jdbcType=DOUBLE}
+        where id=#{usreId,jdbcType=INTEGER} AND balance>0 and (balance-#{amount}>0)
+    </update>
 
 </mapper>

@@ -4,6 +4,7 @@ import com.spring.domain.model.Product;
 import com.spring.persistence.ProductMapper;
 import com.spring.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,5 +20,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void addProduct(Product product) {
         productMapper.addProduct(product);
+    }
+
+    @Override
+ //   @Cacheable(value = "shop_product",key="'product_'+#productId")
+    public Product getProductById(Integer productId) {
+        return productMapper.getProductById(productId);
     }
 }

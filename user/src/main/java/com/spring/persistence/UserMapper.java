@@ -11,5 +11,24 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserMapper {
+    /**
+     * 添加用户信息
+     * @param user
+     */
     void addUser(User user);
+
+    /**
+     * 通过用户id获得用户
+     * @param userId
+     * @return
+     */
+    User getUserById(@Param("userId") Integer userId);
+
+    /**
+     * 消费余额
+     * @param userId
+     * @param amount
+     * @return
+     */
+    int consumeBalance(@Param("usreId") Integer userId,@Param("amount") Double amount);
 }

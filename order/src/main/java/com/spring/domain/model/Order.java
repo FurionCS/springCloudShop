@@ -1,5 +1,6 @@
 package com.spring.domain.model;
 
+import com.spring.domain.type.OrderStatus;
 import lombok.*;
 
 import java.util.Date;
@@ -22,5 +23,5 @@ public class Order {
     private int userId;
     private int productId;
     private Double price;
-    private int status;
+    private OrderStatus status;
 }
