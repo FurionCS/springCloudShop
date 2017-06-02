@@ -9,7 +9,7 @@
         <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime"/>
         <result column="stock" jdbcType="INTEGER" property="stock"/>
         <result column="product_id" jdbcType="INTEGER" property="productId"/>
-        <result column="status" jdbcType="INTEGER" typeHandler="com.spring.domain.type.handler.TccStatusTypeHandler" />
+        <result column="status" jdbcType="INTEGER" property="status" typeHandler="com.spring.domain.type.handler.TccStatusTypeHandler" />
     </resultMap>
     <sql id="base_column">
         id,create_time,update_time,delete_time,expire_time,stock,product_id,status
