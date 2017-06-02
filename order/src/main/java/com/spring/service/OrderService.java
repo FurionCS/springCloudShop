@@ -1,6 +1,7 @@
 package com.spring.service;
 
 import com.spring.domain.model.Order;
+import com.spring.domain.request.PaymentRequest;
 import com.spring.domain.request.PlaceOrderRequest;
 import com.spring.domain.response.ObjectDataResponse;
 
@@ -23,4 +24,11 @@ public interface OrderService {
      * @return
      */
     ObjectDataResponse<Order> placeOrder(PlaceOrderRequest request);
+
+    /**
+     * 下单
+     * @param request
+     * @return
+     */
+    ObjectDataResponse<Order> confirm(PaymentRequest request);
 }

@@ -1,0 +1,13 @@
+server:
+  port: 8896
+spring:
+  application:
+    name: 'tcc'
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://eureka1:8888/eureka/,http://eureka2:8886/eureka/'
+management:
+  security:
+    enabled: false
+

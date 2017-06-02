@@ -17,4 +17,10 @@ public interface UserBalanceTccService {
      * @return
      */
     UserBalanceTcc trying(Integer userId, Double amount);
+
+    /**
+     * 确认预留资源
+     * @param reservationId
+     */
+    void confirm(Integer reservationId);
 }

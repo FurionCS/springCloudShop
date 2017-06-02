@@ -1,5 +1,6 @@
 package com.spring.persistence;
 
+import com.spring.domain.model.User;
 import com.spring.domain.model.UserBalanceTcc;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,18 @@ public interface UserBalanceTccMapper {
      * @return
      */
     int addUserBalanceTcc(UserBalanceTcc userBalanceTcc);
+
+    /**
+     * 得到预留资源通过id
+     * @param id
+     * @return
+     */
+    UserBalanceTcc getUserBalanceTcc(Integer id);
+
+    /**
+     * 更新预留资源状态
+     * @param id
+     * @return
+     */
+    int updateUserBalanceTccStatus(Integer id);
 }

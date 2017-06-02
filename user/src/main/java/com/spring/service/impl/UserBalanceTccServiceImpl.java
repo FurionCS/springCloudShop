@@ -12,6 +12,7 @@ import com.spring.service.UserBalanceTccService;
 import com.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -59,5 +60,21 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService{
         tcc.setDeleteTime(defaultDateTime);
         userBalanceTccMapper.addUserBalanceTcc(tcc);
         return tcc;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void confirm(Integer reservationId) {
+        Preconditions.checkNotNull(reservationId);
+        UserBalanceTcc userBalanceTcc=userBalanceTccMapper.getUserBalanceTcc(reservationId);
+        if(userBalanceTcc==null){
+            throw new GlobalException("预留资源不存在",StatusCode.Data_Not_Exist);
+        }
+        if(userBalanceTcc.getStatus()==TccStatus.TRY){
+            int flag=userBalanceTccMapper.updateUserBalanceTccStatus(reservationId);
+            if(flag==0){
+                throw new GlobalException("resource " + reservationId + " has been cancelled");
+            }
+        }
     }
 }

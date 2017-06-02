@@ -19,4 +19,9 @@
         VALUE (#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{expireTime,jdbcType=TIMESTAMP},#{uri,jdbcType=VARCHAR},#{orderId,jdbcType=INTEGER})
     </insert>
 
+    <select id="listOrderParticipantByOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_order_participant
+        where order_id=#{orderId,jdbcType=INTEGER}
+    </select>
 </mapper>

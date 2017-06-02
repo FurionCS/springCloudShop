@@ -1,22 +1,28 @@
 package com.spring.service.impl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
 import com.spring.domain.model.*;
-import com.spring.domain.request.BalanceReservationRequest;
-import com.spring.domain.request.PlaceOrderRequest;
-import com.spring.domain.request.StockReservationRequest;
+import com.spring.domain.request.*;
 import com.spring.domain.response.ObjectDataResponse;
 import com.spring.domain.response.ReservationResponse;
 import com.spring.domain.type.OrderStatus;
+import com.spring.exception.PartialConfirmException;
+import com.spring.exception.ReservationExpireException;
 import com.spring.persistence.OrderMapper;
 import com.spring.persistence.OrderParticipantMapper;
 import com.spring.service.OrderService;
 import com.spring.web.client.ProductClient;
+import com.spring.web.client.TccClient;
 import com.spring.web.client.UserClient;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -31,6 +37,8 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService{
 
+    Logger logger= Logger.getLogger(OrderServiceImpl.class);
+
     @Autowired
     private OrderMapper orderMapper;
 
@@ -41,8 +49,12 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     private ProductClient productClient;
+
+    @Autowired
+    private TccClient tccClient;
     @Override
-    public ObjectDataResponse<Order> placeOrder(PlaceOrderRequest request) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ObjectDataResponse<Order> placeOrder(PlaceOrderRequest request){
         Preconditions.checkNotNull(request);
         final Integer userId= Preconditions.checkNotNull(request.getUserId());
         final Integer productId=Preconditions.checkNotNull(request.getProductId());
@@ -75,6 +87,31 @@ public class OrderServiceImpl implements OrderService{
         return new ObjectDataResponse<>(order);
     }
 
+    /**
+     * 提交资源，确认订单，第一个c
+     * @param request
+     * @return
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ObjectDataResponse<Order> confirm(PaymentRequest request) {
+        Preconditions.checkNotNull(request);
+        Integer orderId=request.getOrderId();
+        //检查订单是否存在
+        Order order=orderMapper.getOrderById(orderId);
+        if(order==null){
+            throw new GlobalException("订单不存在",StatusCode.Data_Not_Exist);
+        }
+        List<OrderParticipant> lop=orderParticipantMapper.listOrderParticipantByOrderId(orderId);
+        if(lop.isEmpty()){
+            throw new GlobalException("没有预留资源",StatusCode.Data_Not_Exist);
+        }
+        if(order.getStatus()==OrderStatus.PROCESSING){
+            confirmPhase(order,lop);
+        }
+        return new ObjectDataResponse<>(order);
+    }
+
     @Override
     public List<Order> listOrder() {
         return orderMapper.listOrder();
@@ -86,9 +123,13 @@ public class OrderServiceImpl implements OrderService{
      * @param productId
      * @return
      */
-    private Product findRemoteProduct(Integer productId){
+    private Product findRemoteProduct(Integer productId) {
         Preconditions.checkNotNull(productId);
-        final Product product=productClient.getProductById(productId).getData();
+        ObjectDataResponse<Product> objectDataResponse= productClient.getProductById(productId);
+        if(objectDataResponse.getCode()!=StatusCode.Success){
+            throw new GlobalException(objectDataResponse.getMessage(),objectDataResponse.getCode());
+        }
+        final Product product=objectDataResponse.getData();
         if(product==null){
             // 抛出异常
             throw new GlobalException("产品不存在", StatusCode.Data_Error);
@@ -108,7 +149,11 @@ public class OrderServiceImpl implements OrderService{
      */
     private User findRemoteUser(Integer userId){
         Preconditions.checkNotNull(userId);
-        final User user=userClient.getUserById(userId).getData();
+        ObjectDataResponse<User> objectDataResponse=userClient.getUserById(userId);
+        if(objectDataResponse.getCode()!=StatusCode.Success){
+            throw new GlobalException(objectDataResponse.getMessage(),objectDataResponse.getCode());
+        }
+        final User user=objectDataResponse.getData();
         if(user==null){
             // 抛出异常
             throw new GlobalException("用户不存在", StatusCode.Data_Error);
@@ -133,7 +178,7 @@ public class OrderServiceImpl implements OrderService{
         stockReservationRequest.setNum(1);
         ReservationResponse reservationResponse=productClient.reserve(stockReservationRequest);
         if(reservationResponse.getParticipantLink()==null){
-            throw new GlobalException("预留库存失败",StatusCode.API_Fail);
+            throw new GlobalException(reservationResponse.getMessage(),reservationResponse.getCode());
         }
         persistParticipant( reservationResponse.getParticipantLink(),  order.getId());
     }
@@ -149,7 +194,7 @@ public class OrderServiceImpl implements OrderService{
         balanceReservationRequest.setAmount(order.getPrice());
         ReservationResponse reservationResponse=userClient.reserve(balanceReservationRequest);
         if(reservationResponse.getParticipantLink()==null){
-            throw new GlobalException("预留余额失败",StatusCode.API_Fail);
+            throw new GlobalException(reservationResponse.getMessage(),reservationResponse.getCode());
         }
         //添加资源信息
         persistParticipant(reservationResponse.getParticipantLink(), order.getId());
@@ -166,5 +211,40 @@ public class OrderServiceImpl implements OrderService{
         orderParticipant.setUpdateTime(defaultDateTime);
         orderParticipant.setDeleteTime(defaultDateTime);
         orderParticipantMapper.addOrderParticipant(orderParticipant);
+    }
+
+    /**
+     * 确认资源
+     * @param order
+     * @param lop
+     */
+    private void confirmPhase(Order order,List<OrderParticipant> lop){
+        ImmutableList<OrderParticipant> links=ImmutableList.copyOf(lop);
+        TccRequest tccRequest=new TccRequest(links);
+        try{
+            tccClient.confirm(tccRequest);
+            order.setStatus(OrderStatus.DONE);
+            orderMapper.updateOrder(order);
+        }catch (HystrixRuntimeException e){
+            final Class<? extends Throwable> exceptionCause = e.getCause().getClass();
+            if (ReservationExpireException.class.isAssignableFrom(exceptionCause)) {
+                // 全部确认预留超时
+                order.setStatus(OrderStatus.TIMEOUT);
+                orderMapper.updateOrder(order);
+            } else if (PartialConfirmException.class.isAssignableFrom(exceptionCause)) {
+                order.setStatus(OrderStatus.CONFLICT);
+                orderMapper.updateOrder(order);
+                markdownConfliction(order, e);
+            } else {
+                throw e;
+            }
+        }
+    }
+    private void markdownConfliction(Order order, HystrixRuntimeException e) {
+        Preconditions.checkNotNull(order);
+        Preconditions.checkNotNull(e);
+        final String message = e.getCause().getMessage();
+        logger.error("order id "+order.getId()+" has come across an confliction. "+ message);
+        //TODO 错误信息保存到mongodb
     }
 }

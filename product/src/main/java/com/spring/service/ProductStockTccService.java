@@ -15,4 +15,10 @@ public interface ProductStockTccService {
      * @return
      */
     ProductStockTcc trying(Integer productId,Integer num);
+
+    /**
+     * 确认预留资源
+     * @param reservationId
+     */
+    void confirmReservation(Integer reservationId);
 }

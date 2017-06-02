@@ -1,8 +1,8 @@
 package com.spring.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.domain.model.Order;
 import com.spring.domain.model.User;
+import com.spring.domain.request.PaymentRequest;
 import com.spring.domain.request.PlaceOrderRequest;
 import com.spring.domain.response.ObjectDataResponse;
 import com.spring.service.OrderService;
@@ -56,6 +56,12 @@ public class OrderController {
     public ObjectDataResponse<Order> placeOrder(@Valid @RequestBody PlaceOrderRequest placeOrderRequest, BindingResult result){
        ObjectDataResponse<Order> objectDataResponse= orderService.placeOrder(placeOrderRequest);
         return objectDataResponse;
+    }
+
+    @ApiOperation(value="支付订单")
+    @RequestMapping(value="payOff",method = RequestMethod.POST)
+    public ObjectDataResponse<Order> payOff(@Valid @RequestBody PaymentRequest paymentRequest,BindingResult result){
+        return   orderService.confirm(paymentRequest);
     }
 
 }

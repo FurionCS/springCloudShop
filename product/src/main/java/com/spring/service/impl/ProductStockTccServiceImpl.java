@@ -12,6 +12,7 @@ import com.spring.service.ProductStockTccService;
 import com.sun.scenario.effect.Offset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
@@ -61,5 +62,24 @@ public class ProductStockTccServiceImpl implements ProductStockTccService {
         productStockTcc.setDeleteTime(defaultDateTime);
         productStockTccMapper.addProductStockTcc(productStockTcc);
         return productStockTcc;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void confirmReservation(Integer reservationId) {
+        Preconditions.checkNotNull(reservationId);
+        ProductStockTcc productStockTcc=productStockTccMapper.getProductStockTccById(reservationId);
+
+        if(productStockTcc==null){
+            throw new GlobalException("预留资源不存在",StatusCode.Data_Not_Exist);
+        }
+        System.out.println(productStockTcc);
+        //如果是Try阶段则进行确认
+        if(productStockTcc.getStatus()==TccStatus.TRY){
+            int flag=productStockTccMapper.updateProductStockTccStatus(reservationId);
+            if(flag==0){
+                throw new GlobalException("resource " + reservationId + " has been cancelled",StatusCode.Update_Fail);
+            }
+        }
     }
 }

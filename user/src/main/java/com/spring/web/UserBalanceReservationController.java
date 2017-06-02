@@ -5,14 +5,12 @@ import com.spring.domain.model.UserBalanceTcc;
 import com.spring.domain.model.request.BalanceReservationRequest;
 import com.spring.domain.model.response.ReservationResponse;
 import com.spring.service.UserBalanceTccService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -43,4 +41,11 @@ public class UserBalanceReservationController {
         Participant participant=new Participant("http://"+applicationName+"/balances/reservation/"+balanceTcc.getId(),balanceTcc.getExpireTime());
         return new ReservationResponse(participant);
     }
+
+    @ApiOperation(value="确认预留资源")
+    @RequestMapping(value="/balances/reservation/{reservationId}",method = RequestMethod.PUT)
+    public void confirm(@PathVariable Integer reservationId){
+        userBalanceTccService.confirm(reservationId);
+    }
+
 }

@@ -18,4 +18,16 @@
         insert INTO t_product_stock_tcc(create_time,update_time,delete_time,expire_time,stock,product_id,status)
         VALUE (#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{expireTime,jdbcType=TIMESTAMP},#{stock,jdbcType=INTEGER},#{productId,jdbcType=INTEGER},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.TccStatusTypeHandler})
     </insert>
+
+    <select id="getProductStockTccById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column" />
+        from t_product_stock_tcc
+        where id=#{id,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateProductStockTccStatus" parameterType="java.lang.Integer">
+        update t_product_stock_tcc
+        set status=1
+        where id=#{id,jdbcType=INTEGER} AND status=0
+    </update>
 </mapper>

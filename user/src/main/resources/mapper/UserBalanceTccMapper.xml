@@ -20,4 +20,15 @@
         VALUE (#{expireTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{amount,jdbcType=DECIMAL},#{userId,jdbcType=INTEGER},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.model.type.handler.TccStatusTypeHandler})
     </insert>
 
+    <select id="getUserBalanceTcc" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_user_balance_tcc
+        where id=#{id,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateUserBalanceTccStatus" parameterType="java.lang.Integer" >
+        update t_user_balance_tcc
+        set status=1
+        where id=#{id,jdbcType=INTEGER} AND status=0
+    </update>
 </mapper>

@@ -2,6 +2,7 @@ package com.spring.persistence;
 
 import com.spring.domain.model.Order;
 import com.spring.domain.model.OrderParticipant;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,6 +25,20 @@ public interface OrderMapper {
      * @return
      */
     int addOrder(Order order);
+
+    /**
+     * 获得订单
+     * @param orderId
+     * @return
+     */
+    Order getOrderById(@Param("orderId") Integer orderId);
+
+    /**
+     * 更新订单
+     * @param order
+     * @return
+     */
+    int updateOrder(Order order);
 
 
 }

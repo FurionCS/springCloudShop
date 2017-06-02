@@ -5,13 +5,11 @@ import com.spring.domain.model.ProductStockTcc;
 import com.spring.domain.request.StockReservationRequest;
 import com.spring.domain.response.ReservationResponse;
 import com.spring.service.ProductStockTccService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -29,6 +27,13 @@ public class ProductStockTccController {
     @Autowired
     private ProductStockTccService productStockTccService;
 
+    /**
+     * 预留资源
+     * @param stockReservationRequest
+     * @param result
+     * @return
+     */
+    @ApiOperation(value="预留资源")
     @RequestMapping(value="/productStock/reservation",method = RequestMethod.POST)
     public ReservationResponse reserve(@Valid @RequestBody StockReservationRequest stockReservationRequest, BindingResult result){
         System.out.println(stockReservationRequest.getProductId());
@@ -37,5 +42,11 @@ public class ProductStockTccController {
         participant.setExpireTime(productStockTcc.getExpireTime());
         participant.setUri("http://"+applicationName+"/productStock/reservation/"+productStockTcc.getId());
         return new ReservationResponse(participant);
+    }
+
+    @ApiOperation("确认预留资源")
+    @RequestMapping(value="/productStock/reservation/{reservationId}",method = RequestMethod.PUT)
+    public void confirm(@PathVariable Integer reservationId){
+        productStockTccService.confirmReservation(reservationId);
     }
 }
