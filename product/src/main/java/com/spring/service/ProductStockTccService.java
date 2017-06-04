@@ -7,7 +7,7 @@ import com.spring.domain.model.ProductStockTcc;
  * @Author ErnestCheng
  * @Date 2017/6/1.
  */
-public interface ProductStockTccService {
+public interface ProductStockTccService{
     /**
      * 预留资源
      * @param productId
@@ -21,4 +21,17 @@ public interface ProductStockTccService {
      * @param reservationId
      */
     void confirmReservation(Integer reservationId);
+
+    /**
+     * 取消预留资源
+     * @param id
+     */
+    void cancelReservation(Integer id);
+
+    /**
+     * 取消预留资源
+     * @param res
+     * @return
+     */
+    void cancelReservation(ProductStockTcc res);
 }

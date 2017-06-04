@@ -30,4 +30,18 @@
         set status=1
         where id=#{id,jdbcType=INTEGER} AND status=0
     </update>
+
+    <select id="selectExpireReservation" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_product_stock_tcc
+        <![CDATA[
+        where expire_time <= NOW() and status=0
+        limit #{limitation}
+        ]]>
+    </select>
+
+    <delete id="deleteProductStockTcc" parameterType="java.lang.Integer">
+        delete from t_product_stock_tcc
+        where id=#{id,javaType=INTEGER}
+    </delete>
 </mapper>

@@ -49,4 +49,10 @@ public class ProductStockTccController {
     public void confirm(@PathVariable Integer reservationId){
         productStockTccService.confirmReservation(reservationId);
     }
+
+    @ApiOperation("取消预留资源")
+    @RequestMapping(value="/productStock/reservation/{reservationId}",method = RequestMethod.DELETE)
+    public void cancel(@PathVariable Integer reservationId){
+        productStockTccService.cancelReservation(reservationId);
+    }
 }

@@ -2,7 +2,10 @@ package com.spring.persistence;
 
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserBalanceTcc;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Set;
 
 /**
  * @Description 用户余额TccMapper
@@ -31,4 +34,18 @@ public interface UserBalanceTccMapper {
      * @return
      */
     int updateUserBalanceTccStatus(Integer id);
+
+    /**
+     * 获得过期资源
+     * @param limitation
+     * @return
+     */
+    Set<UserBalanceTcc> selectExpireReservation(@Param("limitation") Integer limitation);
+
+    /**
+     * 删除资源
+     * @param id
+     * @return
+     */
+    int deleteReservation(@Param("id") Integer id);
 }

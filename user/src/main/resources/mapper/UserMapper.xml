@@ -33,4 +33,9 @@
         where id=#{usreId,jdbcType=INTEGER} AND balance>0 and (balance-#{amount}>0)
     </update>
 
+    <update id="updateBalance">
+        update t_user
+        set balance=balance+#{amount,jdbcType=DOUBLE}
+        where id=#{userId,jdbcType=INTEGER}
+    </update>
 </mapper>

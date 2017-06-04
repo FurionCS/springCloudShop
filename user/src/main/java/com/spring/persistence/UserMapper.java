@@ -31,4 +31,12 @@ public interface UserMapper {
      * @return
      */
     int consumeBalance(@Param("usreId") Integer userId,@Param("amount") Double amount);
+
+    /**
+     * 更新用户余额
+     * @param userId
+     * @param amount
+     * @return
+     */
+    int updateBalance(@Param("userId") Integer userId,@Param("amount") Double amount);
 }

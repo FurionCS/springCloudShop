@@ -23,4 +23,16 @@ public interface UserBalanceTccService {
      * @param reservationId
      */
     void confirm(Integer reservationId);
+
+    /**
+     * 取消预留资源
+     * @param id
+     * @return
+     */
+    void cancelReservation(Integer id);
+    /**
+     * 取消预留资源
+     * @param userBalanceTcc
+     */
+    void cancelReservation(UserBalanceTcc userBalanceTcc);
 }

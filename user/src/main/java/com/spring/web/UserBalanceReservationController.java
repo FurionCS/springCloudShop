@@ -3,10 +3,12 @@ package com.spring.web;
 import com.spring.domain.model.Participant;
 import com.spring.domain.model.UserBalanceTcc;
 import com.spring.domain.model.request.BalanceReservationRequest;
+import com.spring.domain.model.response.ObjectDataResponse;
 import com.spring.domain.model.response.ReservationResponse;
 import com.spring.service.UserBalanceTccService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
@@ -46,6 +48,12 @@ public class UserBalanceReservationController {
     @RequestMapping(value="/balances/reservation/{reservationId}",method = RequestMethod.PUT)
     public void confirm(@PathVariable Integer reservationId){
         userBalanceTccService.confirm(reservationId);
+    }
+
+    @ApiOperation(value="取消预留资源")
+    @RequestMapping(value="/balances/reservation/{reservationId}",method = RequestMethod.DELETE)
+    public void cancel(@PathVariable Integer reservationId){
+        userBalanceTccService.cancelReservation(reservationId);
     }
 
 }

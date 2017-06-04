@@ -4,6 +4,8 @@ import com.spring.domain.model.ProductStockTcc;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 /**
  * @Description 产品库存tccMapper
  * @Author ErnestCheng
@@ -31,4 +33,18 @@ public interface ProductStockTccMapper {
      * @return
      */
     int updateProductStockTccStatus(@Param("id") Integer id);
+
+    /**
+     * 搜索过期资源
+     * @param limitation
+     * @return
+     */
+    Set<ProductStockTcc> selectExpireReservation(@Param("limitation") int limitation);
+
+    /**
+     * 删除库存预留资源
+     * @param id
+     * @return
+     */
+    int deleteProductStockTcc(Integer id);
 }

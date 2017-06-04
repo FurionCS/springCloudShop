@@ -6,17 +6,23 @@ import com.spring.common.model.exception.GlobalException;
 import com.spring.domain.model.Product;
 import com.spring.domain.model.ProductStockTcc;
 import com.spring.domain.type.TccStatus;
+import com.spring.event.ProductStockCancellationEvent;
 import com.spring.persistence.ProductMapper;
 import com.spring.persistence.ProductStockTccMapper;
 import com.spring.service.ProductStockTccService;
 import com.sun.scenario.effect.Offset;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Set;
 
 /**
  * @Description 产品库存TccService实现
@@ -24,7 +30,7 @@ import java.time.ZoneOffset;
  * @Date 2017/6/1.
  */
 @Service
-public class ProductStockTccServiceImpl implements ProductStockTccService {
+public class ProductStockTccServiceImpl implements ProductStockTccService,ApplicationContextAware{
 
     private Long expireSeconds=15L;
     @Autowired
@@ -32,6 +38,8 @@ public class ProductStockTccServiceImpl implements ProductStockTccService {
 
     @Autowired
     private ProductStockTccMapper productStockTccMapper;
+
+    private ApplicationContext context;
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public ProductStockTcc trying(Integer productId, Integer num) {
@@ -81,5 +89,47 @@ public class ProductStockTccServiceImpl implements ProductStockTccService {
                 throw new GlobalException("resource " + reservationId + " has been cancelled",StatusCode.Update_Fail);
             }
         }
+    }
+
+    /**
+     * 资源回收策略为定时轮询数据库，暂时，存在资源竞争与重复计算嫌疑
+     */
+    @Scheduled(fixedRate = 1000)
+    public void autoCancelTrying(){
+        //获取过期资源
+        Set<ProductStockTcc> reservations=productStockTccMapper.selectExpireReservation(100);
+        reservations.forEach(productStockTcc -> {
+            context.publishEvent(new ProductStockCancellationEvent(productStockTcc));
+        });
+    }
+
+    @Override
+    public void cancelReservation(Integer id) {
+        Preconditions.checkNotNull(id);
+        ProductStockTcc productStockTcc= productStockTccMapper.getProductStockTccById(id);
+        this.cancelReservation(productStockTcc);
+    }
+
+    @Override
+    @Transactional(propagation=Propagation.REQUIRED)
+    public void cancelReservation(ProductStockTcc res) {
+        Preconditions.checkNotNull(res);
+        Preconditions.checkArgument(res.getId()>0);
+        Preconditions.checkNotNull(res.getStatus());
+        // 先删除预留信息
+        if(res.getStatus()==TccStatus.TRY) {
+            int flag = productStockTccMapper.deleteProductStockTcc(res.getId());
+            //  恢复产品库存
+            if (flag > 0) {
+                int flag2 = productMapper.updateProductStock(res.getProductId(), -res.getStock());
+                if (flag2 == 0) {
+                    throw new GlobalException("更新库存失败");
+                }
+            }
+        }
+    }
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context=applicationContext;
     }
 }

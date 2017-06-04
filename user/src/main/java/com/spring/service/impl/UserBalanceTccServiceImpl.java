@@ -6,11 +6,16 @@ import com.spring.common.model.exception.GlobalException;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserBalanceTcc;
 import com.spring.domain.model.type.TccStatus;
+import com.spring.event.UserBalanceTccCancelEvent;
 import com.spring.persistence.UserBalanceTccMapper;
 import com.spring.persistence.UserMapper;
 import com.spring.service.UserBalanceTccService;
 import com.spring.service.UserService;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Set;
 
 /**
  * @Description 用户余额tcc
@@ -25,7 +31,7 @@ import java.time.ZoneOffset;
  * @Date 2017/5/31.
  */
 @Service
-public class UserBalanceTccServiceImpl implements UserBalanceTccService{
+public class UserBalanceTccServiceImpl implements UserBalanceTccService,ApplicationContextAware{
     @Autowired
     private UserService userService;
     @Autowired
@@ -33,6 +39,9 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService{
 
     @Autowired
     private UserBalanceTccMapper userBalanceTccMapper;
+
+
+    private ApplicationContext context;
 
     private Long expireSeconds=15L;
     @Override
@@ -62,6 +71,42 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService{
         return tcc;
     }
 
+    /**
+     * 自动检查过期资源，通过定时轮询数据库，这个做法有问题，会出现资源竞争和重复检查问题
+     */
+    @Scheduled(fixedDelay = 100)
+    public void autoExpireReservation(){
+        final Set<UserBalanceTcc>  userBalanceTccSet=userBalanceTccMapper.selectExpireReservation(100);
+        userBalanceTccSet.forEach(userBalanceTcc -> {
+            context.publishEvent(new UserBalanceTccCancelEvent(userBalanceTcc));
+        });
+    }
+
+    @Override
+    public void cancelReservation(Integer id){
+        Preconditions.checkNotNull(id);
+        UserBalanceTcc userBalanceTcc=userBalanceTccMapper.getUserBalanceTcc(id);
+        this.cancelReservation(userBalanceTcc);
+    }
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void cancelReservation(UserBalanceTcc userBalanceTcc) {
+        Preconditions.checkNotNull(userBalanceTcc);
+        Preconditions.checkNotNull(userBalanceTcc.getId());
+        Preconditions.checkNotNull(userBalanceTcc.getStatus());
+        if(userBalanceTcc.getStatus()==TccStatus.TRY){
+            //删除用户资源信息
+            int flag=userBalanceTccMapper.deleteReservation(userBalanceTcc.getId());
+            if(flag>0){
+                int flag2=userMapper.updateBalance(userBalanceTcc.getUserId(),userBalanceTcc.getAmount());
+                // 更新用户余额
+                if(flag2==0){
+                    throw new GlobalException("余额更新失败");
+                }
+            }
+        }
+    }
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void confirm(Integer reservationId) {
@@ -76,5 +121,10 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService{
                 throw new GlobalException("resource " + reservationId + " has been cancelled");
             }
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context=applicationContext;
     }
 }
