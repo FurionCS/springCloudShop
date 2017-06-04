@@ -18,10 +18,11 @@ spring:
     config:
       server:
         git:
-          uri: 'https://github.com/FurionCS/SpringcloudConfig'
+          uri: 'https://git.oschina.net/believecs/SpringcloudConfig'
+        #  uri: 'https://github.com/FurionCS/SpringcloudConfig'
           search-paths: 'shop'
-          password: 'cs950211@'
-          username: 'FurionCS'
+        #   password: '##@'
+        #  username: '###'
       label: master
 encrypt:
   key: '*&3loa#@9no_0*(!'

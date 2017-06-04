@@ -8,6 +8,7 @@ spring:
       discovery:
         enabled: true
         service-id: config
+      fail-fast: true
       username: cs
       password: 123456
       profile: dev
