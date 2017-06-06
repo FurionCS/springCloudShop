@@ -25,7 +25,13 @@ spring:
         #  username: '###'
       label: master
 encrypt:
-  key: '*&3loa#@9no_0*(!'
+ # key: '*&3loa#@9no_0*(!'
+  key-store:
+    location: server.jks
+    password: letmein
+    alias: mytestkey
+    secret: changeme
+
 #security:
 #  basic:
 #    enabled: true
