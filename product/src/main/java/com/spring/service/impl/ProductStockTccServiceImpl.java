@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
 import com.spring.common.model.model.ErrorInfo;
+import com.spring.common.model.model.RedisKey;
 import com.spring.domain.model.Product;
 import com.spring.domain.model.ProductStockTcc;
 import com.spring.domain.type.TccStatus;
@@ -11,12 +12,14 @@ import com.spring.event.ProductStockCancellationEvent;
 import com.spring.persistence.ProductMapper;
 import com.spring.persistence.ProductStockTccMapper;
 import com.spring.repository.ErrorRepository;
+import com.spring.service.ProductService;
 import com.spring.service.ProductStockTccService;
 import com.sun.scenario.effect.Offset;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,19 +42,25 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
     private ProductMapper productMapper;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private ProductStockTccMapper productStockTccMapper;
 
     private ApplicationContext context;
 
     @Autowired
     private ErrorRepository errorRepository;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public ProductStockTcc trying(Integer productId, Integer num) {
         //更新产品库存
         Preconditions.checkArgument(productId>0);
         Preconditions.checkArgument(num>0);
-        Product product=productMapper.getProductById(productId);
+        Product product=productService.getProductById(productId);
         if(product==null){
             throw new GlobalException("产品不存在", StatusCode.Data_Not_Exist);
         }
@@ -62,6 +71,8 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
         if(isLock==0){
             throw new GlobalException("更新失败",StatusCode.Update_Fail);
         }
+        //更新reids
+        //redisTemplate.opsForValue().
 
         // 插入产品预留资源
         ProductStockTcc productStockTcc=new ProductStockTcc();
