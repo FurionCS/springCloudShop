@@ -72,7 +72,8 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
             throw new GlobalException("更新失败",StatusCode.Update_Fail);
         }
         //更新reids
-        //redisTemplate.opsForValue().
+        product.setStock(product.getStock()-num);
+        redisTemplate.opsForValue().getAndSet(RedisKey.product+":"+productId,product);
 
         // 插入产品预留资源
         ProductStockTcc productStockTcc=new ProductStockTcc();
@@ -142,6 +143,12 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
                     ErrorInfo errorInfo=new ErrorInfo<>(StatusCode.Update_Fail,"更新库存失败",null,res,OffsetDateTime.now());
                     errorRepository.insert(errorInfo);
                     throw new GlobalException("更新库存失败");
+                }
+                //设置redis
+                Product product=(Product)redisTemplate.opsForValue().get(RedisKey.product+":"+res.getProductId());
+                if(product!=null) {
+                    product.setStock(product.getStock()+res.getStock());
+                    redisTemplate.opsForValue().set(RedisKey.product + ":" + res.getProductId(),product);
                 }
             }
         }
