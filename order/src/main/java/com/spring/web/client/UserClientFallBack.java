@@ -1,15 +1,20 @@
 package com.spring.web.client;
 
 import com.spring.common.model.StatusCode;
+import com.spring.common.model.model.ErrorInfo;
 import com.spring.domain.model.User;
 import com.spring.domain.request.BalanceReservationRequest;
 import com.spring.domain.response.ObjectDataResponse;
 import com.spring.domain.response.ReservationResponse;
+import com.spring.repository.ErrorRepository;
 import feign.hystrix.FallbackFactory;
 import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.OffsetDateTime;
 
 /**
  * @Description 用户接口回调
@@ -19,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Component
 public class UserClientFallBack implements FallbackFactory<UserClient> {
     Logger logger= Logger.getLogger(UserClientFallBack.class);
+
+    @Autowired
+    private ErrorRepository errorRepository;
     @Override
     public UserClient create(Throwable throwable) {
         return new UserClient() {
@@ -28,7 +36,14 @@ public class UserClientFallBack implements FallbackFactory<UserClient> {
                 ObjectDataResponse objectDataResponse=new ObjectDataResponse();
                 objectDataResponse.setCode(StatusCode.API_Fail);
                 objectDataResponse.setMessage("调用getUserById失败：cause:"+throwable.getMessage());
-                //TODO 记录到mongodb
+                // 记录到mongodb
+                ErrorInfo errorInfo=new ErrorInfo<>();
+                errorInfo.setCode(StatusCode.API_Fail);
+                errorInfo.setMessage(throwable.getMessage());
+                errorInfo.setCreateTime(OffsetDateTime.now());
+                errorInfo.setData(userId);
+                errorInfo.setUrl("getUserById");
+                errorRepository.insert(errorInfo);
                 return objectDataResponse;
             }
 
@@ -38,7 +53,14 @@ public class UserClientFallBack implements FallbackFactory<UserClient> {
                 ReservationResponse reservationResponse=new ReservationResponse();
                 reservationResponse.setCode(StatusCode.API_Fail);
                 reservationResponse.setMessage("调用reserve失败：cause："+throwable.getMessage());
-                //TODO 记录到mongodb
+                // 记录到mongodb
+                ErrorInfo errorInfo=new ErrorInfo<>();
+                errorInfo.setCode(StatusCode.API_Fail);
+                errorInfo.setMessage(throwable.getMessage());
+                errorInfo.setCreateTime(OffsetDateTime.now());
+                errorInfo.setData(balanceReservationRequest);
+                errorInfo.setUrl("/balances/reservation");
+                errorRepository.insert(errorInfo);
                 return reservationResponse;
             }
         };

@@ -3,12 +3,14 @@ package com.spring.service.impl;
 import com.google.common.base.Preconditions;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
+import com.spring.common.model.model.ErrorInfo;
 import com.spring.domain.model.Product;
 import com.spring.domain.model.ProductStockTcc;
 import com.spring.domain.type.TccStatus;
 import com.spring.event.ProductStockCancellationEvent;
 import com.spring.persistence.ProductMapper;
 import com.spring.persistence.ProductStockTccMapper;
+import com.spring.repository.ErrorRepository;
 import com.spring.service.ProductStockTccService;
 import com.sun.scenario.effect.Offset;
 import org.springframework.beans.BeansException;
@@ -40,6 +42,9 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
     private ProductStockTccMapper productStockTccMapper;
 
     private ApplicationContext context;
+
+    @Autowired
+    private ErrorRepository errorRepository;
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public ProductStockTcc trying(Integer productId, Integer num) {
@@ -123,6 +128,8 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
             if (flag > 0) {
                 int flag2 = productMapper.updateProductStock(res.getProductId(), -res.getStock());
                 if (flag2 == 0) {
+                    ErrorInfo errorInfo=new ErrorInfo<>(StatusCode.Update_Fail,"更新库存失败",null,res,OffsetDateTime.now());
+                    errorRepository.insert(errorInfo);
                     throw new GlobalException("更新库存失败");
                 }
             }

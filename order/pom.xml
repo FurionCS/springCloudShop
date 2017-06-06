@@ -107,10 +107,14 @@
 			<scope>runtime</scope>
 		</dependency>
 		<!-- mongodb-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver</artifactId>
 			<version>3.4.2</version>
+		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		<!-- 切面 -->
 		<dependency>

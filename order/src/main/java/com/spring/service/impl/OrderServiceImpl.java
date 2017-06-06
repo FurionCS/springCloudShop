@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
+import com.spring.common.model.model.ErrorInfo;
 import com.spring.domain.model.*;
 import com.spring.domain.request.*;
 import com.spring.domain.response.ObjectDataResponse;
@@ -14,6 +15,7 @@ import com.spring.exception.PartialConfirmException;
 import com.spring.exception.ReservationExpireException;
 import com.spring.persistence.OrderMapper;
 import com.spring.persistence.OrderParticipantMapper;
+import com.spring.repository.ErrorRepository;
 import com.spring.service.OrderService;
 import com.spring.web.client.ProductClient;
 import com.spring.web.client.TccClient;
@@ -52,7 +54,9 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     private TccClient tccClient;
-    @Override
+
+    @Autowired
+    private ErrorRepository errorRepository;
     @Transactional(propagation = Propagation.REQUIRED)
     public ObjectDataResponse<Order> placeOrder(PlaceOrderRequest request){
         Preconditions.checkNotNull(request);
@@ -245,6 +249,8 @@ public class OrderServiceImpl implements OrderService{
         Preconditions.checkNotNull(e);
         final String message = e.getCause().getMessage();
         logger.error("order id "+order.getId()+" has come across an confliction. "+ message);
-        //TODO 错误信息保存到mongodb
+        // 错误信息保存到mongodb
+        ErrorInfo errorInfo=new ErrorInfo<>(StatusCode.PartialConfirmerror,message,null,order,OffsetDateTime.now());
+        errorRepository.insert(errorInfo);
     }
 }

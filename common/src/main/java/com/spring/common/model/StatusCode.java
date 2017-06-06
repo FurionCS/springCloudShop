@@ -164,6 +164,10 @@ public enum StatusCode {
      */
     Invalid_Token_ReLogin(4100),
 
+    /**
+     * 预留资源错误
+     */
+    PartialConfirmerror(5000),
 
     /**
      * 9xxxx 系统错误*
