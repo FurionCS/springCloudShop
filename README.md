@@ -28,7 +28,7 @@ Spring Cloud为开发者提供了快速构建分布式系统中的一些常见�
 |tcc|tcc事务模块|
 
 
-##启动方式
+## 启动方式
 为了保证开箱即用，我们将config 的需要加载的配置文件放入码云，https://git.oschina.net/believecs/SpringcloudConfig
 fork一份到自己的码云。
 1：先准备环境，启动mysql,rabbitmq,redis,mongodb,准备带有jce的java环境（加密需要用到），本地系统host加上
