@@ -14,6 +14,8 @@ import com.spring.persistence.UserMapper;
 import com.spring.repository.ErrorRepository;
 import com.spring.service.UserBalanceTccService;
 import com.spring.service.UserService;
+import com.spring.web.UserController;
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +38,8 @@ import java.util.Set;
  */
 @Service
 public class UserBalanceTccServiceImpl implements UserBalanceTccService,ApplicationContextAware{
+
+    Logger logger= Logger.getLogger(UserBalanceTccServiceImpl.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -53,7 +57,7 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
     @Autowired
     private ErrorRepository errorRepository;
 
-    private Long expireSeconds=15L;
+    private Long expireSeconds=240L;
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public UserBalanceTcc trying(Integer userId, Double amount) {
@@ -90,8 +94,10 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
      */
     @Scheduled(fixedDelay = 100)
     public void autoExpireReservation(){
+
         final Set<UserBalanceTcc>  userBalanceTccSet=userBalanceTccMapper.selectExpireReservation(100);
         userBalanceTccSet.forEach(userBalanceTcc -> {
+            logger.info("------------autoExpireReservation-------------------------");
             context.publishEvent(new UserBalanceTccCancelEvent(userBalanceTcc));
         });
     }
@@ -100,11 +106,14 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
     public void cancelReservation(Integer id){
         Preconditions.checkNotNull(id);
         UserBalanceTcc userBalanceTcc=userBalanceTccMapper.getUserBalanceTcc(id);
-        this.cancelReservation(userBalanceTcc);
+        if(userBalanceTcc!=null) {
+            this.cancelReservation(userBalanceTcc);
+        }
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void cancelReservation(UserBalanceTcc userBalanceTcc) {
+        logger.info("------------cancelReservation-------------------------");
         Preconditions.checkNotNull(userBalanceTcc);
         Preconditions.checkNotNull(userBalanceTcc.getId());
         Preconditions.checkNotNull(userBalanceTcc.getStatus());

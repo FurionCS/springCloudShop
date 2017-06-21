@@ -8,6 +8,8 @@ import com.spring.domain.model.Participant;
 import com.spring.domain.model.TccErrorResponse;
 import com.spring.domain.model.TccStatus;
 import com.spring.domain.request.TccRequest;
+import com.spring.exception.PartialConfirmException;
+import com.spring.exception.ReservationExpireException;
 import com.spring.service.TccService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -36,17 +38,40 @@ public class TccServiceImpl  implements TccService{
         header.setContentType(MediaType.APPLICATION_JSON_UTF8);
         REQUEST_ENTITY = new HttpEntity<>(header);
     }
+
+    /**
+     * 确认资源
+     * @param request
+     */
     @Override
     public void confirm(TccRequest request) {
+        handler(request,HttpMethod.PUT);
+    }
+
+    /**
+     * 取消资源
+     * @param request
+     */
+    @Override
+    public void cancel(TccRequest request) {
+        handler(request,HttpMethod.DELETE);
+    }
+
+    /**
+     * 处理预留资源
+     * @param request
+     * @param method
+     */
+    private void handler(TccRequest request,HttpMethod  method){
         Preconditions.checkNotNull(request);
         List<Participant> participantList=request.getParticipants();
         Preconditions.checkNotNull(participantList);
-         int success=0;
-         int fail=0;
+        int success=0;
+        int fail=0;
         for (Participant participant : participantList) {
             participant.setExecuteTime(OffsetDateTime.now());
             //设置重试，防止参与者宕机或网络抖动
-            ResponseEntity<String> response=restTemplate.exchange(participant.getUri(), HttpMethod.PUT,REQUEST_ENTITY,String.class);
+            ResponseEntity<String> response=restTemplate.exchange(participant.getUri(), method,REQUEST_ENTITY,String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 participant.setTccStatus(TccStatus.CONFIRMED);
                 success++;
@@ -61,10 +86,10 @@ public class TccServiceImpl  implements TccService{
         // 检查是否有冲突
         if (success > 0 && fail > 0) {
             // 出现冲突必须返回并需要人工介入
-            throw new GlobalException("all reservation were cancelled or timeout", new TccErrorResponse(participantList));
+            throw new PartialConfirmException("all reservation were cancelled or timeout", new TccErrorResponse(participantList));
         } else if (fail == participantList.size()) {
             // 全部timeout
-            throw new GlobalException("although we have check the expire time in request body, we got an expiration when confirming actually");
+            throw new ReservationExpireException("although we have check the expire time in request body, we got an expiration when confirming actually");
         }
     }
 }

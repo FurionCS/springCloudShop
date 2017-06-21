@@ -2,6 +2,7 @@ package com.spring.web;
 
 import com.spring.domain.model.Order;
 import com.spring.domain.model.User;
+import com.spring.domain.request.CancelRequest;
 import com.spring.domain.request.PaymentRequest;
 import com.spring.domain.request.PlaceOrderRequest;
 import com.spring.domain.response.ObjectDataResponse;
@@ -10,10 +11,7 @@ import com.spring.web.client.UserClient;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -62,6 +60,12 @@ public class OrderController {
     @RequestMapping(value="payOff",method = RequestMethod.POST)
     public ObjectDataResponse<Order> payOff(@Valid @RequestBody PaymentRequest paymentRequest,BindingResult result){
         return   orderService.confirm(paymentRequest);
+    }
+
+    @ApiOperation(value ="取消订单")
+    @DeleteMapping(value="cancel")
+    public ObjectDataResponse<Order> cancel(@Valid @RequestBody CancelRequest cancelRequest, BindingResult result){
+        return orderService.cancel(cancelRequest);
     }
 
 

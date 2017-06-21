@@ -37,7 +37,7 @@ import java.util.Set;
 @Service
 public class ProductStockTccServiceImpl implements ProductStockTccService,ApplicationContextAware{
 
-    private Long expireSeconds=15L;
+    private Long expireSeconds=240L;
     @Autowired
     private ProductMapper productMapper;
 
@@ -124,7 +124,9 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
     public void cancelReservation(Integer id) {
         Preconditions.checkNotNull(id);
         ProductStockTcc productStockTcc= productStockTccMapper.getProductStockTccById(id);
-        this.cancelReservation(productStockTcc);
+        if(productStockTcc!=null) {
+            this.cancelReservation(productStockTcc);
+        }
     }
 
     @Override

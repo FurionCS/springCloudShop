@@ -40,6 +40,20 @@ public class TccClientFallBack implements FallbackFactory<TccClient>{
                 errorRepository.insert(errorInfo);
                 throw new GlobalException("api失败：", StatusCode.API_Fail);
             }
+
+            @Override
+            public void cancel(@RequestBody TccRequest tccRequest) {
+                logger.error("调用取消资源错误：cancel：case:"+throwable.getMessage());
+                // 记录到Mongodb
+                ErrorInfo errorInfo=new ErrorInfo<>();
+                errorInfo.setCode(StatusCode.API_Fail);
+                errorInfo.setMessage(throwable.getMessage());
+                errorInfo.setCreateTime(OffsetDateTime.now());
+                errorInfo.setData(tccRequest);
+                errorInfo.setUrl("/tcc/coordinator/cancellation");
+                errorRepository.insert(errorInfo);
+                throw new GlobalException("api失败：", StatusCode.API_Fail);
+            }
         };
     }
 }

@@ -16,4 +16,7 @@ public interface TccClient {
 
     @RequestMapping(value="/tcc/coordinator/confirmation",method = RequestMethod.POST)
     void confirm(@RequestBody TccRequest tccRequest);
+
+    @RequestMapping(value="/tcc/coordinator/cancellation",method = RequestMethod.POST)
+    void cancel(@RequestBody TccRequest tccRequest);
 }

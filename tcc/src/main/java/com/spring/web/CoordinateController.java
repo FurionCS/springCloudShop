@@ -2,13 +2,11 @@ package com.spring.web;
 
 import com.spring.domain.request.TccRequest;
 import com.spring.service.TccService;
+import com.sun.istack.internal.logging.Logger;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -21,6 +19,8 @@ import javax.validation.Valid;
 @RequestMapping(value="/tcc")
 public class CoordinateController {
 
+    Logger logger= Logger.getLogger(CoordinateController.class);
+
     @Autowired
     private TccService tccService;
 
@@ -29,5 +29,12 @@ public class CoordinateController {
     @PostMapping(value="/coordinator/confirmation")
     public void confirm(@Valid @RequestBody TccRequest tccRequest, BindingResult result){
         tccService.confirm(tccRequest);
+    }
+
+    @ApiOperation(value="取消预留资源")
+    @PostMapping(value="/coordinator/cancellation")
+    public void cancel(@Valid @RequestBody TccRequest tccRequest,BindingResult result){
+        logger.info("取消预留资源");
+        tccService.cancel(tccRequest);
     }
 }

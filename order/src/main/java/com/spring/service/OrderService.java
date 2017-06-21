@@ -1,6 +1,7 @@
 package com.spring.service;
 
 import com.spring.domain.model.Order;
+import com.spring.domain.request.CancelRequest;
 import com.spring.domain.request.PaymentRequest;
 import com.spring.domain.request.PlaceOrderRequest;
 import com.spring.domain.response.ObjectDataResponse;
@@ -31,4 +32,11 @@ public interface OrderService {
      * @return
      */
     ObjectDataResponse<Order> confirm(PaymentRequest request);
+
+    /**
+     * 取消
+     * @param request
+     * @return
+     */
+    ObjectDataResponse<Order> cancel(CancelRequest request);
 }

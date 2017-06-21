@@ -13,4 +13,10 @@ public interface TccService {
      * @param request
      */
     void confirm(TccRequest request);
+
+    /**
+     * 取消预留资源
+     * @param request
+     */
+    void cancel(TccRequest request);
 }

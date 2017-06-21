@@ -253,4 +253,56 @@ public class OrderServiceImpl implements OrderService{
         ErrorInfo errorInfo=new ErrorInfo<>(StatusCode.PartialConfirmerror,message,null,order,OffsetDateTime.now());
         errorRepository.insert(errorInfo);
     }
+
+    /**
+     * 取消订单
+     * @param request
+     * @return
+     */
+    @Override
+    public ObjectDataResponse<Order> cancel(CancelRequest request) {
+        Preconditions.checkNotNull(request);
+        Integer orderId=request.getOrderId();
+        //判断是否有这个订单
+        Order order=orderMapper.getOrderById(orderId);
+        if(order==null){
+            throw new GlobalException("订单不存在",StatusCode.Data_Not_Exist);
+        }
+        List<OrderParticipant> lop=orderParticipantMapper.listOrderParticipantByOrderId(orderId);
+        if(lop.isEmpty()){
+            throw new GlobalException("没有预留资源",StatusCode.Data_Not_Exist);
+        }
+        if(order.getStatus()==OrderStatus.PROCESSING){
+            cancelPhase(order,lop);
+        }
+        return new ObjectDataResponse<>(order);
+    }
+
+    /**
+     * 取消资源
+     * @param order
+     * @param lop
+     */
+    private void cancelPhase(Order order,List<OrderParticipant> lop){
+        ImmutableList<OrderParticipant> links=ImmutableList.copyOf(lop);
+        TccRequest tccRequest=new TccRequest(links);
+        try{
+            tccClient.cancel(tccRequest);
+            order.setStatus(OrderStatus.DONE);
+            orderMapper.updateOrder(order);
+        }catch (HystrixRuntimeException e){
+            final Class<? extends Throwable> exceptionCause = e.getCause().getClass();
+            if (ReservationExpireException.class.isAssignableFrom(exceptionCause)) {
+                // 全部确认预留超时
+                order.setStatus(OrderStatus.TIMEOUT);
+                orderMapper.updateOrder(order);
+            } else if (PartialConfirmException.class.isAssignableFrom(exceptionCause)) {
+                order.setStatus(OrderStatus.DONE);
+                orderMapper.updateOrder(order);
+                markdownConfliction(order, e);
+            } else {
+                throw e;
+            }
+        }
+    }
 }
