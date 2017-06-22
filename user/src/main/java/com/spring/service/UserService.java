@@ -1,6 +1,9 @@
 package com.spring.service;
 
 import com.spring.domain.model.User;
+import com.spring.domain.model.UserAuth;
+
+import java.util.List;
 
 /**
  * @Description 用户service接口
@@ -20,4 +23,10 @@ public interface UserService {
      * @return
      */
     User getUserById(Integer userId);
+
+    /**
+     * 获得所有用户
+     * @return
+     */
+    List<UserAuth> listUser();
 }
