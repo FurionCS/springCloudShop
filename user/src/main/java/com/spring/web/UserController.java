@@ -41,6 +41,7 @@ public class UserController {
         return userResponse;
     }
     @ApiOperation(value="获得用户")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value="getUserById",method = RequestMethod.GET)
     public ObjectDataResponse<User> getUserById(@RequestParam Integer userId){
         ObjectDataResponse objectDataResponse=new ObjectDataResponse();

@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,5 +24,7 @@ public class UserAuth {
     private String password;
 
     private List<String> roles;
+
+    private Date lastPasswordResetDate;
 
 }
