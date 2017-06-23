@@ -2,6 +2,7 @@ package com.spring.service;
 
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserAuth;
+import com.spring.domain.model.VO.UserRoleVO;
 
 import java.util.List;
 
@@ -29,4 +30,11 @@ public interface UserService {
      * @return
      */
     List<UserAuth> listUser();
+
+    /**
+     * 获得用户角色信息
+     * @param userId
+     * @return
+     */
+    UserRoleVO listUserRoleVO(Integer userId);
 }

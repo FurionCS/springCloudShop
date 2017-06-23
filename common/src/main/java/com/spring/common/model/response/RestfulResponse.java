@@ -1,15 +1,12 @@
 package com.spring.common.model.response;
 
 import com.spring.common.model.StatusCode;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Data;
 
 /**
  * @author  Mr.Cheng
  */
-@Getter
-@Setter
+@Data
 public class RestfulResponse implements Response {
     private static final long serialVersionUID = -7443304902819898146L;
     // api请求类型
@@ -22,5 +19,19 @@ public class RestfulResponse implements Response {
 //    @JsonIgnore
     private Object[] args;
 
+    public RestfulResponse() {
+    }
 
+    public RestfulResponse(String action, StatusCode code, String message) {
+        this.action = action;
+        this.code = code;
+        this.message = message;
+    }
+
+    public RestfulResponse(String action, StatusCode code, String message, Object[] args) {
+        this.action = action;
+        this.code = code;
+        this.message = message;
+        this.args = args;
+    }
 }

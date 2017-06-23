@@ -39,4 +39,5 @@ public interface UserMapper {
      * @return
      */
     int updateBalance(@Param("userId") Integer userId,@Param("amount") Double amount);
+
 }

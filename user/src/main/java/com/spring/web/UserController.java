@@ -3,13 +3,13 @@ package com.spring.web;
 import com.spring.common.model.StatusCode;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserAuth;
+import com.spring.domain.model.VO.UserRoleVO;
 import com.spring.domain.model.response.ObjectDataResponse;
 import com.spring.domain.model.response.UserResponse;
 import com.spring.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,8 +40,11 @@ public class UserController {
         userService.addUser(user);
         return userResponse;
     }
+    
+
+
     @ApiOperation(value="获得用户")
-    @PreAuthorize("hasRole('USER')")
+  //  @PreAuthorize("hasRole('USER')")
     @RequestMapping(value="getUserById",method = RequestMethod.GET)
     public ObjectDataResponse<User> getUserById(@RequestParam Integer userId){
         ObjectDataResponse objectDataResponse=new ObjectDataResponse();
@@ -61,7 +64,7 @@ public class UserController {
 
     @ApiOperation(value = "获得所有用户")
     @GetMapping(value="listUser")
-    @PreAuthorize("hasRole('ADMIN')")
+ //   @PreAuthorize("hasRole('ADMIN')")
     public ObjectDataResponse<List<UserAuth>> listUser(){
         ObjectDataResponse objectDataResponse=new ObjectDataResponse();
         List<UserAuth> userAuthList=userService.listUser();
@@ -71,5 +74,12 @@ public class UserController {
             objectDataResponse.setMessage("暂无记录");
         }
         return objectDataResponse;
+    }
+
+
+    @ApiOperation(value="获得用户角色列表")
+    @PostMapping(value="/listUserRole")
+    public UserRoleVO listUserRoleVO(@RequestParam Integer userId){
+        return userService.listUserRoleVO(userId);
     }
 }

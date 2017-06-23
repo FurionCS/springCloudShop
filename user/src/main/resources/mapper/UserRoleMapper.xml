@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.persistence.UserRoleMapper">
+    <resultMap id="BaseResultMap" type="com.spring.domain.model.UserRole">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <resultMap id="roleMap" type="com.spring.domain.model.Role">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <resultMap id="userRoleVO" type="com.spring.domain.model.VO.UserRoleVO">
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <collection property="roles" resultMap="roleMap" />
+    </resultMap>
+    <sql id="base_column">
+        id,user_id,role_id,status,create_time,create_user,update_time
+    </sql>
+    <insert id="addUserRole" parameterType="com.spring.domain.model.UserRole" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_user_role(user_id,role_id,status,create_time,create_user,update_time)
+        VALUE (
+        #{userId,jdbcType=INTEGER},#{roleId,jdbcType=INTEGER},#{status,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},#{createUser,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="getUserRoleVO" resultMap="userRoleVO" parameterType="java.lang.Integer">
+        select ur.user_id,u.user_name,r.id,r.role_name,r.description,r.`status`,r.create_user,r.create_time,r.update_time from t_user_role ur INNER  join t_user u on ur.user_id=u.id INNER  join t_role r on ur.role_id=r.id where ur.user_id=#{userId,jdbcType=INTEGER} and ur.status=1 and r.status=1
+    </select>
+</mapper>
