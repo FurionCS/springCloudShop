@@ -33,6 +33,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @ApiOperation(value = "登入")
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ObjectDataResponse<String> createAuthenticationToken(
             @RequestBody UserAuth serAuth) throws AuthenticationException {
@@ -43,6 +44,7 @@ public class AuthController {
         return objectDataResponse;
     }
 
+    @ApiOperation(value="刷新")
     @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
     public ObjectDataResponse refreshAndGetAuthenticationToken(
             HttpServletRequest request) throws AuthenticationException{
@@ -58,6 +60,7 @@ public class AuthController {
         }
     }
 
+    @ApiOperation(value="注册")
     @RequestMapping(value = "${jwt.route.authentication.register}", method = RequestMethod.POST)
     public UserAuth register(@RequestBody UserAuth userAuth) throws AuthenticationException{
         return authService.register(userAuth);
