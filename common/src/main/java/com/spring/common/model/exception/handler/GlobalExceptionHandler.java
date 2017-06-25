@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 @ResponseBody
 public class GlobalExceptionHandler {
 
+
+
     @ExceptionHandler(value = GlobalException.class)
     public ErrorInfo<String> jsonErrorHandler(HttpServletRequest req, GlobalException e) throws Exception {
         ErrorInfo<String> r = new ErrorInfo<>();

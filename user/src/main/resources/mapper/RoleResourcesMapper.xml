@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.persistence.RoleResourcesMapper">
+    <resultMap id="BaseResultMap" type="com.spring.domain.model.RoleResource">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="resource_id" jdbcType="INTEGER" property="resourceId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="base_column">
+        id,role_id,resource_id,status,create_user,create_time,update_time
+    </sql>
+
+    <insert id="addRoleResource" parameterType="com.spring.domain.model.RoleResource">
+        insert into t_role_resources(role_id,resource_id,status,create_user,create_time,update_time)
+        VALUE(#{roleId,jdbcType=INTEGER},#{resourceId,jdbcType=INTEGER},#{status,jdbcType=INTEGER},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="addRoleResources">
+         insert into t_role_resources(role_id,resource_id,status,create_user,create_time,update_time)
+        VALUES
+        <foreach collection="RoleResources" item="item" separator=",">
+            (#{item.roleId,jdbcType=INTEGER},#{item.resourceId,jdbcType=INTEGER},#{item.status,jdbcType=INTEGER},#{item.createUser,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+</mapper>

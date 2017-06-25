@@ -13,7 +13,7 @@
     <sql id="base_column">
         id,user_name,password,idCard,balance,createTime,leastTime
     </sql>
-    <insert id="addUser" parameterType="com.spring.domain.model.User">
+    <insert id="addUser" parameterType="com.spring.domain.model.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_user(user_name,password,idCard,balance,createTime,leastTime)
         VALUE (
         #{userName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},

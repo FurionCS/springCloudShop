@@ -28,7 +28,6 @@ public class MongoAppender extends AppenderSkeleton {
     private String collectionName;   //集合名
     @Override
     protected void append(LoggingEvent loggingEvent) {
-        System.out.println("coming into mongodb aop");
         if(mongoDatabase == null) {
             MongoClientURI connectionString = new MongoClientURI(connectionUrl);
             mongoClient = new MongoClient(connectionString);

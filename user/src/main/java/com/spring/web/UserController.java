@@ -4,14 +4,21 @@ import com.spring.common.model.StatusCode;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserAuth;
 import com.spring.domain.model.VO.UserRoleVO;
+import com.spring.domain.model.request.UserRoleRequest;
 import com.spring.domain.model.response.ObjectDataResponse;
 import com.spring.domain.model.response.UserResponse;
 import com.spring.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,12 +42,29 @@ public class UserController {
         if(user==null|| "".equals(user.getUserName())||"".equals(user.getPassword())){
             userResponse.setCode(StatusCode.Fail_Code);
             userResponse.setMessage("参数不正确");
+            return userResponse;
         }
         logger.info(user);
         userService.addUser(user);
         return userResponse;
     }
-    
+
+    @ApiOperation(value="添加用户")
+    @PostMapping(value="addUserAndRole")
+    public UserResponse addUserAndRole(HttpServletRequest request, HttpServletResponse response,@Valid @RequestBody UserRoleRequest userRoleRequest, BindingResult result){
+        UserResponse userResponse=new UserResponse();
+        User user=userRoleRequest.getUser();
+        List<Integer> roleIds=userRoleRequest.getRoleIds();
+        if("".equals(user.getUserName())&&"".equals(user.getPassword())){
+            userResponse.setCode(StatusCode.Fail_Code);
+            userResponse.setMessage("参数不正确");
+            return userResponse;
+        }
+        user.setCreateTime(new Date());
+        userService.addUserAndRole(user,roleIds);
+        return userResponse;
+    }
+
 
 
     @ApiOperation(value="获得用户")
