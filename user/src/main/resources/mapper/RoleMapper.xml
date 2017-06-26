@@ -27,5 +27,9 @@
         from t_role where id=#{id,jdbcType=INTEGER}
     </select>
 
+    <select id="listRole" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_role where status=#{status,jdbcType=INTEGER}
+    </select>
 
 </mapper>

@@ -3,9 +3,9 @@ package com.spring.jwt;
 
 
 
-import com.spring.common.model.StatusCode;
-import com.spring.common.model.response.RestfulResponse;
-import com.spring.common.model.util.tools.JsonUtil;
+import com.spring.model.StatusCode;
+import com.spring.model.response.RestfulResponse;
+import com.spring.util.JsonUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -30,7 +30,7 @@ public class NoAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
-        RestfulResponse restResp = new RestfulResponse("",StatusCode.Invalid_Token_ReLogin, "没有登录或登录已过期!");
+        RestfulResponse restResp = new RestfulResponse("", StatusCode.Invalid_Token_ReLogin, "没有登录或登录已过期!");
         response.getWriter().println(JsonUtil.toJsonString(restResp));
         response.getWriter().flush();
     }

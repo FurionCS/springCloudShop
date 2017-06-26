@@ -12,6 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:角色
@@ -43,5 +46,23 @@ public class RoleController {
         RoleResourcesVO  roleResourcesVO=roleService.getRoleResourcesVo(roleId);
         objectDataResponse.setData(roleResourcesVO);
         return objectDataResponse;
+    }
+
+    @ApiOperation(value="获得角色资源名称")
+    @GetMapping(value="/listRoleResources")
+    public List<String> listRoleResources(@RequestParam Integer roleId){
+        Preconditions.checkArgument(roleId>0);
+        RoleResourcesVO  roleResourcesVO=roleService.getRoleResourcesVo(roleId);
+        if(roleResourcesVO.getResources()!=null && roleResourcesVO.getResources().size()>0){
+            return roleResourcesVO.getResources().stream().map(resource -> resource.getUrl() ).collect(Collectors.toList());
+        }else{
+            return new ArrayList<>();
+        }
+    }
+
+    @ApiOperation("获得状态为status的角色")
+    @GetMapping("/listRole")
+    public List<Role> listRole(@RequestParam Integer status){
+        return roleService.listRole(status);
     }
 }

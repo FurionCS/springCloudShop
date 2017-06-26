@@ -76,4 +76,9 @@ public class RoleServiceImpl implements RoleService {
         Preconditions.checkArgument(roleId>0);
         return roleResourcesMapper.getRoleResourcesVO(roleId);
     }
+
+    @Override
+    public List<Role> listRole(Integer status) {
+        return roleMapper.listRole(status);
+    }
 }

@@ -1,6 +1,7 @@
 package com.spring.sercuity;
 
 import com.spring.model.Role;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -22,6 +23,7 @@ import java.util.*;
 @Component
 public class MyInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
 
+    private Logger logger= Logger.getLogger(MyInvocationSecurityMetadataSourceService.class);
     @Autowired
     private RestTemplate restTemplate;
 
@@ -35,24 +37,24 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
          * 应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
          * sparta
          */
-        List<Role> roles = restTemplate.postForObject(); // 替换为查询角色列表
+        List<HashMap> roles = restTemplate.getForObject("http://localhost:8894/role/listRole?status=1",List.class); //
+        logger.info(roles);
         resourceMap = new HashMap<>();
 
-        for (Role role : roles) {
-            ConfigAttribute ca = new SecurityConfig(role.getName());
+        for (HashMap role : roles) {
+            ConfigAttribute ca = new SecurityConfig(role.get("roleName").toString());
 
-            Map<String, Object> params = new HashMap<>();
-            params.put("roleId", role.getId());
-            // 查询每个角色对于的权限,我这里假设直接查到了url
-            List<String> resources = restTemplate.postForObject();
-
+          /*  Map<String, Object> params = new HashMap<>();
+            params.put("roleId", role.get("id"));*/
+            // 查询每个角色对于的权限
+            List<String> resources = restTemplate.getForObject("http://localhost:8894/role/listRoleResources?roleId="+role.get("id"),List.class);
+            logger.info(resources);
             for (String url : resources) {
                 /*
                  * 判断资源文件和权限的对应关系，如果已经存在相关的资源url，则要通过该url为key提取出权限集合，将权限增加到权限集合中。
                  * sparta
                  */
                 if (resourceMap.containsKey(url)) {
-
                     Collection<ConfigAttribute> value = resourceMap.get(url);
                     value.add(ca);
                     resourceMap.put(url, value);

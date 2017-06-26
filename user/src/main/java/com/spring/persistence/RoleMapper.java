@@ -5,6 +5,8 @@ import com.spring.domain.model.VO.RoleResourcesVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @Description:角色
  * @Author : Mr.Cheng
@@ -25,6 +27,12 @@ public interface RoleMapper {
      * @return
      */
     Role getRole(@Param("id") Integer id);
+
+    /**
+     * 状态为status的获得所有角色信息，
+     * @return
+     */
+    List<Role> listRole(@Param("status") Integer status);
 
 
 

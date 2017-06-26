@@ -31,4 +31,11 @@ public interface RoleService {
      * @return
      */
     RoleResourcesVO getRoleResourcesVo(Integer roleId);
+
+    /**
+     * 获得状态为status的所有角色信息
+     * @param status
+     * @return
+     */
+    List<Role> listRole(Integer status);
 }
