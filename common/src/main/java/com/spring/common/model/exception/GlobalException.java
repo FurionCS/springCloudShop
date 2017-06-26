@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @Description 全局异常
+ * @Description 全局运行异常
  * @Author ErnestCheng
  * @Date 2017/5/31.
  */

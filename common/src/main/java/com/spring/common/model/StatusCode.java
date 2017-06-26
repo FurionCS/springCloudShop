@@ -9,6 +9,8 @@ public enum StatusCode {
      */
     Bind_Cient(1000),
 
+
+
     /**
      * 2xxxx 操作成功*
      */

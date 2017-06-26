@@ -102,8 +102,9 @@ public class UserController {
 
 
     @ApiOperation(value="获得用户角色列表")
-    @PostMapping(value="/listUserRole")
+    @GetMapping(value="/listUserRole")
     public UserRoleVO listUserRoleVO(@RequestParam Integer userId){
+        logger.info("coming");
         return userService.listUserRoleVO(userId);
     }
 }

@@ -10,6 +10,20 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+    <resultMap id="resourceMap" type="com.spring.domain.model.Resource">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <resultMap id="roleResourcesVO" type="com.spring.domain.model.VO.RoleResourcesVO">
+        <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <collection property="resources" resultMap="resourceMap" />
+    </resultMap>
     <sql id="base_column">
         id,role_id,resource_id,status,create_user,create_time,update_time
     </sql>
@@ -26,5 +40,14 @@
             (#{item.roleId,jdbcType=INTEGER},#{item.resourceId,jdbcType=INTEGER},#{item.status,jdbcType=INTEGER},#{item.createUser,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP})
         </foreach>
     </insert>
+
+
+    <select id="getRoleResourcesVO" parameterType="java.lang.Integer" resultMap="roleResourcesVO">
+        select rr.role_id,role.role_name,res.id,res.url,res.description,res.status,res.create_user,res.create_time,res.update_time
+        from t_role_resources rr
+        INNER JOIN t_role role on rr.role_id=role.id
+        INNER JOIN t_resources  res on rr.resource_id=res.id
+        where role.id=#{roleId,jdbcType=INTEGER} and rr.`status`=1 and role.`status`=1 and res.`status`=1
+    </select>
 
 </mapper>

@@ -10,6 +10,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+
     <sql id="base_column">
         id,role_name,description,status,create_user,create_time,update_time
     </sql>
@@ -20,6 +21,11 @@
          #{roleName,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
+
+    <select id="getRole" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_role where id=#{id,jdbcType=INTEGER}
+    </select>
 
 
 </mapper>

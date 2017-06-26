@@ -1,16 +1,19 @@
 package com.spring.service.impl;
 
 
+import com.spring.common.model.exception.GlobalException;
 import com.spring.common.model.util.tools.SecurityUtil;
+import com.spring.domain.model.Role;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserAuth;
 import com.spring.domain.model.UserRole;
 import com.spring.domain.model.VO.UserRoleVO;
-import com.spring.domain.model.request.UserRoleRequest;
+import com.spring.persistence.RoleMapper;
 import com.spring.persistence.UserMapper;
 import com.spring.persistence.UserRoleMapper;
 import com.spring.repository.UserAuthRepository;
 import com.spring.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * @Description 用户接口实现
  * @Author ErnestCheng
@@ -29,6 +33,8 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    private Logger logger= Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -38,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
     @Override
     public void addUser(User user) {
         try {
@@ -61,9 +70,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value="shop_user_role",key="T(String).valueOf(#userId)")
+ //   @Cacheable(value="shop_user_role",key="T(String).valueOf(#userId)")
     public UserRoleVO listUserRoleVO(Integer userId) {
-        return userRoleMapper.getUserRoleVO(userId);
+        UserRoleVO userRoleVO= userRoleMapper.getUserRoleVO(userId);
+        logger.info(userRoleVO);
+        return userRoleVO;
     }
 
     @Override
@@ -75,12 +86,17 @@ public class UserServiceImpl implements UserService {
         if(roleIds!=null&&roleIds.size()>0) {
             List<UserRole> userRoles = new ArrayList<>();
             roleIds.forEach(roleId -> {
-                UserRole userRole = new UserRole();
-                userRole.setRoleId(roleId);
-                userRole.setUserId(user.getId());
-                userRole.setCreateTime(OffsetDateTime.now());
-                userRole.setStatus(1);
-                userRoles.add(userRole);
+                Role role=roleMapper.getRole(roleId);
+                if(role!=null) {
+                    UserRole userRole = new UserRole();
+                    userRole.setRoleId(roleId);
+                    userRole.setUserId(user.getId());
+                    userRole.setCreateTime(OffsetDateTime.now());
+                    userRole.setStatus(1);
+                    userRoles.add(userRole);
+                }else{
+                    throw new GlobalException("找不到id为"+roleId+"的角色");
+                }
             });
             userRoleMapper.addUserRoleList(userRoles);
         }

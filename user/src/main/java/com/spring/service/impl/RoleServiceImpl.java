@@ -1,8 +1,12 @@
 package com.spring.service.impl;
 
 import com.google.common.base.Preconditions;
+import com.spring.common.model.exception.GlobalException;
+import com.spring.domain.model.Resource;
 import com.spring.domain.model.Role;
 import com.spring.domain.model.RoleResource;
+import com.spring.domain.model.VO.RoleResourcesVO;
+import com.spring.persistence.ResourcesMapper;
 import com.spring.persistence.RoleMapper;
 import com.spring.persistence.RoleResourcesMapper;
 import com.spring.service.RoleService;
@@ -31,6 +35,9 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleResourcesMapper roleResourcesMapper;
 
+    @Autowired
+    private ResourcesMapper resourcesMapper;
+
     @Override
     public void addRole(Role role) {
         Preconditions.checkNotNull(role);
@@ -48,14 +55,25 @@ public class RoleServiceImpl implements RoleService {
         if(resourcesIds.size()>0) {
             List<RoleResource> roleResources = new ArrayList<>();
             resourcesIds.forEach(resourcesId->{
-                RoleResource roleResource=new RoleResource();
-                roleResource.setRoleId(role.getId());
-                roleResource.setResourceId(resourcesId);
-                roleResource.setStatus(1);
-                roleResource.setCreateTime(OffsetDateTime.now());
-                roleResources.add(roleResource);
+               Resource resource=resourcesMapper.getResource(resourcesId);
+                if(resource!=null) {
+                    RoleResource roleResource = new RoleResource();
+                    roleResource.setRoleId(role.getId());
+                    roleResource.setResourceId(resourcesId);
+                    roleResource.setStatus(1);
+                    roleResource.setCreateTime(OffsetDateTime.now());
+                    roleResources.add(roleResource);
+                }else{
+                    throw new GlobalException("找不到id为"+resourcesId+"的资源");
+                }
             });
             roleResourcesMapper.addRoleResources(roleResources);
         }
+    }
+
+    @Override
+    public RoleResourcesVO getRoleResourcesVo(Integer roleId) {
+        Preconditions.checkArgument(roleId>0);
+        return roleResourcesMapper.getRoleResourcesVO(roleId);
     }
 }

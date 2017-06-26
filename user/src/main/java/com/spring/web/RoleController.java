@@ -2,16 +2,14 @@ package com.spring.web;
 
 import com.google.common.base.Preconditions;
 import com.spring.domain.model.Role;
+import com.spring.domain.model.VO.RoleResourcesVO;
 import com.spring.domain.model.request.RoleResourcesRequest;
 import com.spring.domain.model.response.ObjectDataResponse;
 import com.spring.service.RoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,6 +32,16 @@ public class RoleController {
         Preconditions.checkNotNull(roleResourcesRequest.getRole());
         ObjectDataResponse objectDataResponse=new ObjectDataResponse();
         roleService.addRoleAndResources(roleResourcesRequest.getRole(),roleResourcesRequest.getResourcesIds());
+        return objectDataResponse;
+    }
+
+    @ApiOperation(value="获得角色资源")
+    @GetMapping(value="/getRoleResources")
+    public ObjectDataResponse<RoleResourcesVO> getRoleResources(@RequestParam Integer roleId){
+        Preconditions.checkArgument(roleId>0);
+        ObjectDataResponse objectDataResponse=new ObjectDataResponse<>();
+        RoleResourcesVO  roleResourcesVO=roleService.getRoleResourcesVo(roleId);
+        objectDataResponse.setData(roleResourcesVO);
         return objectDataResponse;
     }
 }

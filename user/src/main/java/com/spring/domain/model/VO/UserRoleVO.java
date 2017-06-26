@@ -1,6 +1,7 @@
 package com.spring.domain.model.VO;
 
 import com.spring.domain.model.Role;
+import lombok.Data;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * @Author ErnestCheng
  * @Date 2017/6/23.
  */
+@Data
 public class UserRoleVO {
     /**
      * 用户id

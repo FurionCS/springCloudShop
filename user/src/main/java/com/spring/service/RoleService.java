@@ -1,6 +1,7 @@
 package com.spring.service;
 
 import com.spring.domain.model.Role;
+import com.spring.domain.model.VO.RoleResourcesVO;
 import com.spring.domain.model.request.RoleResourcesRequest;
 
 import java.util.List;
@@ -18,9 +19,16 @@ public interface RoleService {
     void addRole(Role role);
 
     /**
-     * t添加角色资源
+     * 添加角色资源
      * @param role
      * @param resourcesIds
      */
      void addRoleAndResources(Role role, List<Integer> resourcesIds);
+
+    /**
+     *获得角色资源
+     * @param roleId
+     * @return
+     */
+    RoleResourcesVO getRoleResourcesVo(Integer roleId);
 }
