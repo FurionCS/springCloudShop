@@ -7,7 +7,7 @@ import org.springframework.security.web.authentication.preauth.RequestHeaderAuth
 import org.springframework.stereotype.Component;
 
 /**
- * Created by YangFan on 2016/11/28 上午10:06.
+ * 授权过滤器，读取头部信息
  * <p/>
  * JTW验证
  */

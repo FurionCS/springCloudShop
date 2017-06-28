@@ -26,6 +26,12 @@
         from t_user
         where id=#{userId,jdbcType=INTEGER}
     </select>
+
+    <select id="getUserByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_user
+        where user_name=#{userName,jdbcType=VARCHAR}
+    </select>
     
     <update id="consumeBalance">
         update t_user

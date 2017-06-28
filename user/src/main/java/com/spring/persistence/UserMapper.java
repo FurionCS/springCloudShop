@@ -25,6 +25,13 @@ public interface UserMapper {
     User getUserById(@Param("userId") Integer userId);
 
     /**
+     * 通过名称获得用户
+     * @param userName
+     * @return
+     */
+    User getUserByName(@Param("userName") String userName);
+
+    /**
      * 消费余额
      * @param userId
      * @param amount

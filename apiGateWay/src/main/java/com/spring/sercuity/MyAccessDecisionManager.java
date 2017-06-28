@@ -1,5 +1,6 @@
 package com.spring.sercuity;
 
+import com.sun.istack.internal.logging.Logger;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -47,6 +48,8 @@ import java.util.Collection;
 @Component
 public class MyAccessDecisionManager implements AccessDecisionManager{
 
+    private Logger logger= Logger.getLogger(MyAccessDecisionManager.class);
+
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
         if (configAttributes == null) {
@@ -56,6 +59,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager{
             String needRole = ca.getAttribute();
             //ga 为用户所被赋予的权限。 needRole 为访问相应的资源应该具有的权限。
             for (GrantedAuthority ga : authentication.getAuthorities()) {
+                logger.info("-----------------------------:"+needRole.trim()+"/---------------"+ga.getAuthority());
                 if (needRole.trim().equals(ga.getAuthority().trim())) {
                     return;
                 }

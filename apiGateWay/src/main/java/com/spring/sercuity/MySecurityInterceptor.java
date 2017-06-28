@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import java.io.IOException;
 /**
- * @Description
+ * @Description 拦截器
  * @Author ErnestCheng
  * @Date 2017/6/23.
  */

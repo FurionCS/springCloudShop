@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by YangFan on 2016/11/28 上午10:19.
+ * 头部信息将被转换为Spring Authentication对象，名称为PreAuthenticatedAuthenticationToken 我们需要一个授权提供者读取这个记号
+ * ，然后验证它，然后转换为我们自己的定制授权对象，就是把header里的token转化成我们自己的授权对象。
+ * 然后把解析之后的对象返回给Spring Security，这里就相当于完成了token->session的转换。
  * <p/>
  */
 @Component

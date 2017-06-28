@@ -27,6 +27,13 @@ public interface UserService {
     User getUserById(Integer userId);
 
     /**
+     * 得到用户通过名称
+     * @param userName
+     * @return
+     */
+    User getUserByName(String userName);
+
+    /**
      * 获得所有用户
      * @return
      */

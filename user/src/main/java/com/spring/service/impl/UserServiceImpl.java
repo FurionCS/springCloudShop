@@ -59,6 +59,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByName(String userName) {
+        return userMapper.getUserByName(userName);
+    }
+
+    @Override
     @Cacheable(value="shop_user_id",key = "T(String).valueOf(#userId)")
     public User getUserById(Integer userId) {
         return userMapper.getUserById(userId);

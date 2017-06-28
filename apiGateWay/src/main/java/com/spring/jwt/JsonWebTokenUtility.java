@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by YangFan on 2016/11/28 上午10:01.
+ * Token生成工具类
  * <p/>
  */
 @Slf4j
@@ -23,15 +23,20 @@ public class JsonWebTokenUtility {
     private Key secretKey;
 
     public JsonWebTokenUtility() {
-
-        // 为了简单，我们存储一个静态key在这里，
+        //算法
         signatureAlgorithm = SignatureAlgorithm.HS512;
         //加密后密钥，到时候要放到外面
         String encodedKey =
                 "L7A/6zARSkK1j7Vd5SDD9pSSqZlqF7mAhiOgRbgv9Smce6tf4cJnvKOjtKPxNNnWQj+2lQEScm3XIUjhW+YVZg==";
+        //密钥
         secretKey = deserializeKey(encodedKey);
     }
 
+    /**
+     * 创建jwt token
+     * @param authTokenDetails
+     * @return
+     */
     public String createJsonWebToken(AuthTokenDetails authTokenDetails) {
         String token =
                 Jwts.builder().setSubject(authTokenDetails.getId().toString())
