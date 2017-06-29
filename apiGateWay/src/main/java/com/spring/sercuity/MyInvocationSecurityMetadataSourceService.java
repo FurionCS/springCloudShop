@@ -10,6 +10,8 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,38 +39,27 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
          * 应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
          * sparta
          */
-        List<HashMap> roles = restTemplate.getForObject("http://localhost:8894/role/listRole?status=1",List.class); //
-        logger.info(roles);
+        List<HashMap> resources = restTemplate.getForObject("http://localhost:8894/resources/listResources?status=1",List.class); //
+        logger.info(resources);
         resourceMap = new HashMap<>();
-
-        for (HashMap role : roles) {
-            ConfigAttribute ca = new SecurityConfig(role.get("roleName").toString());
-
-          /*  Map<String, Object> params = new HashMap<>();
-            params.put("roleId", role.get("id"));*/
-            // 查询每个角色对于的权限
-            List<String> resources = restTemplate.getForObject("http://localhost:8894/role/listRoleResources?roleId="+role.get("id"),List.class);
-            logger.info(resources);
-            for (String url : resources) {
-                /*
-                 * 判断资源文件和权限的对应关系，如果已经存在相关的资源url，则要通过该url为key提取出权限集合，将权限增加到权限集合中。
-                 * 资源对应角色
-                 * sparta
-                 */
-                if (resourceMap.containsKey(url)) {
-                    Collection<ConfigAttribute> value = resourceMap.get(url);
+        for (HashMap resource : resources) {
+            // 查询每个资源对于的角色
+            MultiValueMap<String, Integer> requestEntity = new LinkedMultiValueMap<>();
+            requestEntity.add("id",Integer.valueOf(resource.get("id").toString()));
+            List<String> roleNames = restTemplate.postForObject("http://localhost:8894/resources/listRoleNameByResourceId",requestEntity,List.class);
+            logger.info(roleNames);
+            Collection<ConfigAttribute> value=new ArrayList<>();
+            if(roleNames!=null && roleNames.size()>0) {
+                for (String roleName : roleNames) {
+                    ConfigAttribute ca = new SecurityConfig(roleName);
                     value.add(ca);
-                    resourceMap.put(url, value);
-                } else {
-                    Collection<ConfigAttribute> atts = new ArrayList<>();
-                    atts.add(ca);
-                    resourceMap.put(url, atts);
                 }
-
+            }else {
+                    ConfigAttribute ca = new SecurityConfig("super");
+                    value.add(ca);
             }
-
+            resourceMap.put(resource.get("url").toString(), value);
         }
-
     }
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {

@@ -18,7 +18,7 @@ import java.io.IOException;
  * @Date 2017/6/23.
  */
 @Component
-public class MySecurityInterceptor extends AbstractSecurityInterceptor implements  Filter {
+public class MySecurityInterceptor extends AbstractSecurityInterceptor implements Filter{
     @Autowired
     private FilterInvocationSecurityMetadataSource securityMetadataSource;
 

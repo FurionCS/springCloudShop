@@ -8,12 +8,11 @@ import com.spring.service.ResourcesService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Description 资源
@@ -29,7 +28,7 @@ public class ResourcesController {
 
     @ApiOperation(value="添加资源")
     @PostMapping("/addResource")
-    private ObjectDataResponse<Resource> addResource(@Valid @RequestBody Resource resource, BindingResult result){
+    public ObjectDataResponse<Resource> addResource(@Valid @RequestBody Resource resource, BindingResult result){
         Preconditions.checkNotNull(resource);
         ObjectDataResponse objectDataResponse=new ObjectDataResponse();
         int i=resourcesService.addResource(resource);
@@ -38,5 +37,21 @@ public class ResourcesController {
             objectDataResponse.setCode(StatusCode.API_Fail);
         }
         return objectDataResponse;
+    }
+
+    @ApiOperation(value="获得状态为status的资源")
+    @GetMapping("/listResources")
+    public List<Resource> listResource(@RequestParam Integer status){
+        Preconditions.checkNotNull(status);
+        ObjectDataResponse objectDataResponse=new ObjectDataResponse();
+        List<Resource> resourceList=resourcesService.listResources(status);
+        return resourceList;
+    }
+
+    @ApiOperation("通过资源获得角色名称")
+    @PostMapping("/listRoleNameByResourceId")
+    public List<String> listRoleNameByResourceId(@RequestParam("id") Integer id){
+        List<String> roleNameList=resourcesService.listRoleByResourceId(id);
+        return roleNameList;
     }
 }

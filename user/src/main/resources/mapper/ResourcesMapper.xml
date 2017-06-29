@@ -26,5 +26,9 @@
         from t_resources where id=#{id,jdbcType=INTEGER}
     </select>
 
+    <select id="listResources" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_resources where status=#{status,jdbcType=INTEGER}
+    </select>
 
 </mapper>

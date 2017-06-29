@@ -19,6 +19,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+    
     <resultMap id="roleResourcesVO" type="com.spring.domain.model.VO.RoleResourcesVO">
         <id column="role_id" jdbcType="INTEGER" property="roleId"/>
         <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
@@ -50,4 +51,10 @@
         where role.id=#{roleId,jdbcType=INTEGER} and rr.`status`=1 and role.`status`=1 and res.`status`=1
     </select>
 
+    <select id="listRoleByResourcesId" parameterType="java.lang.Integer" resultMap="roleResourcesVO">
+        select rr.role_id,role.role_name
+        from t_role_resources rr
+        INNER JOIN t_role role on rr.role_id=role.id
+        where rr.resource_id=#{id,jdbcType=INTEGER} and rr.status=1 and role.status=1
+    </select>
 </mapper>

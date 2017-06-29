@@ -4,6 +4,8 @@ import com.spring.domain.model.Resource;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @Description 资源
  * @Author ErnestCheng
@@ -24,6 +26,13 @@ public interface ResourcesMapper {
      * @return
      */
     Resource getResource(@Param("id") Integer id);
+
+    /**
+     * 获得状态为资源列表
+     * @param status
+     * @return
+     */
+    List<Resource> listResources(@Param("status") Integer status);
 
 
 }

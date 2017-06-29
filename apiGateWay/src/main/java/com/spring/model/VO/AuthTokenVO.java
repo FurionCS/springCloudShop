@@ -11,6 +11,9 @@ import java.util.List;
  */
 @Data
 public class AuthTokenVO {
+    /**
+     *token
+     */
     private String token;
     private Long userId;
     private List<String> resourceList;

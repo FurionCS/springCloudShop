@@ -18,7 +18,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ *
  * @Description 登入过滤器
+ * 登录后获得登录信息，生成token
  * @Author ErnestCheng
  * @Date 2017/6/26.
  */
@@ -47,6 +49,7 @@ public class LoginFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         final String requestURI = ctx.getRequest().getRequestURI();
+        logger.info("requesteUrl:"+requestURI);
         if("/user/login".equals(requestURI)){
             final InputStream responseDataStream = ctx.getResponseDataStream();
             final String responseData;
@@ -80,11 +83,13 @@ public class LoginFilter extends ZuulFilter {
         }
         return null;
     }
-
+    /**
+     * 设定过期时间
+     * @return
+     */
     private Date buildExpirationDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR_OF_DAY, 1);
         return calendar.getTime();
     }
-
 }

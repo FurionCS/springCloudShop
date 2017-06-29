@@ -24,12 +24,9 @@ public class NoAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
-
-
         //返回json形式的错误信息
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-
         RestfulResponse restResp = new RestfulResponse("", StatusCode.Invalid_Token_ReLogin, "没有登录或登录已过期!");
         response.getWriter().println(JsonUtil.toJsonString(restResp));
         response.getWriter().flush();

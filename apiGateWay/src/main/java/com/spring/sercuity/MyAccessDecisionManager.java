@@ -4,6 +4,7 @@ import com.sun.istack.internal.logging.Logger;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -65,6 +66,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager{
                 }
             }
         }
+        //没有权限一定要抛出该异常
         throw new AccessDeniedException("没有权限进行操作！");
     }
 

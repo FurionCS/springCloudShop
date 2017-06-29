@@ -1,5 +1,6 @@
 package com.spring.persistence;
 
+import com.spring.domain.model.Role;
 import com.spring.domain.model.RoleResource;
 import com.spring.domain.model.VO.RoleResourcesVO;
 import org.apache.ibatis.annotations.Param;
@@ -21,6 +22,11 @@ public interface RoleResourcesMapper {
      */
     int addRoleResource(@Param("RoleResource")RoleResource roleResource);
 
+    /**
+     * 添加角色资源列表
+     * @param roleResourceList
+     * @return
+     */
     int addRoleResources(@Param("RoleResources")List<RoleResource> roleResourceList);
 
 
@@ -30,4 +36,10 @@ public interface RoleResourcesMapper {
      * @return
      */
     RoleResourcesVO getRoleResourcesVO(@Param("roleId") Integer roleId );
+
+    /**
+     *获得角色通过资源id
+     * @return
+     */
+    List<RoleResourcesVO> listRoleByResourcesId(@Param("id")Integer id);
 }
