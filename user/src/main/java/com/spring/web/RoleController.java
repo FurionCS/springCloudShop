@@ -53,7 +53,7 @@ public class RoleController {
     public List<String> listRoleResources(@RequestParam Integer roleId){
         Preconditions.checkArgument(roleId>0);
         RoleResourcesVO  roleResourcesVO=roleService.getRoleResourcesVo(roleId);
-        if(roleResourcesVO.getResources()!=null && roleResourcesVO.getResources().size()>0){
+        if(roleResourcesVO!=null&&roleResourcesVO.getResources()!=null && roleResourcesVO.getResources().size()>0){
             return roleResourcesVO.getResources().stream().map(resource -> resource.getUrl() ).collect(Collectors.toList());
         }else{
             return new ArrayList<>();

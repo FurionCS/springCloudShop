@@ -50,7 +50,7 @@ public class LoginFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         final String requestURI = ctx.getRequest().getRequestURI();
         logger.info("requesteUrl:"+requestURI);
-        if("/user/login".equals(requestURI)){
+        if(requestURI.contains("/user/login")){
             final InputStream responseDataStream = ctx.getResponseDataStream();
             final String responseData;
             try {

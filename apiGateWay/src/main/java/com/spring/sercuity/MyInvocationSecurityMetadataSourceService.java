@@ -3,6 +3,7 @@ package com.spring.sercuity;
 import com.spring.model.Role;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -29,6 +30,11 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
     @Autowired
     private RestTemplate restTemplate;
 
+    @Value("${resources.list.url}")
+    private String resourcesUrl;
+
+    @Value("${resources.list.roleName}")
+    private String roleNameUrl;
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
 
     public MyInvocationSecurityMetadataSourceService() {
@@ -39,14 +45,14 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
          * 应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
          * sparta
          */
-        List<HashMap> resources = restTemplate.getForObject("http://localhost:8894/resources/listResources?status=1",List.class); //
+        List<HashMap> resources = restTemplate.getForObject(resourcesUrl,List.class); //
         logger.info(resources);
         resourceMap = new HashMap<>();
         for (HashMap resource : resources) {
             // 查询每个资源对于的角色
             MultiValueMap<String, Integer> requestEntity = new LinkedMultiValueMap<>();
             requestEntity.add("id",Integer.valueOf(resource.get("id").toString()));
-            List<String> roleNames = restTemplate.postForObject("http://localhost:8894/resources/listRoleNameByResourceId",requestEntity,List.class);
+            List<String> roleNames = restTemplate.postForObject(roleNameUrl,requestEntity,List.class);
             logger.info(roleNames);
             Collection<ConfigAttribute> value=new ArrayList<>();
             if(roleNames!=null && roleNames.size()>0) {
@@ -73,7 +79,6 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
             }
         }
         return null;
-
     }
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {

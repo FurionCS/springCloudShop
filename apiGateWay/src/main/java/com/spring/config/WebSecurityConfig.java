@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends JsonWebTokenSecurityConfig {
+
     @Override
     protected void setupAuthorization(HttpSecurity http) throws Exception {
         http.authorizeRequests()
