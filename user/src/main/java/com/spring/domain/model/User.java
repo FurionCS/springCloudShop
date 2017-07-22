@@ -2,6 +2,8 @@ package com.spring.domain.model;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,9 +19,11 @@ import java.util.Date;
 @ToString
 public class User implements Serializable{
     private Integer id;
+    @NotNull
     private String userName;
     private String password;
     private String idCard;
+    @Min(1000)
     private Double balance;
     private Date createTime;
     private Date leastTime;

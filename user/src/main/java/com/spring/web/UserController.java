@@ -65,7 +65,7 @@ public class UserController {
 
     @ApiOperation(value="添加用户")
     @PostMapping(value="addUser")
-    public UserResponse addUser(@RequestBody User user){
+    public UserResponse addUser(@Valid @RequestBody User user,BindingResult result){
         UserResponse userResponse=new UserResponse();
         if(user==null|| "".equals(user.getUserName())||"".equals(user.getPassword())){
             userResponse.setCode(StatusCode.Fail_Code);
