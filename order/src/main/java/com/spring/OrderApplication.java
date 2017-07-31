@@ -10,7 +10,6 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 @SpringCloudApplication
 @EnableFeignClients
-@EnableCircuitBreaker
 @MapperScan(basePackages = "com.spring.persistence")
 @ServletComponentScan
 public class OrderApplication {
