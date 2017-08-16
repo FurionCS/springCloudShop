@@ -114,21 +114,6 @@ public class UserController {
         return objectDataResponse;
     }
 
-    @ApiOperation(value = "获得所有用户")
-    @GetMapping(value="listUser")
- //   @PreAuthorize("hasRole('ADMIN')")
-    public ObjectDataResponse<List<UserAuth>> listUser(){
-        ObjectDataResponse objectDataResponse=new ObjectDataResponse();
-        List<UserAuth> userAuthList=userService.listUser();
-        if(userAuthList.size()>0){
-            objectDataResponse.setData(userAuthList);
-        }else{
-            objectDataResponse.setMessage("暂无记录");
-        }
-        return objectDataResponse;
-    }
-
-
     @ApiOperation(value="获得用户角色列表")
     @GetMapping(value="/listUserRole")
     public UserRoleVO listUserRoleVO(@RequestParam Integer userId){

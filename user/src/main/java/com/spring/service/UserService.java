@@ -33,11 +33,7 @@ public interface UserService {
      */
     User getUserByName(String userName);
 
-    /**
-     * 获得所有用户
-     * @return
-     */
-    List<UserAuth> listUser();
+
 
     /**
      * 获得用户角色信息

@@ -89,7 +89,7 @@ public class HibernateValidatorAspect implements Ordered {
             // 以entity中的code为key存入Request中
             final String errorCode = String.valueOf(errorStatus.code());
             bindStatusCodesInRequestScope(errorCode, entity);
-            throw new IllegalValidateException(errorCode);
+            throw new IllegalValidateException(errorMap.toString());
         }
     }
 

@@ -69,10 +69,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserById(userId);
     }
 
-    @Override
-    public List<UserAuth> listUser() {
-        return userAuthRepository.findAll();
-    }
+
 
     @Override
  //   @Cacheable(value="shop_user_role",key="T(String).valueOf(#userId)")
