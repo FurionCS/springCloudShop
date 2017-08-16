@@ -1,14 +1,19 @@
 package com.spring.web;
 
+import com.google.common.base.Strings;
 import com.spring.common.model.StatusCode;
 import com.spring.domain.model.Product;
+import com.spring.domain.request.ProductUpdateRequest;
 import com.spring.domain.response.ObjectDataResponse;
 import com.spring.domain.response.ProductResponse;
 import com.spring.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -24,9 +29,9 @@ public class ProductController {
 
     @ApiOperation(value="添加产品")
     @PostMapping(value="addProduct")
-    public ProductResponse addProduct(@RequestBody Product product){
+    public ProductResponse addProduct(@Validated @RequestBody Product product, BindingResult result){
         ProductResponse productResponse=new ProductResponse();
-        if(product==null||"".equals(product.getName())||"".equals(product.getPrice())){
+        if(product==null|| Strings.isNullOrEmpty(product.getName())||product.getPrice().compareTo(BigDecimal.ZERO)<0){
             productResponse.setCode(StatusCode.Fail_Code);
             productResponse.setMessage("参数不正确");
             return productResponse;
@@ -35,6 +40,18 @@ public class ProductController {
             productService.addProduct(product);
             return productResponse;
         }
+    }
+
+    @ApiOperation("更新产品信息")
+    @PostMapping("/updateProduct")
+    public ProductResponse updateProduct(@Validated @RequestBody ProductUpdateRequest productUpdateRequest,BindingResult result){
+        ProductResponse productResponse=new ProductResponse();
+        int flag=productService.updateProduct(productUpdateRequest);
+        if(flag==0){
+            productResponse.setCode(StatusCode.Update_Fail);
+            productResponse.setMessage("更新失败");
+        }
+        return  productResponse;
     }
 
     /**

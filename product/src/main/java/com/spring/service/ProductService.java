@@ -1,6 +1,7 @@
 package com.spring.service;
 
 import com.spring.domain.model.Product;
+import com.spring.domain.request.ProductUpdateRequest;
 
 /**
  * @Description 产品service接口
@@ -20,4 +21,11 @@ public interface ProductService {
      * @return
      */
     Product getProductById(Integer productId);
+
+    /**
+     * 更新产品信息
+     * @param productUpdateRequest
+     * @return
+     */
+    int updateProduct(ProductUpdateRequest productUpdateRequest);
 }
