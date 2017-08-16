@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -67,7 +68,7 @@ public class OrderServiceImpl implements OrderService{
         //查询用户
         final User user=findRemoteUser(userId);
         //检查余额
-        if(user.getBalance()-product.getPrice()<0){
+        if(user.getBalance().subtract(product.getPrice()).compareTo(BigDecimal.ZERO)<0){
             // 抛出异常
             throw new GlobalException("余额不足", StatusCode.Data_Error);
         }
@@ -163,7 +164,7 @@ public class OrderServiceImpl implements OrderService{
             throw new GlobalException("用户不存在", StatusCode.Data_Error);
         }
         //检查余额
-        if(user.getBalance()<=0){
+        if(user.getBalance().compareTo(BigDecimal.ZERO)<=0){
             //余额不足
             throw new GlobalException("余额不足", StatusCode.Data_Error);
         }

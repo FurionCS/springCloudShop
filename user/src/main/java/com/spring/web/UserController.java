@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +80,7 @@ public class UserController {
 
     @ApiOperation(value="添加用户")
     @PostMapping(value="addUserAndRole")
-    public UserResponse addUserAndRole(HttpServletRequest request, HttpServletResponse response,@Valid @RequestBody UserRoleRequest userRoleRequest, BindingResult result){
+    public UserResponse addUserAndRole(HttpServletRequest request, HttpServletResponse response, @Validated @RequestBody UserRoleRequest userRoleRequest, BindingResult result){
         UserResponse userResponse=new UserResponse();
         User user=userRoleRequest.getUser();
         List<Integer> roleIds=userRoleRequest.getRoleIds();
@@ -96,7 +97,6 @@ public class UserController {
 
 
     @ApiOperation(value="获得用户")
-  //  @PreAuthorize("hasRole('USER')")
     @RequestMapping(value="getUserById",method = RequestMethod.GET)
     public ObjectDataResponse<User> getUserById(@RequestParam Integer userId){
         ObjectDataResponse objectDataResponse=new ObjectDataResponse();

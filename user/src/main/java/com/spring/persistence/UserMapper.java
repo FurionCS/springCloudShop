@@ -4,6 +4,8 @@ import com.spring.domain.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 /**
  * @Description 用户数据接口
  * @Author ErnestCheng
@@ -37,7 +39,7 @@ public interface UserMapper {
      * @param amount
      * @return
      */
-    int consumeBalance(@Param("usreId") Integer userId,@Param("amount") Double amount);
+    int consumeBalance(@Param("usreId") Integer userId,@Param("amount") BigDecimal amount);
 
     /**
      * 更新用户余额
@@ -45,6 +47,6 @@ public interface UserMapper {
      * @param amount
      * @return
      */
-    int updateBalance(@Param("userId") Integer userId,@Param("amount") Double amount);
+    int updateBalance(@Param("userId") Integer userId,@Param("amount") BigDecimal amount);
 
 }

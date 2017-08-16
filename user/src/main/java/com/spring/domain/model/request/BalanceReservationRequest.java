@@ -11,6 +11,7 @@ import lombok.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * @author Zhao Junjian
@@ -35,6 +36,6 @@ public class BalanceReservationRequest extends RestfulRequest {
     @Min(1)
     @Max(100000000L)
     @ApiModelProperty(value = "预留金额", example = "100", required = true)
-    private Double amount;
+    private BigDecimal amount;
 
 }

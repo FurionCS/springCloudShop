@@ -60,9 +60,9 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
     private Long expireSeconds=240L;
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public UserBalanceTcc trying(Integer userId, Double amount) {
+    public UserBalanceTcc trying(Integer userId, BigDecimal amount) {
         Preconditions.checkArgument(userId>0);
-        Preconditions.checkArgument(amount>0);
+        Preconditions.checkArgument(amount.compareTo(BigDecimal.ZERO)>0);
         final User user=userService.getUserById(userId);
         if (user == null) {
             throw new GlobalException("用户不存在", StatusCode.Data_Not_Exist);
@@ -73,7 +73,7 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
             throw new GlobalException("消费余额失败",StatusCode.Action_Fail);
         }
         //保存到redis
-        user.setBalance(user.getBalance()-amount);
+        user.setBalance(user.getBalance().subtract(amount));
         redisTemplate.opsForValue().set(RedisKey.user+":"+userId,user);
 
         UserBalanceTcc tcc=new UserBalanceTcc();
@@ -131,7 +131,7 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
                 //更新redis
                 User user=(User)redisTemplate.opsForValue().get(RedisKey.user+":"+userBalanceTcc.getUserId());
                 if(user!=null){
-                    user.setBalance(user.getBalance()+userBalanceTcc.getAmount());
+                    user.setBalance(user.getBalance().add(userBalanceTcc.getAmount()));
                     redisTemplate.opsForValue().set(RedisKey.user+":"+userBalanceTcc.getUserId(),user);
                 }
             }
