@@ -144,14 +144,19 @@ public class UserController {
     @ApiOperation(value = "更新用户密码")
     @PostMapping(value = "/updatePassword")
     public UserResponse updatePassword(@Validated @RequestBody UserPasswordRequest userPasswordRequest, BindingResult result) {
-        UserResponse userResponse=new UserResponse();
+        UserResponse userResponse = new UserResponse();
         User user = userService.getUserById(userPasswordRequest.getUserId());
         if (user == null) {
             userResponse.setCode(StatusCode.Data_Not_Exist);
             userResponse.setMessage("找不到该用户");
+            return userResponse;
         }
-
-        return null;
+        int flag = userService.updatePassword(userPasswordRequest.getNewPassword(), userPasswordRequest.getOldPassword(), user);
+        if (flag == 0) {
+            userResponse.setCode(StatusCode.Update_Fail);
+            userResponse.setMessage("更新失败");
+        }
+        return userResponse;
     }
 
 }

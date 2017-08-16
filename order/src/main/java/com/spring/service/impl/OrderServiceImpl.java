@@ -204,6 +204,12 @@ public class OrderServiceImpl implements OrderService{
         //添加资源信息
         persistParticipant(reservationResponse.getParticipantLink(), order.getId());
     }
+
+    /**
+     * 添加资源信息
+     * @param participant
+     * @param orderId
+     */
     private void persistParticipant(Participant participant, Integer orderId) {
         Preconditions.checkNotNull(participant);
         Preconditions.checkNotNull(orderId);
