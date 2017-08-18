@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -61,6 +63,18 @@ public class ProductServiceImpl implements ProductService {
                 product.setUpdateTime(new Date());
                 redisTemplate.opsForValue().set(RedisKey.product + productUpdateRequest.getProductId(), product);
             }
+        }
+        return flag;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public int deleteProductByProductId(Integer productId) {
+        // 1：先删除数据库中的产品
+        int flag=productMapper.deleteProductByProductId(productId);
+        // 2: 删除redis中数据
+        if(flag==1){
+            redisTemplate.delete(RedisKey.product+productId);
         }
         return flag;
     }

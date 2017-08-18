@@ -42,4 +42,11 @@ public interface ProductMapper {
      * @return
      */
     int updateProduct(@Param("productId") Integer productId, @Param("productName")String productName, @Param("stock")Integer stock, @Param("price")BigDecimal price);
+
+    /**
+     * 删除产品
+     * @param productId
+     * @return
+     */
+    int deleteProductByProductId(@Param("productId") Integer productId);
 }

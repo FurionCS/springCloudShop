@@ -28,4 +28,11 @@ public interface ProductService {
      * @return
      */
     int updateProduct(ProductUpdateRequest productUpdateRequest);
+
+    /**
+     * 删除产品
+     * @param productId
+     * @return
+     */
+    int deleteProductByProductId(Integer productId);
 }
