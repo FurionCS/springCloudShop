@@ -1,8 +1,11 @@
 package com.spring.persistence;
 
 import com.spring.domain.model.User;
+import com.spring.domain.model.request.UserUpdateRequest;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.math.BigDecimal;
 
 /**
  * @Description 用户数据接口
@@ -37,7 +40,7 @@ public interface UserMapper {
      * @param amount
      * @return
      */
-    int consumeBalance(@Param("usreId") Integer userId,@Param("amount") Double amount);
+    int consumeBalance(@Param("usreId") Integer userId,@Param("amount") BigDecimal amount);
 
     /**
      * 更新用户余额
@@ -45,6 +48,22 @@ public interface UserMapper {
      * @param amount
      * @return
      */
-    int updateBalance(@Param("userId") Integer userId,@Param("amount") Double amount);
+    int updateBalance(@Param("userId") Integer userId,@Param("amount") BigDecimal amount);
+
+    /**
+     * 更新用户信息
+     * @param userId
+     * @param  userName
+     * @param idCard
+     * @return
+     */
+    int updateUser(@Param("userId") Integer userId,@Param("userName") String userName,@Param("idCard") String idCard,@Param("password")String password);
+
+    /**
+     * 通过用户id删除用户
+     * @param userId
+     * @return
+     */
+    int deleteUserByUserId(@Param("userId") Integer userId);
 
 }

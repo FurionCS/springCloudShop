@@ -73,7 +73,7 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
         }
         //更新reids
         product.setStock(product.getStock()-num);
-        redisTemplate.opsForValue().getAndSet(RedisKey.product+":"+productId,product);
+        redisTemplate.opsForValue().getAndSet(RedisKey.product+productId,product);
 
         // 插入产品预留资源
         ProductStockTcc productStockTcc=new ProductStockTcc();
@@ -147,10 +147,10 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
                     throw new GlobalException("更新库存失败");
                 }
                 //设置redis
-                Product product=(Product)redisTemplate.opsForValue().get(RedisKey.product+":"+res.getProductId());
+                Product product=(Product)redisTemplate.opsForValue().get(RedisKey.product+res.getProductId());
                 if(product!=null) {
                     product.setStock(product.getStock()+res.getStock());
-                    redisTemplate.opsForValue().set(RedisKey.product + ":" + res.getProductId(),product);
+                    redisTemplate.opsForValue().set(RedisKey.product + res.getProductId(),product);
                 }
             }
         }

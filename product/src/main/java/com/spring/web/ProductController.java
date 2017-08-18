@@ -1,15 +1,21 @@
 package com.spring.web;
 
+import com.google.common.base.Strings;
 import com.spring.common.model.StatusCode;
 import com.spring.domain.model.Product;
+import com.spring.domain.request.ProductUpdateRequest;
 import com.spring.domain.response.ObjectDataResponse;
 import com.spring.domain.response.ProductResponse;
 import com.spring.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @Description 产品控制器
@@ -17,16 +23,17 @@ import java.util.Date;
  * @Date 2017/5/27.
  */
 @RestController
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
     @ApiOperation(value="添加产品")
-    @PostMapping(value="addProduct")
-    public ProductResponse addProduct(@RequestBody Product product){
+    @PostMapping(value="/addProduct")
+    public ProductResponse addProduct(@Validated @RequestBody Product product, BindingResult result){
         ProductResponse productResponse=new ProductResponse();
-        if(product==null||"".equals(product.getName())||"".equals(product.getPrice())){
+        if(product==null|| Strings.isNullOrEmpty(product.getName())||product.getPrice().compareTo(BigDecimal.ZERO)<0){
             productResponse.setCode(StatusCode.Fail_Code);
             productResponse.setMessage("参数不正确");
             return productResponse;
@@ -37,13 +44,25 @@ public class ProductController {
         }
     }
 
+    @ApiOperation("更新产品信息")
+    @PostMapping("/updateProduct")
+    public ProductResponse updateProduct(@Validated @RequestBody ProductUpdateRequest productUpdateRequest,BindingResult result){
+        ProductResponse productResponse=new ProductResponse();
+        int flag=productService.updateProduct(productUpdateRequest);
+        if(flag==0){
+            productResponse.setCode(StatusCode.Update_Fail);
+            productResponse.setMessage("更新失败");
+        }
+        return  productResponse;
+    }
+
     /**
      * 通过产品id获得产品
      * @param productId
      * @return
      */
     @ApiOperation(value="通过产品id获得产品")
-    @RequestMapping(value="getProductById",method = RequestMethod.GET)
+    @GetMapping("/getProductById")
     public ObjectDataResponse<Product> getProductById(@RequestParam("productId") Integer productId){
         ObjectDataResponse objectDataResponse=new ObjectDataResponse();
         if(productId==null||productId<1){
@@ -61,4 +80,20 @@ public class ProductController {
         return objectDataResponse;
     }
 
+    @ApiOperation(value="删除产品通过产品id")
+    @GetMapping()
+    public ProductResponse deleteProductByProductId(@RequestParam("productId") Integer productId){
+        ProductResponse productResponse=new ProductResponse();
+        if(Objects.isNull(productId)|| productId<1){
+            productResponse.setCode(StatusCode.Param_Error);
+            productResponse.setMessage("参数不正确");
+        }else{
+            int flag=productService.deleteProductByProductId(productId);
+            if(flag==0){
+                productResponse.setCode(StatusCode.Update_Fail);
+                productResponse.setMessage("删除失败");
+            }
+        }
+        return productResponse;
+    }
 }

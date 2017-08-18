@@ -5,31 +5,51 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 /**
  * Token生成工具类
  * <p/>
  */
-@Slf4j
+@Component
 public class JsonWebTokenUtility {
+
+    private Logger logger= Logger.getLogger(JsonWebTokenUtility.class);
     private SignatureAlgorithm signatureAlgorithm;
     private Key secretKey;
+    /**
+     * 秘钥
+     */
+    @Value("${jwt.encodedKey:L7A/6zARSkK1j7Vd5SDD9pSSqZlqF7mAhiOgRbgv9Smce6tf4cJnvKOjtKPxNNnWQj+2lQEScm3XIUjhW+YVZg==}")
+    private String encodedKey;
+    /**
+     * 过期时间
+     */
+    @Value("${jwt.expireTime:120}")
+    private Integer expire;
+    /**
+     * 是否初始化
+     */
+    private boolean isInit;
 
-    public JsonWebTokenUtility() {
+    public boolean getIsInit(){return this.isInit;}
+
+    public JsonWebTokenUtility() {}
+
+    public void init(){
         //算法
         signatureAlgorithm = SignatureAlgorithm.HS512;
-        //加密后密钥，到时候要放到外面
-        String encodedKey =
-                "L7A/6zARSkK1j7Vd5SDD9pSSqZlqF7mAhiOgRbgv9Smce6tf4cJnvKOjtKPxNNnWQj+2lQEScm3XIUjhW+YVZg==";
         //密钥
         secretKey = deserializeKey(encodedKey);
+        this.isInit=true;
     }
 
     /**
@@ -42,7 +62,7 @@ public class JsonWebTokenUtility {
                 Jwts.builder().setSubject(authTokenDetails.getId().toString())
                         .claim("username", authTokenDetails.getUsername())
                         .claim("roleNames", authTokenDetails.getRoleNames())
-                        .setExpiration(authTokenDetails.getExpirationDate())
+                        .setExpiration(buildExpirationDate(expire))
                         .signWith(getSignatureAlgorithm(),
                                 getSecretKey()).compact();
         return token;
@@ -79,7 +99,7 @@ public class JsonWebTokenUtility {
             authTokenDetails.setRoleNames(roleNames);
             authTokenDetails.setExpirationDate(expirationDate);
         } catch (JwtException ex) {
-            log.error(ex.getMessage(), ex);
+            logger.error(ex.getMessage(), ex);
         }
         return authTokenDetails;
     }
@@ -88,5 +108,30 @@ public class JsonWebTokenUtility {
         String encodedKey =
                 Base64.getEncoder().encodeToString(key.getEncoded());
         return encodedKey;
+    }
+
+    /**
+     * 刷新token
+     * @param token
+     * @return
+     */
+    public String refeshToken(String token){
+        AuthTokenDetails authTokenDetails=parseAndValidate(token);
+        if(authTokenDetails==null){
+            //表示token 已经过期或者不正确
+            return null;
+        }else {
+            return createJsonWebToken(authTokenDetails);
+        }
+    }
+
+    /**
+     * 设定过期时间
+     * @return
+     */
+    private Date buildExpirationDate(int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, minute);
+        return calendar.getTime();
     }
 }

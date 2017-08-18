@@ -10,6 +10,8 @@ import com.spring.jwt.AuthTokenDetails;
 import com.spring.jwt.JsonWebTokenUtility;
 import com.spring.model.VO.AuthTokenVO;
 import com.sun.istack.internal.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +30,11 @@ public class LoginFilter extends ZuulFilter {
 
     Logger logger= Logger.getLogger(LoginFilter.class);
 
-    private JsonWebTokenUtility tokenService = new JsonWebTokenUtility();
+    @Autowired
+    private JsonWebTokenUtility tokenService;
+
+    @Value("${jwt.user.login:/user/login}")
+    private String loginUrl;
 
     @Override
     public String filterType() {
@@ -47,10 +53,14 @@ public class LoginFilter extends ZuulFilter {
 
     @Override
     public Object run() {
+        //初始化token工具类
+        if(!tokenService.getIsInit()){
+            tokenService.init();
+        }
         RequestContext ctx = RequestContext.getCurrentContext();
         final String requestURI = ctx.getRequest().getRequestURI();
         logger.info("requesteUrl:"+requestURI);
-        if(requestURI.contains("/user/login")){
+        if(requestURI.contains(loginUrl)){
             final InputStream responseDataStream = ctx.getResponseDataStream();
             final String responseData;
             try {

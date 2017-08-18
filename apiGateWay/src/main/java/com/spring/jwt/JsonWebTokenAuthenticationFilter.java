@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * 授权过滤器，读取头部信息
+ * 继承RequestHeaderAuthenticationFilter  spring security 过滤器 获得请求头设置到
+ * spring security 的登录验证是由org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter这个过滤器来完成的
+ * 在该类的父类AbstractAuthenticationProcessingFilter中有一个AuthenticationManager接口属性
+ * 验证工作主要是通过这个AuthenticationManager接口的实例来完成的
  * <p/>
  * JTW验证
  */

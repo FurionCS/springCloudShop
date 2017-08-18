@@ -17,3 +17,10 @@ eureka:
    service-url:
      defaultZone: 'http://eureka1:8888/eureka/,http://eureka2:8886/eureka'
 
+jwt:
+  expireTime: 110
+  user:
+    login: '/user/login'
+auth:
+  allow:
+    url: '/user/login,/swagger/**'

@@ -4,6 +4,8 @@ import com.spring.domain.model.Product;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 /**
  * @Description 产品Mapper
  * @Author ErnestCheng
@@ -30,4 +32,21 @@ public interface ProductMapper {
      * @return
      */
     int updateProductStock(@Param("productId") Integer productId,@Param("num") Integer num);
+
+    /**
+     * 更新产品信息
+     * @param productId
+     * @param productName
+     * @param stock
+     * @param price
+     * @return
+     */
+    int updateProduct(@Param("productId") Integer productId, @Param("productName")String productName, @Param("stock")Integer stock, @Param("price")BigDecimal price);
+
+    /**
+     * 删除产品
+     * @param productId
+     * @return
+     */
+    int deleteProductByProductId(@Param("productId") Integer productId);
 }

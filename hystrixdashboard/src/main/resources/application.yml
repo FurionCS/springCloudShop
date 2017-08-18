@@ -2,7 +2,7 @@ server:
   port: 8892
 spring:
   application:
-    name: 'hystrixdashboard'
+    name: hystrixdashboard
 eureka:
   client:
     service-url:
@@ -11,5 +11,6 @@ eureka:
       enabled: true
 turbine:
   app-config: order
-  cluster-name-expression: 'default'
+  cluster-name-expression: "'default'"
+
 

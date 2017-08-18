@@ -37,7 +37,7 @@ public class UserBalanceTcc{
     /**
      * 金额
      */
-    private Double amount;
+    private BigDecimal amount;
     /**
      * 状态
      */

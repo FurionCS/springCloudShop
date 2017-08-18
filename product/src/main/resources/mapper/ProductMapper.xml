@@ -32,4 +32,24 @@
         set stock=stock-#{num,jdbcType=INTEGER}
         where id=#{productId,jdbcType=INTEGER}
     </update>
+
+    <update id="updateProduct">
+        update t_product
+        set update_time=now()
+        <if test="name!=null and name!=''">
+            ,name=#{productName,jdbcType=VARCHAR}
+        </if>
+        <if test="stock!=null and stock>-1">
+            ,stock=#{stock,jdbcType=INTEGER}
+        </if>
+        <if test="price!=null and product>-1">
+            ,price=#{price,jdbcType=DECIMAL}
+        </if>
+        where id=#{productId,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteProductByProductId">
+        delete from t_product
+        where id=#{productId,jdbcType=INTEGER}
+    </delete>
 </mapper>

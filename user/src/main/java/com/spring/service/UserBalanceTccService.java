@@ -16,7 +16,7 @@ public interface UserBalanceTccService {
      * @param amount
      * @return
      */
-    UserBalanceTcc trying(Integer userId, Double amount);
+    UserBalanceTcc trying(Integer userId, BigDecimal amount);
 
     /**
      * 确认预留资源

@@ -3,6 +3,7 @@ package com.spring.domain.model;
 import com.spring.domain.type.OrderStatus;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -22,6 +23,6 @@ public class Order {
     private Date deleteTime;
     private int userId;
     private int productId;
-    private Double price;
+    private BigDecimal price;
     private OrderStatus status;
 }

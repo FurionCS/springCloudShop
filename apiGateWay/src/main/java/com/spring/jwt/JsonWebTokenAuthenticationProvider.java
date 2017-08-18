@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ *
+ * 认证是由 AuthenticationManager 来管理的，但是真正进行认证的是 AuthenticationManager 中定义的 AuthenticationProvider。
  * 头部信息将被转换为Spring Authentication对象，名称为PreAuthenticatedAuthenticationToken 我们需要一个授权提供者读取这个记号
  * ，然后验证它，然后转换为我们自己的定制授权对象，就是把header里的token转化成我们自己的授权对象。
  * 然后把解析之后的对象返回给Spring Security，这里就相当于完成了token->session的转换。
@@ -25,6 +27,12 @@ public class JsonWebTokenAuthenticationProvider implements AuthenticationProvide
 
     private JsonWebTokenUtility tokenService = new JsonWebTokenUtility();
 
+    /**
+     * 在authenticate方法中，首先可以根据用户名获取到用户信息，再者可以拿自定义参数和用户信息做逻辑验证，如密码的验证
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
@@ -64,6 +72,11 @@ public class JsonWebTokenAuthenticationProvider implements AuthenticationProvide
         return principal;
     }
 
+    /**
+     * 这个类中先执行这个方法，如果为true,执行authenticate方法
+     * @param authentication
+     * @return
+     */
     @Override
     public boolean supports(Class<?> authentication) {
         return

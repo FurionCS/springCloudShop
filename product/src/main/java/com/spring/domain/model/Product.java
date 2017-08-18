@@ -3,7 +3,10 @@ package com.spring.domain.model;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -36,13 +39,18 @@ public class Product implements Serializable{
     /**
      * 产品名称
      */
+    @NotNull
     private String name;
     /**
      * 库存
      */
+    @NotNull
+    @Min(0)
     private Integer stock;
     /**
      * 价格
      */
-    private Double price;
+    @NotNull
+    @Min(0)
+    private BigDecimal price;
 }

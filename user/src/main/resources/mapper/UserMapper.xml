@@ -44,4 +44,21 @@
         set balance=balance+#{amount,jdbcType=DOUBLE}
         where id=#{userId,jdbcType=INTEGER}
     </update>
+
+    <update id="updateUser">
+        update t_user
+        set user_name=#{userName,jdbcType=VARCHAR}
+        <if test="idCard!=null and idCard!=''">
+            ,idCard=#{idCard,jdbcType=VARCHAR}
+        </if>
+        <if test="password!=null and password!=''">
+            ,password=#{password,jdbcType=VARCHAR}
+        </if>
+        where id=#{userId,jdbcType=INTEGER}
+    </update>
+    
+    <delete id="deleteUserByUserId">
+        delete from t_user
+        where id=#{userId,jdbcType=INTEGER}
+    </delete>
 </mapper>
