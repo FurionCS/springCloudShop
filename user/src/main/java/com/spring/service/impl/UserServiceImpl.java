@@ -128,12 +128,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public int updateUser(UserUpdateRequest userUpdateRequest) {
-        int flag = userMapper.updateUser(userUpdateRequest.getId(), userUpdateRequest.getUserName(), userUpdateRequest.getIdCard(),null);
+        int flag = userMapper.updateUser(userUpdateRequest.getId(), null, userUpdateRequest.getIdCard(),null);
         if (flag == 1) {
             User user = (User) redisTemplate.opsForValue().get(RedisKey.user + userUpdateRequest.getId());
             if (user != null) {
                 user.setIdCard(userUpdateRequest.getIdCard());
-                user.setUserName(userUpdateRequest.getUserName());
                 redisTemplate.opsForValue().set(RedisKey.user + user.getId(), user);
             }
         }

@@ -1,10 +1,13 @@
 
 package com.spring.jwt;
 
+
+import com.google.common.base.Objects;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.NoArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,15 +18,21 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 /**
  * Token生成工具类
  * <p/>
  */
 @Component
+@NoArgsConstructor
 public class JsonWebTokenUtility {
 
-    private Logger logger= Logger.getLogger(JsonWebTokenUtility.class);
-    private SignatureAlgorithm signatureAlgorithm;
+    private Logger logger = Logger.getLogger(JsonWebTokenUtility.class);
+    private static final SignatureAlgorithm signatureAlgorithm;
+    static {
+        //算法
+        signatureAlgorithm = SignatureAlgorithm.HS512;
+    }
     private Key secretKey;
     /**
      * 秘钥
@@ -35,25 +44,18 @@ public class JsonWebTokenUtility {
      */
     @Value("${jwt.expireTime:120}")
     private Integer expire;
-    /**
-     * 是否初始化
-     */
-    private boolean isInit;
 
-    public boolean getIsInit(){return this.isInit;}
-
-    public JsonWebTokenUtility() {}
-
-    public void init(){
-        //算法
-        signatureAlgorithm = SignatureAlgorithm.HS512;
+    public JsonWebTokenUtility initKey() {
         //密钥
-        secretKey = deserializeKey(encodedKey);
-        this.isInit=true;
+        if (Objects.equal(null, secretKey)) {
+            secretKey = deserializeKey(encodedKey);
+        }
+        return this;
     }
 
     /**
      * 创建jwt token
+     *
      * @param authTokenDetails
      * @return
      */
@@ -70,8 +72,7 @@ public class JsonWebTokenUtility {
 
     private Key deserializeKey(String encodedKey) {
         byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-        Key key =
-                new SecretKeySpec(decodedKey, getSignatureAlgorithm().getJcaName());
+        Key key = new SecretKeySpec(decodedKey, getSignatureAlgorithm().getJcaName());
         return key;
     }
 
@@ -92,12 +93,7 @@ public class JsonWebTokenUtility {
             String username = (String) claims.get("username");
             List<String> roleNames = (List) claims.get("roleNames");
             Date expirationDate = claims.getExpiration();
-
-            authTokenDetails = new AuthTokenDetails();
-            authTokenDetails.setId(Long.valueOf(userId));
-            authTokenDetails.setUsername(username);
-            authTokenDetails.setRoleNames(roleNames);
-            authTokenDetails.setExpirationDate(expirationDate);
+            authTokenDetails = new AuthTokenDetails(Long.valueOf(userId), username, null, roleNames, expirationDate);
         } catch (JwtException ex) {
             logger.error(ex.getMessage(), ex);
         }
@@ -112,21 +108,23 @@ public class JsonWebTokenUtility {
 
     /**
      * 刷新token
+     *
      * @param token
      * @return
      */
-    public String refeshToken(String token){
-        AuthTokenDetails authTokenDetails=parseAndValidate(token);
-        if(authTokenDetails==null){
+    public String refeshToken(String token) {
+        AuthTokenDetails authTokenDetails = parseAndValidate(token);
+        if (authTokenDetails == null) {
             //表示token 已经过期或者不正确
             return null;
-        }else {
+        } else {
             return createJsonWebToken(authTokenDetails);
         }
     }
 
     /**
      * 设定过期时间
+     *
      * @return
      */
     private Date buildExpirationDate(int minute) {

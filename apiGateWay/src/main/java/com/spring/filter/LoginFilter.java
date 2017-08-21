@@ -53,10 +53,6 @@ public class LoginFilter extends ZuulFilter {
 
     @Override
     public Object run() {
-        //初始化token工具类
-        if(!tokenService.getIsInit()){
-            tokenService.init();
-        }
         RequestContext ctx = RequestContext.getCurrentContext();
         final String requestURI = ctx.getRequest().getRequestURI();
         if(requestURI.contains(loginUrl)){
@@ -74,7 +70,7 @@ public class LoginFilter extends ZuulFilter {
                         return map.get("roleName").toString();
                     }).collect(Collectors.toList());
                     AuthTokenDetails authTokenDetails = new AuthTokenDetails(Long.valueOf(data.get("userId").toString()),data.get("userName").toString(),null,roleNameList,null);
-                    String jwt=tokenService.createJsonWebToken(authTokenDetails);
+                    String jwt=tokenService.initKey().createJsonWebToken(authTokenDetails);
                     authTokenDetails=null;
                     if(jwt!=null){
                         AuthTokenVO authTokenVO=new AuthTokenVO();

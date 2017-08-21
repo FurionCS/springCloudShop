@@ -1,6 +1,6 @@
 package com.spring.domain.model.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spring.common.model.response.RestfulResponse;
 import lombok.*;
@@ -8,9 +8,7 @@ import lombok.*;
 /**
  * @author Zhao Junjian
  */
-@Getter
-@Setter
-@ToString(callSuper = true)
+@Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
