@@ -6,10 +6,10 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
 import com.spring.common.model.model.ErrorInfo;
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.*;
 import com.spring.domain.request.*;
-import com.spring.domain.response.ObjectDataResponse;
-import com.spring.domain.response.ReservationResponse;
+
 import com.spring.domain.type.OrderStatus;
 import com.spring.exception.PartialConfirmException;
 import com.spring.exception.ReservationExpireException;
@@ -31,6 +31,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Description 订单service实现
@@ -181,11 +182,11 @@ public class OrderServiceImpl implements OrderService{
         stockReservationRequest.setProductId(order.getProductId());
         //这里写死一个产品
         stockReservationRequest.setNum(1);
-        ReservationResponse reservationResponse=productClient.reserve(stockReservationRequest);
-        if(reservationResponse.getParticipantLink()==null){
-            throw new GlobalException(reservationResponse.getMessage(),reservationResponse.getCode());
+        ObjectDataResponse<Participant> objectDataResponse=productClient.reserve(stockReservationRequest);
+        if(Objects.isNull(objectDataResponse.getData())){
+            throw new GlobalException(objectDataResponse.getMessage(),objectDataResponse.getCode());
         }
-        persistParticipant( reservationResponse.getParticipantLink(),  order.getId());
+        persistParticipant(objectDataResponse.getData(),  order.getId());
     }
 
     /**
@@ -197,12 +198,12 @@ public class OrderServiceImpl implements OrderService{
         BalanceReservationRequest balanceReservationRequest=new BalanceReservationRequest();
         balanceReservationRequest.setUserId(order.getUserId());
         balanceReservationRequest.setAmount(order.getPrice());
-        ReservationResponse reservationResponse=userClient.reserve(balanceReservationRequest);
-        if(reservationResponse.getParticipantLink()==null){
-            throw new GlobalException(reservationResponse.getMessage(),reservationResponse.getCode());
+        ObjectDataResponse<Participant> objectDataResponse=userClient.reserve(balanceReservationRequest);
+        if(objectDataResponse.getData()==null){
+            throw new GlobalException(objectDataResponse.getMessage(),objectDataResponse.getCode());
         }
         //添加资源信息
-        persistParticipant(reservationResponse.getParticipantLink(), order.getId());
+        persistParticipant(objectDataResponse.getData(), order.getId());
     }
 
     /**

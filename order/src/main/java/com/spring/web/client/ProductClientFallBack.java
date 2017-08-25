@@ -2,10 +2,10 @@ package com.spring.web.client;
 
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.model.ErrorInfo;
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Product;
 import com.spring.domain.request.StockReservationRequest;
-import com.spring.domain.response.ObjectDataResponse;
-import com.spring.domain.response.ReservationResponse;
+
 import com.spring.repository.ErrorRepository;
 import feign.hystrix.FallbackFactory;
 import org.apache.log4j.Logger;
@@ -34,9 +34,6 @@ public class ProductClientFallBack implements FallbackFactory<ProductClient> {
             @Override
             public ObjectDataResponse<Product> getProductById(@RequestParam Integer productId) {
                 logger.error("调用产品接口失败："+throwable.getMessage());
-                ObjectDataResponse objectDataResponse=new ObjectDataResponse();
-                objectDataResponse.setCode(StatusCode.API_Fail);
-                objectDataResponse.setMessage(throwable.getMessage());
                 // 记录到Mongodb
                 ErrorInfo errorInfo=new ErrorInfo<>();
                 errorInfo.setCode(StatusCode.API_Fail);
@@ -44,14 +41,11 @@ public class ProductClientFallBack implements FallbackFactory<ProductClient> {
                 errorInfo.setCreateTime(OffsetDateTime.now());
                 errorInfo.setUrl("getProductById/"+productId);
                 errorRepository.insert(errorInfo);
-                return objectDataResponse;
+                return new ObjectDataResponse<>(StatusCode.API_Fail,throwable.getMessage());
             }
             @Override
-            public ReservationResponse reserve(@RequestBody StockReservationRequest stockReservationRequest) {
+            public ObjectDataResponse reserve(@RequestBody StockReservationRequest stockReservationRequest) {
                 logger.error("调用产品预留库存接口失败："+throwable.getMessage());
-                ReservationResponse reservationResponse=new ReservationResponse();
-                reservationResponse.setCode(StatusCode.API_Fail);
-                reservationResponse.setMessage(throwable.getMessage());
                 // 记录到Mongodb
                 ErrorInfo errorInfo=new ErrorInfo<>();
                 errorInfo.setCode(StatusCode.API_Fail);
@@ -60,7 +54,7 @@ public class ProductClientFallBack implements FallbackFactory<ProductClient> {
                 errorInfo.setUrl("/productStock/reservation");
                 errorInfo.setData(stockReservationRequest);
                 errorRepository.insert(errorInfo);
-                return reservationResponse;
+                return new ObjectDataResponse(StatusCode.API_Fail,throwable.getMessage());
             }
         };
     }

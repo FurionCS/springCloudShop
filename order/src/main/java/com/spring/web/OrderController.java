@@ -1,11 +1,12 @@
 package com.spring.web;
 
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Order;
 import com.spring.domain.model.User;
 import com.spring.domain.request.CancelRequest;
 import com.spring.domain.request.PaymentRequest;
 import com.spring.domain.request.PlaceOrderRequest;
-import com.spring.domain.response.ObjectDataResponse;
+
 import com.spring.service.OrderService;
 import com.spring.web.client.UserClient;
 import io.swagger.annotations.ApiOperation;

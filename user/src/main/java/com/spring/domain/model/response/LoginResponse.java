@@ -1,6 +1,7 @@
 package com.spring.domain.model.response;
 
-import com.spring.common.model.response.RestfulResponse;
+
+import com.spring.common.model.response.ObjectDataResponse;
 import lombok.Data;
 
 /**
@@ -9,7 +10,7 @@ import lombok.Data;
  * @Date 2017/6/22.
  */
 @Data
-public class LoginResponse  extends RestfulResponse {
+public class LoginResponse  extends ObjectDataResponse {
     /**
      * token
      */

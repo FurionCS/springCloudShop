@@ -1,9 +1,9 @@
 package com.spring.web;
 
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Participant;
 import com.spring.domain.model.ProductStockTcc;
 import com.spring.domain.request.StockReservationRequest;
-import com.spring.domain.response.ReservationResponse;
 import com.spring.service.ProductStockTccService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
@@ -39,13 +39,12 @@ public class ProductStockTccController {
      */
     @ApiOperation(value="预留资源")
     @RequestMapping(value="/productStock/reservation",method = RequestMethod.POST)
-    public ReservationResponse reserve(@Valid @RequestBody StockReservationRequest stockReservationRequest, BindingResult result){
-        System.out.println(stockReservationRequest.getProductId());
+    public ObjectDataResponse reserve(@Valid @RequestBody StockReservationRequest stockReservationRequest, BindingResult result){
         ProductStockTcc productStockTcc=productStockTccService.trying(stockReservationRequest.getProductId(),stockReservationRequest.getNum());
         Participant participant=new Participant();
         participant.setExpireTime(productStockTcc.getExpireTime());
         participant.setUri("http://"+applicationName+"/productStock/reservation/"+productStockTcc.getId());
-        return new ReservationResponse(participant);
+        return new ObjectDataResponse(participant);
     }
 
     @ApiOperation("确认预留资源")

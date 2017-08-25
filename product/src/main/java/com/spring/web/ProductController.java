@@ -1,11 +1,12 @@
 package com.spring.web;
 
+
 import com.google.common.base.Strings;
 import com.spring.common.model.StatusCode;
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Product;
 import com.spring.domain.request.ProductUpdateRequest;
-import com.spring.domain.response.ObjectDataResponse;
-import com.spring.domain.response.ProductResponse;
+
 import com.spring.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,29 +32,20 @@ public class ProductController {
 
     @ApiOperation(value="添加产品")
     @PostMapping(value="/addProduct")
-    public ProductResponse addProduct(@Validated @RequestBody Product product, BindingResult result){
-        ProductResponse productResponse=new ProductResponse();
-        if(product==null|| Strings.isNullOrEmpty(product.getName())||product.getPrice().compareTo(BigDecimal.ZERO)<0){
-            productResponse.setCode(StatusCode.Fail_Code);
-            productResponse.setMessage("参数不正确");
-            return productResponse;
-        }else{
-            product.setCreateTime(new Date());
-            productService.addProduct(product);
-            return productResponse;
-        }
+    public ObjectDataResponse addProduct(@Validated @RequestBody Product product, BindingResult result){
+        product.setCreateTime(new Date());
+        productService.addProduct(product);
+         return new ObjectDataResponse();
     }
 
     @ApiOperation("更新产品信息")
     @PostMapping("/updateProduct")
-    public ProductResponse updateProduct(@Validated @RequestBody ProductUpdateRequest productUpdateRequest,BindingResult result){
-        ProductResponse productResponse=new ProductResponse();
+    public ObjectDataResponse updateProduct(@Validated @RequestBody ProductUpdateRequest productUpdateRequest,BindingResult result){
         int flag=productService.updateProduct(productUpdateRequest);
         if(flag==0){
-            productResponse.setCode(StatusCode.Update_Fail);
-            productResponse.setMessage("更新失败");
+            return new ObjectDataResponse(StatusCode.Update_Fail,"更新失败");
         }
-        return  productResponse;
+        return  new ObjectDataResponse();
     }
 
     /**
@@ -64,36 +56,24 @@ public class ProductController {
     @ApiOperation(value="通过产品id获得产品")
     @GetMapping("/getProductById")
     public ObjectDataResponse<Product> getProductById(@RequestParam("productId") Integer productId){
-        ObjectDataResponse objectDataResponse=new ObjectDataResponse();
         if(productId==null||productId<1){
-                objectDataResponse.setCode(StatusCode.Param_Error);
-                objectDataResponse.setMessage("参数不对");
+           return new ObjectDataResponse(StatusCode.Param_Error,"参数不对");
         }else{
-           Product product= productService.getProductById(productId);
-            if(product==null){
-                objectDataResponse.setCode(StatusCode.Data_Not_Exist);
-                objectDataResponse.setMessage("数据不存在");
-            }else{
-                objectDataResponse.setData(product);
-            }
+          return new ObjectDataResponse<>(productService.getProductById(productId));
         }
-        return objectDataResponse;
     }
 
     @ApiOperation(value="删除产品通过产品id")
     @GetMapping()
-    public ProductResponse deleteProductByProductId(@RequestParam("productId") Integer productId){
-        ProductResponse productResponse=new ProductResponse();
+    public ObjectDataResponse deleteProductByProductId(@RequestParam("productId") Integer productId){
         if(Objects.isNull(productId)|| productId<1){
-            productResponse.setCode(StatusCode.Param_Error);
-            productResponse.setMessage("参数不正确");
+            return new ObjectDataResponse(StatusCode.Param_Error,"参数不对");
         }else{
             int flag=productService.deleteProductByProductId(productId);
             if(flag==0){
-                productResponse.setCode(StatusCode.Update_Fail);
-                productResponse.setMessage("删除失败");
+              return new ObjectDataResponse(StatusCode.Update_Fail,"更新失败");
             }
         }
-        return productResponse;
+        return new ObjectDataResponse();
     }
 }
