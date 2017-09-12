@@ -23,7 +23,7 @@ public class ErrorFilter extends ZuulFilter {
     @Autowired
     private ErrorRepository errorRepository;
 
-    Logger logger= LoggerFactory.getLogger(ErrorFilter.class);
+    private  static final Logger logger= LoggerFactory.getLogger(ErrorFilter.class);
     @Override
     public String filterType() {
         return "error";

@@ -24,24 +24,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @MapperScan(basePackages = "com.spring.persistence")
 @ServletComponentScan
 public class UserApplication {
-	@Bean
-	public RedisTemplate<String, ?> redisTemplate(RedisConnectionFactory factory) {
-			Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
-			ObjectMapper om = new ObjectMapper();
-			om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-			om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-			jackson2JsonRedisSerializer.setObjectMapper(om);
-			RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
-			//定义key序列化方式
-			RedisSerializer<String> redisSerializer = new StringRedisSerializer();//Long类型会出现异常信息;需要我们上面的自定义key生成策略，一般没必要
-			template.setConnectionFactory(factory);
-			template.setKeySerializer(redisSerializer);
-			template.setValueSerializer(jackson2JsonRedisSerializer);
-			template.setHashKeySerializer(redisSerializer);
-			template.setHashValueSerializer(jackson2JsonRedisSerializer);
-			template.afterPropertiesSet();
-			return template;
-	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(UserApplication.class, args);
 	}

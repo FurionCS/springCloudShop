@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class LoginFilter extends ZuulFilter {
 
-    Logger logger= Logger.getLogger(LoginFilter.class);
+    private  static  final  Logger logger= Logger.getLogger(LoginFilter.class);
 
     @Autowired
     private JsonWebTokenUtility tokenService;
@@ -52,7 +52,7 @@ public class LoginFilter extends ZuulFilter {
     }
 
     @Override
-    public Object run() {
+    public final Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         final String requestURI = ctx.getRequest().getRequestURI();
         if(requestURI.contains(loginUrl)){

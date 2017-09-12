@@ -1,10 +1,10 @@
 package com.spring.sercuity;
 
-import com.sun.istack.internal.logging.Logger;
+
+import org.apache.log4j.Logger;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,7 +49,7 @@ import java.util.Collection;
 @Component
 public class MyAccessDecisionManager implements AccessDecisionManager{
 
-    private Logger logger= Logger.getLogger(MyAccessDecisionManager.class);
+    private static final Logger logger= Logger.getLogger(MyAccessDecisionManager.class);
 
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {

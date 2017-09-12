@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class SecurityUtil {
-	private static	Logger logger =Logger.getLogger(SecurityUtil.class);  
+	private static final Logger logger =Logger.getLogger(SecurityUtil.class);
 	/**
 	 * md5加密
 	 * @param password
