@@ -2,7 +2,9 @@ package com.spring.service.impl;
 
 
 import com.google.common.base.Preconditions;
+import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
+import com.spring.common.model.model.ErrorInfo;
 import com.spring.common.model.model.RedisKey;
 import com.spring.common.model.util.tools.SecurityUtil;
 import com.spring.domain.model.Role;
@@ -13,6 +15,7 @@ import com.spring.domain.model.request.UserUpdateRequest;
 import com.spring.persistence.RoleMapper;
 import com.spring.persistence.UserMapper;
 import com.spring.persistence.UserRoleMapper;
+import com.spring.repository.ErrorRepository;
 import com.spring.repository.UserAuthRepository;
 import com.spring.service.UserService;
 import org.apache.log4j.Logger;
@@ -37,7 +40,7 @@ import java.util.Objects;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private Logger logger = Logger.getLogger(UserServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -53,6 +56,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private ErrorRepository errorRepository;
 
     /**
      * 获得加密过的密码
@@ -74,6 +80,9 @@ public class UserServiceImpl implements UserService {
             userMapper.addUser(user);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            ErrorInfo errorInfo=new ErrorInfo(StatusCode.Update_Fail,"加密失败",user);
+            errorRepository.insert(errorInfo);
+            LOGGER.error("加密异常");
         }
     }
 
@@ -96,7 +105,7 @@ public class UserServiceImpl implements UserService {
     //   @Cacheable(value="shop_user_role",key="T(String).valueOf(#userId)")
     public UserRoleVO listUserRoleVO(Integer userId) {
         UserRoleVO userRoleVO = userRoleMapper.getUserRoleVO(userId);
-        logger.info(userRoleVO);
+        LOGGER.info(userRoleVO);
         return userRoleVO;
     }
 

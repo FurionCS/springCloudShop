@@ -71,7 +71,7 @@ public class TccServiceImpl  implements TccService{
         for (Participant participant : participantList) {
             participant.setExecuteTime(OffsetDateTime.now());
             //设置重试，防止参与者宕机或网络抖动
-            ResponseEntity<String> response=restTemplate.exchange(participant.getUri(), method,REQUEST_ENTITY,String.class);
+            final ResponseEntity<String> response=restTemplate.exchange(participant.getUri(), method,REQUEST_ENTITY,String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 participant.setTccStatus(TccStatus.CONFIRMED);
                 success++;

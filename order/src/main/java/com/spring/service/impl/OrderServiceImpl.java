@@ -61,9 +61,11 @@ public class OrderServiceImpl implements OrderService{
     private ErrorRepository errorRepository;
     @Transactional(propagation = Propagation.REQUIRED)
     public ObjectDataResponse<Order> placeOrder(PlaceOrderRequest request){
+        //参数检查，使用preconditions进行快速失败
         Preconditions.checkNotNull(request);
         final Integer userId= Preconditions.checkNotNull(request.getUserId());
         final Integer productId=Preconditions.checkNotNull(request.getProductId());
+        Preconditions.checkState(request.getNum()>0);
         //获取产品
         final Product product=findRemoteProduct(productId);
         //查询用户
@@ -74,22 +76,14 @@ public class OrderServiceImpl implements OrderService{
             throw new GlobalException("余额不足", StatusCode.Data_Error);
         }
         //构建订单
-        Order order=new Order();
-        order.setPrice(product.getPrice());
-        order.setProductId(productId);
-        order.setUserId(userId);
-        order.setStatus(OrderStatus.PROCESSING);
-        order.setCreateTime(new Date());
         Date startDay=new Date();
         startDay.setTime(0);
-        order.setUpdateTime(startDay);
-        order.setDeleteTime(startDay);
+        Order order=new Order(new Date(),startDay,startDay,userId,productId,product.getPrice(),OrderStatus.PROCESSING,request.getNum());
         orderMapper.addOrder(order);
         //预留余额
         reserveBalanceAndPersistParticipant(order);
         //预留库存
         reserveProductAndPersistParticipant(order);
-
         return new ObjectDataResponse<>(order);
     }
 
@@ -105,7 +99,7 @@ public class OrderServiceImpl implements OrderService{
         Integer orderId=request.getOrderId();
         //检查订单是否存在
         Order order=orderMapper.getOrderById(orderId);
-        if(order==null){
+        if(Objects.isNull(order)){
             throw new GlobalException("订单不存在",StatusCode.Data_Not_Exist);
         }
         List<OrderParticipant> lop=orderParticipantMapper.listOrderParticipantByOrderId(orderId);
@@ -178,10 +172,7 @@ public class OrderServiceImpl implements OrderService{
      */
     private void reserveProductAndPersistParticipant(Order order){
         Preconditions.checkNotNull(order);
-        StockReservationRequest stockReservationRequest=new StockReservationRequest();
-        stockReservationRequest.setProductId(order.getProductId());
-        //这里写死一个产品
-        stockReservationRequest.setNum(1);
+        StockReservationRequest stockReservationRequest=new StockReservationRequest(order.getProductId(),order.getNum());
         ObjectDataResponse<Participant> objectDataResponse=productClient.reserve(stockReservationRequest);
         if(Objects.isNull(objectDataResponse.getData())){
             throw new GlobalException(objectDataResponse.getMessage(),objectDataResponse.getCode());
@@ -214,14 +205,8 @@ public class OrderServiceImpl implements OrderService{
     private void persistParticipant(Participant participant, Integer orderId) {
         Preconditions.checkNotNull(participant);
         Preconditions.checkNotNull(orderId);
-        OrderParticipant orderParticipant=new OrderParticipant();
-        orderParticipant.setOrderId(orderId);
-        orderParticipant.setUri(participant.getUri());
-        orderParticipant.setExpireTime(participant.getExpireTime());
-        orderParticipant.setCreateTime(OffsetDateTime.now());
         OffsetDateTime defaultDateTime=OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.ofHours(8));
-        orderParticipant.setUpdateTime(defaultDateTime);
-        orderParticipant.setDeleteTime(defaultDateTime);
+        OrderParticipant orderParticipant=new OrderParticipant(OffsetDateTime.now(),defaultDateTime,defaultDateTime,participant.getExpireTime(),participant.getUri(),orderId);
         orderParticipantMapper.addOrderParticipant(orderParticipant);
     }
 
@@ -272,8 +257,8 @@ public class OrderServiceImpl implements OrderService{
         Preconditions.checkNotNull(request);
         Integer orderId=request.getOrderId();
         //判断是否有这个订单
-        Order order=orderMapper.getOrderById(orderId);
-        if(order==null){
+        final Order order=orderMapper.getOrderById(orderId);
+        if(Objects.isNull(order)){
             throw new GlobalException("订单不存在",StatusCode.Data_Not_Exist);
         }
         List<OrderParticipant> lop=orderParticipantMapper.listOrderParticipantByOrderId(orderId);

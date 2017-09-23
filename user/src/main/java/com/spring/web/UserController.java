@@ -31,7 +31,7 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    Logger logger = Logger.getLogger(UserController.class);
+    private static final Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -54,7 +54,7 @@ public class UserController {
                     throw new GlobalException("用户密码不正确");
                 }
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
         return null;

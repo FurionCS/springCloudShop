@@ -38,7 +38,7 @@ public class UserBalanceReservationController {
     public ObjectDataResponse<Participant> reserve(@Valid @RequestBody BalanceReservationRequest balanceReservationRequest, BindingResult result){
        UserBalanceTcc balanceTcc= userBalanceTccService.trying(balanceReservationRequest.getUserId(),balanceReservationRequest.getAmount());
         Participant participant=new Participant("http://"+applicationName+"/balances/reservation/"+balanceTcc.getId(),balanceTcc.getExpireTime());
-        return new ObjectDataResponse<Participant>(participant);
+        return new ObjectDataResponse<>(participant);
     }
 
     @ApiOperation(value="确认预留资源")

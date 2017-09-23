@@ -23,6 +23,9 @@ public class ErrorInfo<T> {
     private T data;
     private OffsetDateTime createTime;
 
+    public ErrorInfo(StatusCode code,String message,T data){
+        this(code,message,null,data,OffsetDateTime.now());
+    }
 
     public ErrorInfo(StatusCode code, String message, String url, T data, OffsetDateTime createTime) {
         this.code = code;

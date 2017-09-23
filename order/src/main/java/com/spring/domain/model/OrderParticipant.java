@@ -43,4 +43,14 @@ public class OrderParticipant {
      * 订单id
      */
     private Integer orderId;
+
+
+    public OrderParticipant(OffsetDateTime createTime, OffsetDateTime updateTime, OffsetDateTime deleteTime, OffsetDateTime expireTime, String uri, Integer orderId) {
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.deleteTime = deleteTime;
+        this.expireTime = expireTime;
+        this.uri = uri;
+        this.orderId = orderId;
+    }
 }

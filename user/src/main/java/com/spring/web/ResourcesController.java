@@ -42,15 +42,12 @@ public class ResourcesController {
     @GetMapping("/listResources")
     public List<Resource> listResource(@RequestParam Integer status){
         Preconditions.checkNotNull(status);
-        ObjectDataResponse objectDataResponse=new ObjectDataResponse();
-        List<Resource> resourceList=resourcesService.listResources(status);
-        return resourceList;
+        return resourcesService.listResources(status);
     }
 
     @ApiOperation("通过资源获得角色名称")
     @PostMapping("/listRoleNameByResourceId")
     public List<String> listRoleNameByResourceId(@RequestParam("id") Integer id){
-        List<String> roleNameList=resourcesService.listRoleByResourceId(id);
-        return roleNameList;
+        return resourcesService.listRoleByResourceId(id);
     }
 }

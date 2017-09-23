@@ -19,7 +19,7 @@ import org.jboss.logging.Logger;
  */
 public class MongoAppender extends AppenderSkeleton {
 
-    Logger logger = Logger.getLogger(MongoAppender.class);
+    private static final Logger LOGGER = Logger.getLogger(MongoAppender.class);
     private MongoClient mongoClient;  //mongodb连接客户端
     private MongoDatabase mongoDatabase;//记录日志的数据库
     private MongoCollection<BasicDBObject> logsCollection; //记录日志的集合
@@ -28,7 +28,6 @@ public class MongoAppender extends AppenderSkeleton {
     private String collectionName;   //集合名
     @Override
     protected void append(LoggingEvent loggingEvent) {
-        System.out.println("coming into mongodb aop");
         if(mongoDatabase == null) {
             MongoClientURI connectionString = new MongoClientURI(connectionUrl);
             mongoClient = new MongoClient(connectionString);
@@ -36,10 +35,10 @@ public class MongoAppender extends AppenderSkeleton {
             logsCollection = mongoDatabase.getCollection(collectionName, BasicDBObject.class);
         }
         try {
-            logger.info("message:" + loggingEvent.getMessage());
+            LOGGER.info("message:" + loggingEvent.getMessage());
             logsCollection.insertOne((BasicDBObject) loggingEvent.getMessage());
         }catch (Exception e){
-            logger.error("插入数据库失败：原因："+e.getMessage());
+            LOGGER.error("插入数据库失败：原因："+e.getMessage());
         }
     }
 

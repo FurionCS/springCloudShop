@@ -14,7 +14,6 @@ import com.spring.persistence.UserMapper;
 import com.spring.repository.ErrorRepository;
 import com.spring.service.UserBalanceTccService;
 import com.spring.service.UserService;
-import com.spring.web.UserController;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ import java.util.Set;
 @Service
 public class UserBalanceTccServiceImpl implements UserBalanceTccService,ApplicationContextAware{
 
-    Logger logger= Logger.getLogger(UserBalanceTccServiceImpl.class);
+    private static final Logger logger= Logger.getLogger(UserBalanceTccServiceImpl.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -94,7 +93,6 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
      */
     @Scheduled(fixedDelay = 100)
     public void autoExpireReservation(){
-
         final Set<UserBalanceTcc>  userBalanceTccSet=userBalanceTccMapper.selectExpireReservation(100);
         userBalanceTccSet.forEach(userBalanceTcc -> {
             logger.info("------------autoExpireReservation-------------------------");

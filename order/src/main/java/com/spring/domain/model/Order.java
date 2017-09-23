@@ -25,4 +25,16 @@ public class Order {
     private int productId;
     private BigDecimal price;
     private OrderStatus status;
+    private int num;
+
+    public Order(Date createTime, Date updateTime, Date deleteTime, int userId, int productId, BigDecimal price, OrderStatus status,int num) {
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.deleteTime = deleteTime;
+        this.userId = userId;
+        this.productId = productId;
+        this.price = price;
+        this.status = status;
+        this.num=num;
+    }
 }

@@ -25,6 +25,7 @@
 		<spring-cloud.version>Camden.SR7</spring-cloud.version>
 	</properties>
 
+
 	<dependencies>
 		<dependency>
 			<groupId>com.spring</groupId>
