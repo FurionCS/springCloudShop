@@ -10,14 +10,13 @@ import com.spring.common.model.util.tools.SecurityUtil;
 import com.spring.domain.model.Role;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserRole;
+import com.spring.domain.model.request.UserUpdateRequest;
 import com.spring.domain.model.type.UserStatus;
 import com.spring.domain.model.vo.UserRoleVO;
-import com.spring.domain.model.request.UserUpdateRequest;
 import com.spring.persistence.RoleMapper;
 import com.spring.persistence.UserMapper;
 import com.spring.persistence.UserRoleMapper;
 import com.spring.repository.ErrorRepository;
-import com.spring.repository.UserAuthRepository;
 import com.spring.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,25 +59,25 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 获得加密过的密码
+     *
      * @param salt
      * @param password
      * @param type
      * @return
      * @throws NoSuchAlgorithmException
      */
-    private String getSecurityPassword(String salt,String password,Integer type) throws NoSuchAlgorithmException {
+    private String getSecurityPassword(String salt, String password, Integer type) throws NoSuchAlgorithmException {
         return SecurityUtil.md5(salt, password, type);
     }
 
     @Override
     public void addUser(User user) {
         try {
-            String password =this.getSecurityPassword(user.getUserName(),user.getPassword(),32);
+            String password = this.getSecurityPassword(user.getUserName(), user.getPassword(), 32);
             user.setPassword(password);
             userMapper.addUser(user);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            ErrorInfo errorInfo=new ErrorInfo(StatusCode.Update_Fail,"加密失败",user);
+            ErrorInfo errorInfo = new ErrorInfo(StatusCode.Update_Fail, "加密失败", user);
             errorRepository.insert(errorInfo);
             LOGGER.error("加密异常");
         }
@@ -100,7 +99,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //   @Cacheable(value="shop_user_role",key="T(String).valueOf(#userId)")
     public UserRoleVO listUserRoleVO(Integer userId) {
         UserRoleVO userRoleVO = userRoleMapper.getUserRoleVO(userId);
         LOGGER.info(userRoleVO);
@@ -113,7 +111,7 @@ public class UserServiceImpl implements UserService {
         //添加用户
         this.addUser(user);
         //添加用户角色
-        if (roleIds != null && roleIds.size() > 0) {
+        if (roleIds != null && !roleIds.isEmpty()) {
             List<UserRole> userRoles = new ArrayList<>();
             roleIds.forEach(roleId -> {
                 Role role = roleMapper.getRole(roleId);
@@ -135,7 +133,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public int updateUser(UserUpdateRequest userUpdateRequest) {
-        int flag = userMapper.updateUser(userUpdateRequest.getId(), null, userUpdateRequest.getIdCard(),null);
+        int flag = userMapper.updateUser(userUpdateRequest.getId(), null, userUpdateRequest.getIdCard(), null);
         if (flag == 1) {
             User user = (User) redisTemplate.opsForValue().get(RedisKey.user + userUpdateRequest.getId());
             if (user != null) {
@@ -150,37 +148,37 @@ public class UserServiceImpl implements UserService {
     public int deleteUserByUserId(Integer userId) {
         int flag = userMapper.deleteUserByUserId(userId);
         if (flag == 1) {
-            redisTemplate.delete(RedisKey.user+userId);
+            redisTemplate.delete(RedisKey.user + userId);
         }
         return flag;
     }
 
     @Override
-    public int updatePassword(String newPassword, String oldPassword, User user){
+    public int updatePassword(String newPassword, String oldPassword, User user) {
         Preconditions.checkNotNull(user);
         try {
-            String oldSecurityPassword=this.getSecurityPassword(user.getUserName(),oldPassword,32);
-            if(Objects.equals(oldSecurityPassword,user.getPassword())){
-                String newSecurityPassowrd=this.getSecurityPassword(user.getUserName(),newPassword,32);
-                user.setPassword(newSecurityPassowrd);
-                int flag = userMapper.updateUser(user.getId(), user.getUserName(), null,newSecurityPassowrd);
-                if(flag==1) {
+            String oldSecurityPassword = this.getSecurityPassword(user.getUserName(), oldPassword, 32);
+            if (Objects.equals(oldSecurityPassword, user.getPassword())) {
+                String newSecurityPassword = this.getSecurityPassword(user.getUserName(), newPassword, 32);
+                user.setPassword(newSecurityPassword);
+                int flag = userMapper.updateUser(user.getId(), user.getUserName(), null, newSecurityPassword);
+                if (flag == 1) {
                     redisTemplate.opsForValue().set(RedisKey.user + user.getId(), user);
                 }
                 return flag;
             }
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return 0;
     }
 
     @Override
     public List<User> findUser(UserStatus status, String startDate, String endDate, int pageIndex, int pageSize) {
-        final int startIndex=(pageIndex-1)*pageSize+1;
-        final int endIndex=startIndex+pageSize;
+        final int startIndex = (pageIndex - 1) * pageSize + 1;
+        final int endIndex = startIndex + pageSize;
         //TODO 
-        List<User> userList=userMapper.findUser(status,startIndex,endIndex,startDate,endDate);
+        List<User> userList = userMapper.findUser(status, startIndex, endIndex, startDate, endDate);
         return userList;
     }
 }

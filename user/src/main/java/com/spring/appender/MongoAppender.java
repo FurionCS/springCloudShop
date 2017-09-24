@@ -11,8 +11,6 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 import org.jboss.logging.Logger;
 
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 
 
 /**
