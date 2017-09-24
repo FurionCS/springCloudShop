@@ -10,7 +10,8 @@ import com.spring.common.model.util.tools.SecurityUtil;
 import com.spring.domain.model.Role;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserRole;
-import com.spring.domain.model.VO.UserRoleVO;
+import com.spring.domain.model.type.UserStatus;
+import com.spring.domain.model.vo.UserRoleVO;
 import com.spring.domain.model.request.UserUpdateRequest;
 import com.spring.persistence.RoleMapper;
 import com.spring.persistence.UserMapper;
@@ -44,9 +45,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private UserAuthRepository userAuthRepository;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -175,5 +173,14 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public List<User> findUser(UserStatus status, String startDate, String endDate, int pageIndex, int pageSize) {
+        final int startIndex=(pageIndex-1)*pageSize+1;
+        final int endIndex=startIndex+pageSize;
+        //TODO 
+        List<User> userList=userMapper.findUser(status,startIndex,endIndex,startDate,endDate);
+        return userList;
     }
 }

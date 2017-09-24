@@ -1,11 +1,12 @@
 package com.spring.persistence;
 
 import com.spring.domain.model.User;
-import com.spring.domain.model.request.UserUpdateRequest;
+import com.spring.domain.model.type.UserStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @Description 用户数据接口
@@ -66,4 +67,19 @@ public interface UserMapper {
      */
     int deleteUserByUserId(@Param("userId") Integer userId);
 
+    /**
+     * 获得用户列表
+     * @param status
+     * @param startIndex
+     * @param endIndex
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<User> findUser(@Param("status") UserStatus status,
+                        @Param("startIndex") Integer startIndex,
+                        @Param("endIndex") Integer endIndex,
+                        @Param("startDate") String startDate,
+                        @Param("endDate") String endDate
+                        );
 }

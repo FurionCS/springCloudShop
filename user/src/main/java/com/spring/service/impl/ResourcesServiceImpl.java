@@ -2,7 +2,7 @@ package com.spring.service.impl;
 
 import com.google.common.base.Preconditions;
 import com.spring.domain.model.Resource;
-import com.spring.domain.model.VO.RoleResourcesVO;
+import com.spring.domain.model.vo.RoleResourcesVO;
 import com.spring.persistence.ResourcesMapper;
 import com.spring.persistence.RoleResourcesMapper;
 import com.spring.service.ResourcesService;

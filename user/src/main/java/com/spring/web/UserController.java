@@ -3,13 +3,11 @@ package com.spring.web;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
 import com.spring.common.model.response.ObjectDataResponse;
+import com.spring.common.model.response.PageResponse;
 import com.spring.common.model.util.tools.SecurityUtil;
 import com.spring.domain.model.User;
-import com.spring.domain.model.VO.UserRoleVO;
-import com.spring.domain.model.request.UserPasswordRequest;
-import com.spring.domain.model.request.UserRequest;
-import com.spring.domain.model.request.UserRoleRequest;
-import com.spring.domain.model.request.UserUpdateRequest;
+import com.spring.domain.model.request.*;
+import com.spring.domain.model.vo.UserRoleVO;
 import com.spring.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
@@ -29,6 +27,7 @@ import java.util.List;
  * @Date 2017/5/27.
  */
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     private static final Logger logger = Logger.getLogger(UserController.class);
@@ -39,8 +38,8 @@ public class UserController {
     @ApiOperation("用户登入")
     @PostMapping(value = "/login")
     public ObjectDataResponse login(@Validated @RequestBody UserRequest userRequest, BindingResult result) {
-        String userName = userRequest.getUserName();
-        String password = userRequest.getPassword();
+        final String userName = userRequest.getUserName();
+        final String password = userRequest.getPassword();
         if ("".equals(userName) || "".equals(password)) {
             throw new GlobalException("参数不对");
         } else {
@@ -141,4 +140,10 @@ public class UserController {
         return new ObjectDataResponse();
     }
 
+    @PostMapping("/listUser")
+    @ApiOperation("获得用户列表")
+    public PageResponse listUser(@Validated @RequestBody UserListRequest userListRequest,BindingResult result){
+        List<User> userList=userService.findUser(userListRequest.getUserStatus(),userListRequest.getStartDate(),userListRequest.getEndDate(),userListRequest.getPageIndex(),userListRequest.getPageSize());
+        return new PageResponse(userList,0);
+    }
 }

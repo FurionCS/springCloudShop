@@ -11,6 +11,9 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 import org.jboss.logging.Logger;
 
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+
 
 /**
  * @Description mongodb
@@ -34,8 +37,11 @@ public class MongoAppender extends AppenderSkeleton {
             mongoDatabase = mongoClient.getDatabase(databaseName);
             logsCollection = mongoDatabase.getCollection(collectionName, BasicDBObject.class);
         }
-        LOGGER.info("message:"+loggingEvent.getMessage());
-        logsCollection.insertOne((BasicDBObject) loggingEvent.getMessage());
+        try {
+            logsCollection.insertOne((BasicDBObject) loggingEvent.getMessage());
+        }catch (Exception e){
+            LOGGER.info("message:"+loggingEvent.getMessage());
+        }
     }
 
     public void close() {

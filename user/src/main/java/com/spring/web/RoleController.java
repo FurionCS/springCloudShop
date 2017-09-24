@@ -3,7 +3,7 @@ package com.spring.web;
 import com.google.common.base.Preconditions;
 import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Role;
-import com.spring.domain.model.VO.RoleResourcesVO;
+import com.spring.domain.model.vo.RoleResourcesVO;
 import com.spring.domain.model.request.RoleResourcesRequest;
 import com.spring.service.RoleService;
 import io.swagger.annotations.ApiOperation;
