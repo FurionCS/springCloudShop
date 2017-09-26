@@ -6,6 +6,7 @@ import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
 import com.spring.common.model.model.ErrorInfo;
 import com.spring.common.model.model.RedisKey;
+import com.spring.common.model.util.tools.BeanToMapUtil;
 import com.spring.common.model.util.tools.SecurityUtil;
 import com.spring.domain.model.Role;
 import com.spring.domain.model.User;
@@ -25,11 +26,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import static com.spring.common.model.model.RedisKey.user;
 
 
 /**
@@ -89,13 +95,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Integer userId) {
-        User user = (User) redisTemplate.opsForValue().get(RedisKey.user + userId);
-        if (user == null) {
-            user = userMapper.getUserById(userId);
-            redisTemplate.opsForValue().set(RedisKey.user + userId, user);
+    public User getUserById(Integer userId) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
+        Map userM = (Map) redisTemplate.opsForHash().entries(RedisKey.userh+userId);
+        if (Objects.isNull(userM) || userM.isEmpty()) {
+            User user = userMapper.getUserById(userId);
+            redisTemplate.opsForHash().putAll(RedisKey.userh+userId,BeanToMapUtil.convertBean(user));
+            return user;
         }
-        return user;
+        return (User)BeanToMapUtil.convertMap(User.class,userM);
     }
 
     @Override
@@ -135,10 +142,9 @@ public class UserServiceImpl implements UserService {
     public int updateUser(UserUpdateRequest userUpdateRequest) {
         int flag = userMapper.updateUser(userUpdateRequest.getId(), null, userUpdateRequest.getIdCard(), null);
         if (flag == 1) {
-            User user = (User) redisTemplate.opsForValue().get(RedisKey.user + userUpdateRequest.getId());
-            if (user != null) {
-                user.setIdCard(userUpdateRequest.getIdCard());
-                redisTemplate.opsForValue().set(RedisKey.user + user.getId(), user);
+            String idCardC = (String) redisTemplate.opsForHash().get(RedisKey.userh+userUpdateRequest.getId(),"idCard");
+            if(idCardC!=null) {
+                redisTemplate.opsForHash().put(RedisKey.userh + userUpdateRequest.getId(), "idCard", userUpdateRequest.getIdCard());
             }
         }
         return flag;
@@ -148,7 +154,7 @@ public class UserServiceImpl implements UserService {
     public int deleteUserByUserId(Integer userId) {
         int flag = userMapper.deleteUserByUserId(userId);
         if (flag == 1) {
-            redisTemplate.delete(RedisKey.user + userId);
+            redisTemplate.delete(RedisKey.userh+userId);
         }
         return flag;
     }
@@ -163,7 +169,7 @@ public class UserServiceImpl implements UserService {
                 user.setPassword(newSecurityPassword);
                 int flag = userMapper.updateUser(user.getId(), user.getUserName(), null, newSecurityPassword);
                 if (flag == 1) {
-                    redisTemplate.opsForValue().set(RedisKey.user + user.getId(), user);
+                    redisTemplate.opsForHash().put(RedisKey.userh+user.getId(),"password",newSecurityPassword);
                 }
                 return flag;
             }

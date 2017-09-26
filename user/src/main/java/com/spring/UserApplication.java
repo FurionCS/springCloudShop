@@ -9,7 +9,6 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 
 @SpringCloudApplication
-@EnableCaching
 @EnableFeignClients
 @MapperScan(basePackages = "com.spring.persistence")
 @ServletComponentScan

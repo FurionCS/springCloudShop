@@ -2,6 +2,8 @@ package com.spring.service;
 
 import com.spring.domain.model.UserBalanceTcc;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 
 /**
@@ -16,7 +18,7 @@ public interface UserBalanceTccService {
      * @param amount
      * @return
      */
-    UserBalanceTcc trying(Integer userId, BigDecimal amount);
+    UserBalanceTcc trying(Integer userId, BigDecimal amount) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
 
     /**
      * 确认预留资源

@@ -17,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
@@ -78,7 +80,7 @@ public class UserController {
 
     @ApiOperation(value = "获得用户")
     @RequestMapping(value = "getUserById", method = RequestMethod.GET)
-    public ObjectDataResponse<User> getUserById(@RequestParam Integer userId) {
+    public ObjectDataResponse<User> getUserById(@RequestParam Integer userId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         ObjectDataResponse objectDataResponse = new ObjectDataResponse();
         if (userId == null || userId < 1) {
             objectDataResponse.setCode(StatusCode.Param_Error);
@@ -128,7 +130,7 @@ public class UserController {
 
     @ApiOperation(value = "更新用户密码")
     @PostMapping(value = "/updatePassword")
-    public ObjectDataResponse updatePassword(@Validated @RequestBody UserPasswordRequest userPasswordRequest, BindingResult result) {
+    public ObjectDataResponse updatePassword(@Validated @RequestBody UserPasswordRequest userPasswordRequest, BindingResult result) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         User user = userService.getUserById(userPasswordRequest.getUserId());
         if (user == null) {
             return new ObjectDataResponse(StatusCode.Data_Not_Exist,"用户不存在");

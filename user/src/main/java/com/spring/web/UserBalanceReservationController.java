@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @Description 用户余额
@@ -35,7 +37,7 @@ public class UserBalanceReservationController {
      */
     @ApiOperation(value = "预留余额", notes = "")
     @RequestMapping(value="/balances/reservation",method = RequestMethod.POST)
-    public ObjectDataResponse<Participant> reserve(@Valid @RequestBody BalanceReservationRequest balanceReservationRequest, BindingResult result){
+    public ObjectDataResponse<Participant> reserve(@Valid @RequestBody BalanceReservationRequest balanceReservationRequest, BindingResult result) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
        UserBalanceTcc balanceTcc= userBalanceTccService.trying(balanceReservationRequest.getUserId(),balanceReservationRequest.getAmount());
         Participant participant=new Participant("http://"+applicationName+"/balances/reservation/"+balanceTcc.getId(),balanceTcc.getExpireTime());
         return new ObjectDataResponse<>(participant);

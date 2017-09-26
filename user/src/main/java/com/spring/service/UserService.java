@@ -5,6 +5,8 @@ import com.spring.domain.model.type.UserStatus;
 import com.spring.domain.model.vo.UserRoleVO;
 import com.spring.domain.model.request.UserUpdateRequest;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ public interface UserService {
      * @param userId
      * @return
      */
-    User getUserById(Integer userId);
+    User getUserById(Integer userId) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException;
 
     /**
      * 得到用户通过名称
