@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.persistence.ProductCategoryMapper">
+    <resultMap id="baseMap" type="com.spring.domain.model.ProductCategory">
+        <result property="id" column="id" jdbcType="INTEGER" />
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="sortOrder" column="sortOrder" jdbcType="INTEGER"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER" typeHandler="com.spring.domain.type.handler.ProductCategoryStatusTypeHandler"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        id,name,sort_order sortOrder,create_time createTime,update_time updateTime,status
+    </sql>
+    <select id="listProductCategory" resultMap="baseMap">
+        select <include refid="baseColumn"/>
+        from t_product_category
+        <where>
+            <if test="status!=null">
+                status=#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.ProductCategoryStatusTypeHandler}
+            </if>
+            <if test="sortOrderStart!=null and sortOrderEnd!=null and sortOrderStart &lt;=sortOrderEnd">
+                and sort_order >=#{sortOrderStart,jdbcType=INTEGER}
+                and sort_order &lt;=#{sortOrderEnd,jdbcType=INTEGER}
+            </if>
+        </where>
+        <if test="startIndex>0 and pageSize>0">
+            limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+</mapper>

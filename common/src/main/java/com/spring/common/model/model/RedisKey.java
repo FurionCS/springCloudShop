@@ -22,4 +22,8 @@ public class RedisKey {
      * expamle:shop:product:1:productId
      */
     public static final String producth="shop:product:";
+    /**
+     * expamle:shop:product:category:1(状态)
+     */
+    public static final String productCategory="shop:product:category:";
 }
