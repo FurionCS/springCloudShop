@@ -1,6 +1,7 @@
 package com.spring.service.impl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.spring.common.model.model.RedisKey;
 import com.spring.domain.model.ProductCategory;
 import com.spring.domain.type.ProductCategoryStatus;
@@ -32,8 +33,8 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Override
     public List<ProductCategory> findProductCategory(ProductCategoryStatus status, Integer sortOrderStart,Integer sortOrderEnd, Integer pageIndex, Integer pageSize) {
-        Preconditions.checkNotNull(sortOrderStart);
-        Preconditions.checkNotNull(sortOrderEnd);
+        Preconditions.checkNotNull(sortOrderStart,"排序权重sortOrderStart不能为空");
+        Preconditions.checkNotNull(sortOrderEnd,"排序权重sortOrderStart不能为空");
         int startIndex = pageIndex == -1 ? 0 : (pageIndex - 1) * pageSize;
         //查看redis中是否有
         Set productCategoryList = redisTemplate.opsForZSet().rangeByScore(RedisKey.productCategory + status.getStatus(), sortOrderStart,sortOrderEnd  , startIndex, pageSize<=0? -1:pageSize);
@@ -58,13 +59,32 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Override
     public Integer getProductCategoryCount(ProductCategoryStatus status, Integer sortOrderStart, Integer sortOrderEnd) {
-        Preconditions.checkNotNull(sortOrderStart);
-        Preconditions.checkNotNull(sortOrderEnd);
-        Set productCategoryList=redisTemplate.opsForZSet().rangeByScore(RedisKey.productCategory+status.getStatus(),sortOrderStart,sortOrderEnd);
-        if(Objects.isNull(productCategoryList) || productCategoryList.isEmpty()){
+        Preconditions.checkNotNull(sortOrderStart,"排序权重sortOrderStart不能为空");
+        Preconditions.checkNotNull(sortOrderEnd,"排序权重sortOrderStart不能为空");
+        Long count=redisTemplate.opsForZSet().count(RedisKey.productCategory+status.getStatus(),sortOrderStart,sortOrderEnd);
+        if(Objects.isNull(count) || count==0){
             //这里大部分情况不会进入
             return productCategoryMapper.getProductCategoryCount(status,sortOrderStart,sortOrderEnd);
         }
-        return productCategoryList.size();
+        return count.intValue();
+    }
+
+    @Override
+    public Integer updateProductCategory(Integer id, String name, Integer sortOrder, ProductCategoryStatus status) {
+        Preconditions.checkArgument(id!=null && id>=0,"产品分类id参数不正确");
+        if(Strings.isNullOrEmpty(name) && Objects.isNull(sortOrder) && Objects.isNull(status)){
+            return 0;
+        }
+        //先获得旧类型，更新数据库，获得新类型
+        ProductCategory productCategory=productCategoryMapper.getProductCategoryById(id);
+        Integer count=productCategoryMapper.updateProductCategory(id, name, sortOrder, status);
+        ProductCategory productCategoryNew=productCategoryMapper.getProductCategoryById(id);
+        if(Objects.equals(ProductCategoryStatus.停用,status)){
+            redisTemplate.opsForZSet().add(RedisKey.producth+status.getStatus(),productCategoryNew,productCategoryNew.getSortOrder());
+        }else{
+            redisTemplate.opsForZSet().remove(RedisKey.producth+productCategory.getStatus(),productCategory);
+            redisTemplate.opsForZSet().add(RedisKey.producth+productCategory.getStatus(),productCategoryNew,productCategoryNew.getSortOrder());
+        }
+        return count;
     }
 }

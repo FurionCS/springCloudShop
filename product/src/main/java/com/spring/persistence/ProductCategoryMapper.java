@@ -31,4 +31,21 @@ public interface ProductCategoryMapper {
      * @return
      */
     Integer getProductCategoryCount(@Param("status") ProductCategoryStatus status,@Param("sortOrderStart") Integer sortOrderStart,@Param("sortOrderEnd") Integer sortOrderEnd);
+
+    /**
+     * 更新产品分类信息
+     * @param id
+     * @param name
+     * @param sortOrder
+     * @param status
+     * @return
+     */
+    Integer updateProductCategory(@Param("id") Integer id,@Param("name") String name,@Param("sortOrder") Integer sortOrder,@Param("status") ProductCategoryStatus status);
+
+    /**
+     * 获得产品分类通过id
+     * @param id
+     * @return
+     */
+    ProductCategory getProductCategoryById(@Param("id") Integer id);
 }

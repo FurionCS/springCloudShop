@@ -44,4 +44,25 @@
             </if>
         </where>
     </select>
+
+    <update id="updateProductCategory">
+        update t_product_category
+        set  update_time=now()
+        <if test="name!=null and name!=''">
+            ,name=#{name,jdbcType=VARCHAR}
+        </if>
+        <if test="sortOrder!=null">
+            ,sort_order=#{sortOrder,jdbcType=INTEGER}
+        </if>
+        <if test="status!=null">
+            ,status=#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.ProductCategoryStatusTypeHandler}
+        </if>
+        where id=#{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getProductCategoryById" resultMap="baseMap">
+        select <include refid="baseColumn" />
+        from t_product_category
+        where id=#{id,jdbcType=INTEGER}
+    </select>
 </mapper>

@@ -28,4 +28,14 @@ public interface ProductCategoryService {
      * @return
      */
     Integer getProductCategoryCount(ProductCategoryStatus status,Integer sortOrderStart,Integer sortOrderEnd);
+
+    /**
+     * 更改产品分类
+     * @param id
+     * @param name
+     * @param sortOrder
+     * @param status
+     * @return
+     */
+    Integer updateProductCategory(Integer id,String name,Integer sortOrder,ProductCategoryStatus status);
 }
