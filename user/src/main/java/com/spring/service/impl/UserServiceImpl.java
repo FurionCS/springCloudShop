@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Integer userId) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
-        Map userM = (Map) redisTemplate.opsForHash().entries(RedisKey.userh+userId);
+        Map userM = redisTemplate.opsForHash().entries(RedisKey.userh+userId);
         if (Objects.isNull(userM) || userM.isEmpty()) {
             User user = userMapper.getUserById(userId);
             redisTemplate.opsForHash().putAll(RedisKey.userh+userId,BeanToMapUtil.convertBean(user));

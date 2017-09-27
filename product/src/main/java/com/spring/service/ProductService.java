@@ -3,6 +3,9 @@ package com.spring.service;
 import com.spring.domain.model.Product;
 import com.spring.domain.request.ProductUpdateRequest;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @Description 产品service接口
  * @Author ErnestCheng
@@ -20,7 +23,7 @@ public interface ProductService {
      * @param productId
      * @return
      */
-    Product getProductById(Integer productId);
+    Product getProductById(Integer productId) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException;
 
     /**
      * 更新产品信息

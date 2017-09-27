@@ -2,6 +2,9 @@ package com.spring.service;
 
 import com.spring.domain.model.ProductStockTcc;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @Description 产品库存TccService
  * @Author ErnestCheng
@@ -14,7 +17,7 @@ public interface ProductStockTccService{
      * @param num
      * @return
      */
-    ProductStockTcc trying(Integer productId,Integer num);
+    ProductStockTcc trying(Integer productId,Integer num) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
 
     /**
      * 确认预留资源

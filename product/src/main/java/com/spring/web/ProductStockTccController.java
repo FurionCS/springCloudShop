@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -23,7 +25,7 @@ import javax.validation.Valid;
 @RestController
 public class ProductStockTccController {
 
-    Logger logger= Logger.getLogger(ProductStockTccController.class);
+    private static final  Logger logger= Logger.getLogger(ProductStockTccController.class);
 
     @Value("${spring.application.name}")
     private String applicationName;
@@ -39,7 +41,7 @@ public class ProductStockTccController {
      */
     @ApiOperation(value="预留资源")
     @RequestMapping(value="/productStock/reservation",method = RequestMethod.POST)
-    public ObjectDataResponse reserve(@Valid @RequestBody StockReservationRequest stockReservationRequest, BindingResult result){
+    public ObjectDataResponse reserve(@Valid @RequestBody StockReservationRequest stockReservationRequest, BindingResult result) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         ProductStockTcc productStockTcc=productStockTccService.trying(stockReservationRequest.getProductId(),stockReservationRequest.getNum());
         Participant participant=new Participant();
         participant.setExpireTime(productStockTcc.getExpireTime());

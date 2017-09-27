@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -55,7 +57,7 @@ public class ProductController {
      */
     @ApiOperation(value="通过产品id获得产品")
     @GetMapping("/getProductById")
-    public ObjectDataResponse<Product> getProductById(@RequestParam("productId") Integer productId){
+    public ObjectDataResponse<Product> getProductById(@RequestParam("productId") Integer productId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         if(productId==null||productId<1){
            return new ObjectDataResponse(StatusCode.Param_Error,"参数不对");
         }else{
