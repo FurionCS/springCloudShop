@@ -5,6 +5,7 @@ import com.spring.common.model.StatusCode;
 import com.spring.common.model.exception.GlobalException;
 import com.spring.common.model.model.ErrorInfo;
 import com.spring.common.model.model.RedisKey;
+import com.spring.common.model.util.tools.BeanToMapUtil;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserBalanceTcc;
 import com.spring.domain.model.type.TccStatus;
@@ -14,7 +15,6 @@ import com.spring.persistence.UserMapper;
 import com.spring.repository.ErrorRepository;
 import com.spring.service.UserBalanceTccService;
 import com.spring.service.UserService;
-import com.spring.web.UserController;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -39,7 +41,7 @@ import java.util.Set;
 @Service
 public class UserBalanceTccServiceImpl implements UserBalanceTccService,ApplicationContextAware{
 
-    Logger logger= Logger.getLogger(UserBalanceTccServiceImpl.class);
+    private static final Logger logger= Logger.getLogger(UserBalanceTccServiceImpl.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -60,7 +62,7 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
     private Long expireSeconds=240L;
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public UserBalanceTcc trying(Integer userId, BigDecimal amount) {
+    public UserBalanceTcc trying(Integer userId, BigDecimal amount) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         Preconditions.checkArgument(userId>0);
         Preconditions.checkArgument(amount.compareTo(BigDecimal.ZERO)>0);
         final User user=userService.getUserById(userId);
@@ -74,7 +76,7 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
         }
         //保存到redis
         user.setBalance(user.getBalance().subtract(amount));
-        redisTemplate.opsForValue().set(RedisKey.user+":"+userId,user);
+        redisTemplate.opsForHash().putAll(RedisKey.userh+userId, BeanToMapUtil.convertBean(user));
 
         UserBalanceTcc tcc=new UserBalanceTcc();
         tcc.setAmount(amount);
@@ -94,7 +96,6 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
      */
     @Scheduled(fixedDelay = 100)
     public void autoExpireReservation(){
-
         final Set<UserBalanceTcc>  userBalanceTccSet=userBalanceTccMapper.selectExpireReservation(100);
         userBalanceTccSet.forEach(userBalanceTcc -> {
             logger.info("------------autoExpireReservation-------------------------");
@@ -129,10 +130,9 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
                     throw new GlobalException("余额更新失败");
                 }
                 //更新redis
-                User user=(User)redisTemplate.opsForValue().get(RedisKey.user+":"+userBalanceTcc.getUserId());
-                if(user!=null){
-                    user.setBalance(user.getBalance().add(userBalanceTcc.getAmount()));
-                    redisTemplate.opsForValue().set(RedisKey.user+":"+userBalanceTcc.getUserId(),user);
+                BigDecimal balance=(BigDecimal)redisTemplate.opsForHash().get(RedisKey.userh+userBalanceTcc.getUserId(),"balance");
+                if(balance!=null){
+                    redisTemplate.opsForHash().put(RedisKey.userh+userBalanceTcc.getUserId(),"blance",balance);
                 }
             }
         }

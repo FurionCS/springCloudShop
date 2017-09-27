@@ -1,6 +1,8 @@
 package com.spring.jwt;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
  * @author yangfan
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthTokenDetails implements java.io.Serializable {
 
     private Long id;// 用户ID

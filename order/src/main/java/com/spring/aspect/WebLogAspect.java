@@ -24,7 +24,7 @@ import java.util.*;
 @Component
 public class WebLogAspect {
 
-    private Logger logger = Logger.getLogger("mongodb");
+    private static final Logger LOGGER = Logger.getLogger("mongodb");
     @Pointcut("execution(public * com.spring.web..*.*(..))")
     public void webLog(){}
     @Before("webLog()")
@@ -35,7 +35,7 @@ public class WebLogAspect {
             HttpServletRequest request = attributes.getRequest();
             // 获取要记录的日志内容
             BasicDBObject logInfo = getBasicDBObject(request, joinPoint);
-            logger.info(logInfo);
+            LOGGER.info(logInfo);
         }
     }
     private BasicDBObject getBasicDBObject(HttpServletRequest request, JoinPoint joinPoint) {

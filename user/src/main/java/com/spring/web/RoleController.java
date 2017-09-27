@@ -1,17 +1,15 @@
 package com.spring.web;
 
 import com.google.common.base.Preconditions;
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Role;
-import com.spring.domain.model.VO.RoleResourcesVO;
+import com.spring.domain.model.vo.RoleResourcesVO;
 import com.spring.domain.model.request.RoleResourcesRequest;
-import com.spring.domain.model.response.ObjectDataResponse;
 import com.spring.service.RoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,7 +51,7 @@ public class RoleController {
     public List<String> listRoleResources(@RequestParam Integer roleId){
         Preconditions.checkArgument(roleId>0);
         RoleResourcesVO  roleResourcesVO=roleService.getRoleResourcesVo(roleId);
-        if(roleResourcesVO!=null&&roleResourcesVO.getResources()!=null && roleResourcesVO.getResources().size()>0){
+        if(roleResourcesVO!=null&&roleResourcesVO.getResources()!=null && !roleResourcesVO.getResources().isEmpty()){
             return roleResourcesVO.getResources().stream().map(resource -> resource.getUrl() ).collect(Collectors.toList());
         }else{
             return new ArrayList<>();

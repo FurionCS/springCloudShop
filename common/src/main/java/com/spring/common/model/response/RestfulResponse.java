@@ -21,17 +21,18 @@ public class RestfulResponse implements Response {
 
     public RestfulResponse() {
     }
-
-    public RestfulResponse(String action, StatusCode code, String message) {
-        this.action = action;
-        this.code = code;
-        this.message = message;
+    public RestfulResponse(StatusCode code, String message) {
+       this(null,code,message);
     }
 
+    public RestfulResponse(String action, StatusCode code, String message) {
+       this(action,code,message,null);
+    }
     public RestfulResponse(String action, StatusCode code, String message, Object[] args) {
         this.action = action;
         this.code = code;
         this.message = message;
         this.args = args;
     }
+
 }

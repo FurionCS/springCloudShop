@@ -5,12 +5,11 @@ import com.spring.common.model.exception.GlobalException;
 import com.spring.domain.model.Resource;
 import com.spring.domain.model.Role;
 import com.spring.domain.model.RoleResource;
-import com.spring.domain.model.VO.RoleResourcesVO;
+import com.spring.domain.model.vo.RoleResourcesVO;
 import com.spring.persistence.ResourcesMapper;
 import com.spring.persistence.RoleMapper;
 import com.spring.persistence.RoleResourcesMapper;
 import com.spring.service.RoleService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -52,7 +51,7 @@ public class RoleServiceImpl implements RoleService {
         //添加角色
         this.addRole(role);
         //添加角色资源
-        if(resourcesIds.size()>0) {
+        if(!resourcesIds.isEmpty()) {
             List<RoleResource> roleResources = new ArrayList<>();
             resourcesIds.forEach(resourcesId->{
                Resource resource=resourcesMapper.getResource(resourcesId);

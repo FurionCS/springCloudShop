@@ -1,6 +1,5 @@
 package com.spring.domain.model.request;
 
-import com.spring.domain.model.Role;
 import com.spring.domain.model.User;
 import lombok.Data;
 

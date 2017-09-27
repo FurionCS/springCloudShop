@@ -1,8 +1,8 @@
 package com.spring.domain.model;
 
+import com.spring.domain.model.type.UserStatus;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -20,7 +20,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable{
-
+    /**
+     * id
+     */
     private Integer id;
     @NotNull
     @Length(min=6,max=50,message = "用户名长度必须在6-50位之间")
@@ -29,8 +31,22 @@ public class User implements Serializable{
     @Length(min=6,max=16,message = "密码长度必须在6-16位之间")
     private String password;
     private String idCard;
+    /**
+     * 余额
+     */
     @Min(0)
     private BigDecimal balance;
+    /**
+     * 用户状态
+     */
+    private UserStatus status;
+    /**
+     * 创建时间
+     */
     private Date createTime;
+    /**
+     * 最新时间
+     */
     private Date leastTime;
+
 }

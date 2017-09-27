@@ -22,7 +22,6 @@
     <bytecodeTargetLevel>
       <module name="admin" target="1.8" />
       <module name="apigateway" target="1.8" />
-      <module name="auth" target="1.8" />
       <module name="common" target="1.8" />
       <module name="config" target="1.8" />
       <module name="hystrix-dashboard" target="1.8" />

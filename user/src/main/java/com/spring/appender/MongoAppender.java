@@ -12,6 +12,7 @@ import org.apache.log4j.spi.LoggingEvent;
 import org.jboss.logging.Logger;
 
 
+
 /**
  * @Description mongodb
  * @Author ErnestCheng
@@ -19,7 +20,7 @@ import org.jboss.logging.Logger;
  */
 public class MongoAppender extends AppenderSkeleton {
 
-    Logger logger = Logger.getLogger(MongoAppender.class);
+    private static final Logger LOGGER = Logger.getLogger(MongoAppender.class);
     private MongoClient mongoClient;  //mongodb连接客户端
     private MongoDatabase mongoDatabase;//记录日志的数据库
     private MongoCollection<BasicDBObject> logsCollection; //记录日志的集合
@@ -34,8 +35,11 @@ public class MongoAppender extends AppenderSkeleton {
             mongoDatabase = mongoClient.getDatabase(databaseName);
             logsCollection = mongoDatabase.getCollection(collectionName, BasicDBObject.class);
         }
-        logger.info("message:"+loggingEvent.getMessage());
-        logsCollection.insertOne((BasicDBObject) loggingEvent.getMessage());
+        try {
+            logsCollection.insertOne((BasicDBObject) loggingEvent.getMessage());
+        }catch (Exception e){
+            LOGGER.info("message:"+loggingEvent.getMessage());
+        }
     }
 
     public void close() {

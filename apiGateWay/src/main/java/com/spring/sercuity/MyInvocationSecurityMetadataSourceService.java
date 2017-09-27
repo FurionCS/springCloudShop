@@ -26,7 +26,7 @@ import java.util.*;
 @Component
 public class MyInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
 
-    private Logger logger= Logger.getLogger(MyInvocationSecurityMetadataSourceService.class);
+    private static final Logger logger= Logger.getLogger(MyInvocationSecurityMetadataSourceService.class);
     @Autowired
     private RestTemplate restTemplate;
 

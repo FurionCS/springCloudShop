@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @ToString(callSuper = true)
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,5 +34,7 @@ public class StockReservationRequest extends RestfulRequest {
     @Min(1)
     @ApiModelProperty(value="数量",example = "1",required = true)
     private Integer num;
+
+
 
 }

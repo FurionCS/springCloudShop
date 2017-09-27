@@ -2,8 +2,8 @@ package com.spring.web;
 
 import com.google.common.base.Preconditions;
 import com.spring.common.model.StatusCode;
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Resource;
-import com.spring.domain.model.response.ObjectDataResponse;
 import com.spring.service.ResourcesService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -43,15 +42,12 @@ public class ResourcesController {
     @GetMapping("/listResources")
     public List<Resource> listResource(@RequestParam Integer status){
         Preconditions.checkNotNull(status);
-        ObjectDataResponse objectDataResponse=new ObjectDataResponse();
-        List<Resource> resourceList=resourcesService.listResources(status);
-        return resourceList;
+        return resourcesService.listResources(status);
     }
 
     @ApiOperation("通过资源获得角色名称")
     @PostMapping("/listRoleNameByResourceId")
     public List<String> listRoleNameByResourceId(@RequestParam("id") Integer id){
-        List<String> roleNameList=resourcesService.listRoleByResourceId(id);
-        return roleNameList;
+        return resourcesService.listRoleByResourceId(id);
     }
 }

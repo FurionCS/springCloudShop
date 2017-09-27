@@ -25,8 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -56,12 +59,12 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
     private RedisTemplate redisTemplate;
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public ProductStockTcc trying(Integer productId, Integer num) {
+    public ProductStockTcc trying(Integer productId, Integer num) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         //更新产品库存
         Preconditions.checkArgument(productId>0);
         Preconditions.checkArgument(num>0);
-        Product product=productService.getProductById(productId);
-        if(product==null){
+        final Product product=productService.getProductById(productId);
+        if(Objects.isNull(product)){
             throw new GlobalException("产品不存在", StatusCode.Data_Not_Exist);
         }
         if(product.getStock()-num<0){
@@ -72,8 +75,7 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
             throw new GlobalException("更新失败",StatusCode.Update_Fail);
         }
         //更新reids
-        product.setStock(product.getStock()-num);
-        redisTemplate.opsForValue().getAndSet(RedisKey.product+productId,product);
+        redisTemplate.opsForHash().put(RedisKey.producth+productId,"stock",product.getStock()-num);
 
         // 插入产品预留资源
         ProductStockTcc productStockTcc=new ProductStockTcc();
@@ -147,10 +149,9 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
                     throw new GlobalException("更新库存失败");
                 }
                 //设置redis
-                Product product=(Product)redisTemplate.opsForValue().get(RedisKey.product+res.getProductId());
-                if(product!=null) {
-                    product.setStock(product.getStock()+res.getStock());
-                    redisTemplate.opsForValue().set(RedisKey.product + res.getProductId(),product);
+                if(redisTemplate.opsForHash().hasKey(RedisKey.producth+res.getProductId(),"stock")) {
+                    Integer stock=(Integer)redisTemplate.opsForHash().get(RedisKey.producth+res.getProductId(),"stock");
+                    redisTemplate.opsForHash().put(RedisKey.producth+res.getProductId(),"stock",stock+res.getStock());
                 }
             }
         }

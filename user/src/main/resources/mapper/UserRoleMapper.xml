@@ -19,7 +19,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
-    <resultMap id="userRoleVO" type="com.spring.domain.model.VO.UserRoleVO" autoMapping="true">
+    <resultMap id="userRoleVO" type="com.spring.domain.model.vo.UserRoleVO" autoMapping="true">
         <id column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
         <collection property="roles" resultMap="roleMap" />

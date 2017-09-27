@@ -1,6 +1,7 @@
 package com.spring.service.impl;
 
 import com.spring.common.model.model.RedisKey;
+import com.spring.common.model.util.tools.BeanToMapUtil;
 import com.spring.domain.model.Product;
 import com.spring.domain.request.ProductUpdateRequest;
 import com.spring.persistence.ProductMapper;
@@ -13,7 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+
+import static com.spring.common.model.model.RedisKey.product;
 
 /**
  * @Description 产品service实现
@@ -36,18 +43,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(Integer productId) {
-        String key= RedisKey.product+productId;
-            Product product=(Product)redisTemplate.opsForValue().get(key);
-            if(product==null) {
+    public Product getProductById(Integer productId) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
+        String key= RedisKey.producth+productId;
+            Map productM=redisTemplate.opsForHash().entries(key);
+            if(Objects.isNull(productM) || productM.isEmpty()) {
                 logger.info("查询数据库");
-                Product product2=productMapper.getProductById(productId);
-                if(product2!=null) {
-                    redisTemplate.opsForValue().set(key, product2);
+                Product product=productMapper.getProductById(productId);
+                if(Objects.nonNull(product)) {
+                    redisTemplate.opsForHash().putAll(key, BeanToMapUtil.convertBean(product));
                 }
-                return product2;
+                return product;
             }else{
-            return product;
+            return (Product) BeanToMapUtil.convertMap(Product.class,productM);
         }
     }
 
@@ -55,13 +62,12 @@ public class ProductServiceImpl implements ProductService {
     public int updateProduct(ProductUpdateRequest productUpdateRequest) {
         int flag=productMapper.updateProduct(productUpdateRequest.getProductId(),productUpdateRequest.getProductName(),productUpdateRequest.getStock(),productUpdateRequest.getPrice());
         if(flag==1){
-            Product product=(Product)redisTemplate.opsForValue().get(RedisKey.product+productUpdateRequest.getProductId());
-            if(product!=null) {
-                product.setStock(productUpdateRequest.getStock());
-                product.setName(productUpdateRequest.getProductName());
-                product.setPrice(productUpdateRequest.getPrice());
-                product.setUpdateTime(new Date());
-                redisTemplate.opsForValue().set(RedisKey.product + productUpdateRequest.getProductId(), product);
+            String key=RedisKey.producth+productUpdateRequest.getProductId();
+            if(redisTemplate.opsForHash().hasKey(key,"productId")) {
+                redisTemplate.opsForHash().put(key,"stock",productUpdateRequest.getStock());
+                redisTemplate.opsForHash().put(key,"name",productUpdateRequest.getProductName());
+                redisTemplate.opsForHash().put(key,"price",productUpdateRequest.getPrice());
+                redisTemplate.opsForHash().put(key,"updateTime",new Date());
             }
         }
         return flag;
@@ -74,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
         int flag=productMapper.deleteProductByProductId(productId);
         // 2: 删除redis中数据
         if(flag==1){
-            redisTemplate.delete(RedisKey.product+productId);
+            redisTemplate.delete(RedisKey.producth+productId);
         }
         return flag;
     }

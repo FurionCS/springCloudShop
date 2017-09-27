@@ -27,4 +27,9 @@ public class PlaceOrderRequest extends RestfulRequest {
     @ApiModelProperty(value="用户id",required = true,example = "1")
     private Integer userId;
 
+    @NonNull
+    @Min(1)
+    @ApiModelProperty(value="订单产品数量",required = true,example = "1")
+    private Integer num;
+
 }

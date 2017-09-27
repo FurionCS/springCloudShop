@@ -1,6 +1,5 @@
 package com.spring.persistence;
 
-import com.spring.domain.model.User;
 import com.spring.domain.model.UserBalanceTcc;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

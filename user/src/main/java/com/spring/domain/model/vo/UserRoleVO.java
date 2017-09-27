@@ -1,4 +1,4 @@
-package com.spring.domain.model.VO;
+package com.spring.domain.model.vo;
 
 import com.spring.domain.model.Role;
 import lombok.Data;

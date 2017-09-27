@@ -9,9 +9,10 @@
         <result column="balance" jdbcType="DECIMAL" property="balance"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="leastTime" jdbcType="TIMESTAMP" property="leastTime"/>
+        <result column="status" javaType="INTEGER" property="status" typeHandler="com.spring.domain.model.type.handler.UserStatusTypeHandler"/>
     </resultMap>
     <sql id="base_column">
-        id,user_name,password,idCard,balance,createTime,leastTime
+        id,user_name,password,idCard,balance,createTime,leastTime,status
     </sql>
     <insert id="addUser" parameterType="com.spring.domain.model.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_user(user_name,password,idCard,balance,createTime,leastTime)
@@ -47,7 +48,11 @@
 
     <update id="updateUser">
         update t_user
-        set user_name=#{userName,jdbcType=VARCHAR}
+        set
+        leastTime=now()
+        <if test="userName!=null and userName!=''">
+            ,user_name=#{userName,jdbcType=VARCHAR}
+        </if>
         <if test="idCard!=null and idCard!=''">
             ,idCard=#{idCard,jdbcType=VARCHAR}
         </if>
@@ -61,4 +66,19 @@
         delete from t_user
         where id=#{userId,jdbcType=INTEGER}
     </delete>
+
+    <select id="findUser" resultMap="BaseResultMap">
+        select <include refid="base_column" />
+        from t_user
+        <where>
+            <if test="startDate!=null and endDate!=null">
+                createTime &gt;=to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss')
+                and createTime &lt;=to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss'})
+            </if>
+            <if test="status!=null">
+                and status=#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.model.type.handler.UserStatusTypeHandler}
+            </if>
+            limit #{startIndex} , #{endIndex}
+        </where>
+    </select>
 </mapper>

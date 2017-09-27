@@ -1,10 +1,10 @@
 package com.spring.service;
 
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Order;
 import com.spring.domain.request.CancelRequest;
 import com.spring.domain.request.PaymentRequest;
 import com.spring.domain.request.PlaceOrderRequest;
-import com.spring.domain.response.ObjectDataResponse;
 
 import java.util.List;
 

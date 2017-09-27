@@ -1,12 +1,12 @@
 package com.spring.service;
 
 import com.spring.domain.model.User;
-import com.spring.domain.model.UserAuth;
-import com.spring.domain.model.VO.UserRoleVO;
-import com.spring.domain.model.request.UserRequest;
-import com.spring.domain.model.request.UserRoleRequest;
+import com.spring.domain.model.type.UserStatus;
+import com.spring.domain.model.vo.UserRoleVO;
 import com.spring.domain.model.request.UserUpdateRequest;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ public interface UserService {
      * @param userId
      * @return
      */
-    User getUserById(Integer userId);
+    User getUserById(Integer userId) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException;
 
     /**
      * 得到用户通过名称
@@ -73,4 +73,15 @@ public interface UserService {
      * @return
      */
     int updatePassword(String newPassword,String oldPassword,User user);
+
+    /**
+     * 获得用户列表
+     * @param status
+     * @param startDate
+     * @param endDate
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    List<User> findUser(UserStatus status, String startDate, String endDate, int pageIndex, int pageSize);
 }

@@ -2,7 +2,6 @@ package com.spring.event;
 
 import com.spring.domain.model.UserBalanceTcc;
 import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.ApplicationContextEvent;
 
 /**
  * @Description:用户余额取消事件

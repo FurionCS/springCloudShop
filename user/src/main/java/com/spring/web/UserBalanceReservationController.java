@@ -1,20 +1,19 @@
 package com.spring.web;
 
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.Participant;
 import com.spring.domain.model.UserBalanceTcc;
 import com.spring.domain.model.request.BalanceReservationRequest;
-import com.spring.domain.model.response.ObjectDataResponse;
-import com.spring.domain.model.response.ReservationResponse;
 import com.spring.service.UserBalanceTccService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @Description 用户余额
@@ -38,10 +37,10 @@ public class UserBalanceReservationController {
      */
     @ApiOperation(value = "预留余额", notes = "")
     @RequestMapping(value="/balances/reservation",method = RequestMethod.POST)
-    public ReservationResponse reserve(@Valid @RequestBody BalanceReservationRequest balanceReservationRequest, BindingResult result){
+    public ObjectDataResponse<Participant> reserve(@Valid @RequestBody BalanceReservationRequest balanceReservationRequest, BindingResult result) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
        UserBalanceTcc balanceTcc= userBalanceTccService.trying(balanceReservationRequest.getUserId(),balanceReservationRequest.getAmount());
         Participant participant=new Participant("http://"+applicationName+"/balances/reservation/"+balanceTcc.getId(),balanceTcc.getExpireTime());
-        return new ReservationResponse(participant);
+        return new ObjectDataResponse<>(participant);
     }
 
     @ApiOperation(value="确认预留资源")

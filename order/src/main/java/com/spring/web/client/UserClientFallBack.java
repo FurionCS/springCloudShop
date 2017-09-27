@@ -2,10 +2,9 @@ package com.spring.web.client;
 
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.model.ErrorInfo;
+import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.model.User;
 import com.spring.domain.request.BalanceReservationRequest;
-import com.spring.domain.response.ObjectDataResponse;
-import com.spring.domain.response.ReservationResponse;
 import com.spring.repository.ErrorRepository;
 import feign.hystrix.FallbackFactory;
 import org.jboss.logging.Logger;
@@ -33,9 +32,6 @@ public class UserClientFallBack implements FallbackFactory<UserClient> {
             @Override
             public ObjectDataResponse<User> getUserById(@RequestParam("userId") Integer userId) {
                 logger.error("调用用户接口失败getUserById"+throwable.getMessage());
-                ObjectDataResponse objectDataResponse=new ObjectDataResponse();
-                objectDataResponse.setCode(StatusCode.API_Fail);
-                objectDataResponse.setMessage("调用getUserById失败：cause:"+throwable.getMessage());
                 // 记录到mongodb
                 ErrorInfo errorInfo=new ErrorInfo<>();
                 errorInfo.setCode(StatusCode.API_Fail);
@@ -44,15 +40,12 @@ public class UserClientFallBack implements FallbackFactory<UserClient> {
                 errorInfo.setData(userId);
                 errorInfo.setUrl("getUserById");
                 errorRepository.insert(errorInfo);
-                return objectDataResponse;
+                return new ObjectDataResponse<User>(StatusCode.API_Fail,"调用getUserById失败：cause:"+throwable.getMessage());
             }
 
             @Override
-            public ReservationResponse reserve(@RequestBody BalanceReservationRequest balanceReservationRequest) {
+            public ObjectDataResponse reserve(@RequestBody BalanceReservationRequest balanceReservationRequest) {
                 logger.error("调用用户接口失败reserve"+throwable.getMessage());
-                ReservationResponse reservationResponse=new ReservationResponse();
-                reservationResponse.setCode(StatusCode.API_Fail);
-                reservationResponse.setMessage("调用reserve失败：cause："+throwable.getMessage());
                 // 记录到mongodb
                 ErrorInfo errorInfo=new ErrorInfo<>();
                 errorInfo.setCode(StatusCode.API_Fail);
@@ -61,7 +54,7 @@ public class UserClientFallBack implements FallbackFactory<UserClient> {
                 errorInfo.setData(balanceReservationRequest);
                 errorInfo.setUrl("/balances/reservation");
                 errorRepository.insert(errorInfo);
-                return reservationResponse;
+                return new ObjectDataResponse(StatusCode.API_Fail,"调用reserve失败：cause："+throwable.getMessage());
             }
         };
     }

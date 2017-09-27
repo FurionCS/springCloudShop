@@ -26,9 +26,11 @@ public class WebLogAspect {
 
     private Logger logger = Logger.getLogger("mongodb");
     @Pointcut("execution(public * com.spring.web..*.*(..))")
-    public void webLog(){}
+    public void webLog(){
+        //do nothing
+    }
     @Before("webLog()")
-    public void doBefore(JoinPoint joinPoint) throws Throwable {
+    public void doBefore(JoinPoint joinPoint){
         // 获取HttpServletRequest
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();

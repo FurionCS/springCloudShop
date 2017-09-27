@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class LoginFilter extends ZuulFilter {
 
-    Logger logger= Logger.getLogger(LoginFilter.class);
+    private  static  final  Logger logger= Logger.getLogger(LoginFilter.class);
 
     @Autowired
     private JsonWebTokenUtility tokenService;
@@ -52,14 +52,9 @@ public class LoginFilter extends ZuulFilter {
     }
 
     @Override
-    public Object run() {
-        //初始化token工具类
-        if(!tokenService.getIsInit()){
-            tokenService.init();
-        }
+    public final Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         final String requestURI = ctx.getRequest().getRequestURI();
-        logger.info("requesteUrl:"+requestURI);
         if(requestURI.contains(loginUrl)){
             final InputStream responseDataStream = ctx.getResponseDataStream();
             final String responseData;
@@ -69,17 +64,14 @@ public class LoginFilter extends ZuulFilter {
                 Map<String,Object> value = JSONObject.parseObject(responseData,Map.class);
                 if(value!=null&&value.get("data")!=null){
                     Map<String,Object> data=JSONObject.parseObject(value.get("data").toString());
-                    AuthTokenDetails authTokenDetails = new AuthTokenDetails();
-                    authTokenDetails.setId(Long.valueOf(data.get("userId").toString()));
-                    authTokenDetails.setUsername(data.get("userName").toString());
-                    authTokenDetails.setExpirationDate(buildExpirationDate());
                     JSONArray jsonArray =JSONObject.parseArray(data.get("roles").toString());
                     List<String> roleNameList= jsonArray.stream().map(json->{
                         Map<String,String> map=JSONObject.parseObject(json.toString(),Map.class);
                         return map.get("roleName").toString();
                     }).collect(Collectors.toList());
-                    authTokenDetails.setRoleNames(roleNameList);
-                    String jwt=tokenService.createJsonWebToken(authTokenDetails);
+                    AuthTokenDetails authTokenDetails = new AuthTokenDetails(Long.valueOf(data.get("userId").toString()),data.get("userName").toString(),null,roleNameList,null);
+                    String jwt=tokenService.initKey().createJsonWebToken(authTokenDetails);
+                    authTokenDetails=null;
                     if(jwt!=null){
                         AuthTokenVO authTokenVO=new AuthTokenVO();
                         authTokenVO.setToken(jwt);
@@ -92,14 +84,5 @@ public class LoginFilter extends ZuulFilter {
             }
         }
         return null;
-    }
-    /**
-     * 设定过期时间
-     * @return
-     */
-    private Date buildExpirationDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
-        return calendar.getTime();
     }
 }

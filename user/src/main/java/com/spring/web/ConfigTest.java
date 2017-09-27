@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RefreshScope
-public class configTest {
+public class ConfigTest {
 
     @Value("${switch}")
     private String switchDate;

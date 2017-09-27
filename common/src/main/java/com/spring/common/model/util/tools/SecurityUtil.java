@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class SecurityUtil {
-	private static	Logger logger =Logger.getLogger(SecurityUtil.class);  
+	private static final Logger logger =Logger.getLogger(SecurityUtil.class);
 	/**
 	 * md5加密
 	 * @param password
@@ -65,9 +65,9 @@ public class SecurityUtil {
                 buf.append(Integer.toHexString(i));
             }
             if(type==32){
-            	result = buf.toString();
+            	result = buf.toString().toUpperCase();
             }else{
-            	result.substring(8, 24).toUpperCase();//最后转化成大写
+            	result = buf.toString().substring(8, 24).toUpperCase();//最后转化成大写
             }
         } catch (NoSuchAlgorithmException e) {
         	logger.error(e.getMessage());
@@ -128,6 +128,9 @@ public class SecurityUtil {
 			return null;
 		}
 	}
-	
+
+	public static  void main(String args[]){
+		System.out.println(md5("123456fdsafasfdasf",16));
+	}
 
 }
