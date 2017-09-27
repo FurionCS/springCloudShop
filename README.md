@@ -1,12 +1,10 @@
 
 # Spring cloud shop
-@(spring cloud)[tcc|jwt|]
 
-[TOC]
 
-本系统参考[spring-cloud-rest-tcc](https://github.com/FurionCS/spring-cloud-rest-tcc) 项目进行学习
-Spring Cloud为开发者提供了快速构建分布式系统中的一些常见工具, 如分布式配置中心, 服务发现与注册中心, 智能路由, 服务熔断及降级, 消息总线, 分布式追踪的解决方案等.
-本次实战以模拟下单流程为背景,采用分布式事务中的Try-Confirm-Cancel即TCC模式作为实战演示.
+      本系统参考[spring-cloud-rest-tcc](https://github.com/FurionCS/spring-cloud-rest-tcc) 项目进行学习
+    Spring Cloud为开发者提供了快速构建分布式系统中的一些常见工具, 如分布式配置中心, 服务发现与注册中心, 智能路由, 服务熔断及降级, 消息总线, 分布式追踪的解决方案等.
+    本次实战以模拟下单流程为背景,采用分布式事务中的Try-Confirm-Cancel即TCC模式作为实战演示.
 
 ## 开发环境
 -  MySQL 5.7.17
@@ -15,6 +13,7 @@ Spring Cloud为开发者提供了快速构建分布式系统中的一些常见�
 -  Spring Cloud Camden.SR6
 -  redis 3.0
 -  mongodb
+-  guava
 
 ## 项目结构
 
@@ -107,7 +106,7 @@ RESTful TCC模式分3个阶段执行
  */
 public class LoginFilter extends ZuulFilter {
 
-    Logger logger= Logger.getLogger(LoginFilter.class);
+    private static final Logger logger= Logger.getLogger(LoginFilter.class);
 
     private JsonWebTokenUtility tokenService = new JsonWebTokenUtility();
 

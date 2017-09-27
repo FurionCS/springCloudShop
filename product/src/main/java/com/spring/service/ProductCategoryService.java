@@ -19,4 +19,13 @@ public interface ProductCategoryService {
      * @return
      */
     List<ProductCategory> findProductCategory(ProductCategoryStatus status,Integer sortOrderStart,Integer sortOrderEnd,Integer pageIndex,Integer pageSize);
+
+    /**
+     * 获得某种状态，排序权重大于等于多少的产品分类数量
+      * @param status
+     * @param sortOrderStart
+     * @param sortOrderEnd
+     * @return
+     */
+    Integer getProductCategoryCount(ProductCategoryStatus status,Integer sortOrderStart,Integer sortOrderEnd);
 }

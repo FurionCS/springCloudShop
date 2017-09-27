@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface ProductCategoryMapper {
     /**
-     * 获得某种状态，排序权重大于等于多少的产品分离列表
+     * 获得某种状态，排序权重大于等于多少的产品分类列表
      * @param status
      * @param sortOrderStart
      * @param sortOrderEnd
@@ -23,5 +23,12 @@ public interface ProductCategoryMapper {
      */
     List<ProductCategory> listProductCategory(@Param("status") ProductCategoryStatus status,@Param("sortOrderStart") Integer sortOrderStart,@Param("sortOrderEnd") Integer sortOrderEnd,@Param("startIndex") int startIndex,@Param("pageSize") int pageSize);
 
-
+    /**
+     * 获得某种状态，排序权重大于等于多少的产品分类数量
+     * @param status
+     * @param sortOrderStart
+     * @param sortOrderEnd
+     * @return
+     */
+    Integer getProductCategoryCount(@Param("status") ProductCategoryStatus status,@Param("sortOrderStart") Integer sortOrderStart,@Param("sortOrderEnd") Integer sortOrderEnd);
 }

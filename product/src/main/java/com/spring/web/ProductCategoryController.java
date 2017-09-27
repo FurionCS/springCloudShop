@@ -1,5 +1,6 @@
 package com.spring.web;
 
+import com.google.common.base.Preconditions;
 import com.spring.common.model.response.PageResponse;
 import com.spring.domain.model.ProductCategory;
 import com.spring.domain.request.ProductCategoryRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
+ * 产品分类
  * Created by ErnestCheng on 2017/9/27.
  */
 @RestController
@@ -31,7 +33,8 @@ public class ProductCategoryController {
     @ApiOperation("分页获得产品分类")
     public PageResponse findProductCategory(@Validated @RequestBody ProductCategoryRequest request, BindingResult result){
        List<ProductCategory> productCategoryList=productCategoryService.findProductCategory(request.getProductCategoryStatus(),request.getSortOrderStart(),request.getSortOrderEnd(),request.getPageIndex(),request.getPageSize());
-       return new PageResponse(productCategoryList,0);
+       Integer count=productCategoryService.getProductCategoryCount(request.getProductCategoryStatus(),request.getSortOrderStart(),request.getSortOrderEnd());
+       return new PageResponse(productCategoryList,count);
     }
 
 }

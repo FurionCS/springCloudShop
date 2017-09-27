@@ -13,6 +13,7 @@
     <sql id="baseColumn">
         id,name,sort_order sortOrder,create_time createTime,update_time updateTime,status
     </sql>
+
     <select id="listProductCategory" resultMap="baseMap">
         select <include refid="baseColumn"/>
         from t_product_category
@@ -28,5 +29,19 @@
         <if test="startIndex>0 and pageSize>0">
             limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
         </if>
+    </select>
+
+    <select id="getProductCategoryCount" resultType="java.lang.Integer">
+        select count(*)
+        from t_product_category
+        <where>
+            <if test="status!=null">
+                status=#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.ProductCategoryStatusTypeHandler}
+            </if>
+            <if test="sortOrderStart!=null and sortOrderEnd!=null and sortOrderStart &lt;=sortOrderEnd">
+                and sort_order >=#{sortOrderStart,jdbcType=INTEGER}
+                and sort_order &lt;=#{sortOrderEnd,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
 </mapper>
