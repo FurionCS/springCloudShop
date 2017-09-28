@@ -1,8 +1,8 @@
 package com.spring.web.client;
 
 import com.spring.common.model.response.ObjectDataResponse;
-import com.spring.domain.model.Participant;
-import com.spring.domain.model.Product;
+import com.spring.domain.Participant;
+import com.spring.domain.Product;
 import com.spring.domain.request.StockReservationRequest;
 
 import org.springframework.cloud.netflix.feign.FeignClient;

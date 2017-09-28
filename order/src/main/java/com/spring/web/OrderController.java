@@ -1,8 +1,8 @@
 package com.spring.web;
 
 import com.spring.common.model.response.ObjectDataResponse;
-import com.spring.domain.model.Order;
-import com.spring.domain.model.User;
+import com.spring.domain.Order;
+import com.spring.domain.User;
 import com.spring.domain.request.CancelRequest;
 import com.spring.domain.request.PaymentRequest;
 import com.spring.domain.request.PlaceOrderRequest;
@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 
 /**

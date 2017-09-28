@@ -6,8 +6,8 @@ import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.common.model.response.PageResponse;
 import com.spring.common.model.util.tools.SecurityUtil;
 import com.spring.domain.model.User;
-import com.spring.domain.model.request.*;
-import com.spring.domain.model.vo.UserRoleVO;
+import com.spring.domain.request.*;
+import com.spring.domain.vo.UserRoleVO;
 import com.spring.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
@@ -144,7 +144,7 @@ public class UserController {
 
     @PostMapping("/listUser")
     @ApiOperation("获得用户列表")
-    public PageResponse listUser(@Validated @RequestBody UserListRequest userListRequest,BindingResult result){
+    public PageResponse listUser(@Validated @RequestBody UserListRequest userListRequest, BindingResult result){
         List<User> userList=userService.findUser(userListRequest.getUserStatus(),userListRequest.getStartDate(),userListRequest.getEndDate(),userListRequest.getPageIndex(),userListRequest.getPageSize());
         return new PageResponse(userList,0);
     }

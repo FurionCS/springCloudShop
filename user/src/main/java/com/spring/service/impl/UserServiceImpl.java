@@ -11,9 +11,9 @@ import com.spring.common.model.util.tools.SecurityUtil;
 import com.spring.domain.model.Role;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserRole;
-import com.spring.domain.model.request.UserUpdateRequest;
-import com.spring.domain.model.type.UserStatus;
-import com.spring.domain.model.vo.UserRoleVO;
+import com.spring.domain.request.UserUpdateRequest;
+import com.spring.domain.type.UserStatus;
+import com.spring.domain.vo.UserRoleVO;
 import com.spring.persistence.RoleMapper;
 import com.spring.persistence.UserMapper;
 import com.spring.persistence.UserRoleMapper;
@@ -34,8 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.spring.common.model.model.RedisKey.user;
 
 
 /**

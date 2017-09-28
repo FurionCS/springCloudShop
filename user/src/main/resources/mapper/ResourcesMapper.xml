@@ -14,7 +14,7 @@
         id,url,description,status,create_user,create_time,update_time
     </sql>
 
-    <insert id="addResource" parameterType="com.spring.domain.model.Resource"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="addResource" parameterType="com.spring.domain.model.Resource" useGeneratedKeys="true" keyProperty="id">
         insert into t_resources(url,description,status,create_user,create_time,update_time)
         value(
          #{url,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.persistence.ProductCategoryMapper">
-    <resultMap id="baseMap" type="com.spring.domain.model.ProductCategory">
+    <resultMap id="baseMap" type="com.spring.domain.ProductCategory">
         <result property="id" column="id" jdbcType="INTEGER" />
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="sortOrder" column="sortOrder" jdbcType="INTEGER"/>
@@ -66,7 +66,7 @@
         where id=#{id,jdbcType=INTEGER}
     </select>
 
-    <insert id="addProductCategory" parameterType="com.spring.domain.model.ProductCategory" keyProperty="id" useGeneratedKeys="true">
+    <insert id="addProductCategory" parameterType="com.spring.domain.ProductCategory" keyProperty="id" useGeneratedKeys="true">
         insert into t_product_category(name,sort_order,create_time,update_time,status)
         value(#{name,jdbcType=VARCHAR},#{sortOrder,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.ProductCategoryStatusTypeHandler})
     </insert>

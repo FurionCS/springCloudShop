@@ -2683,7 +2683,7 @@ Caused by: java.net.ConnectException: Connection refused: connect
 2017-05-27 18:03:11,890  INFO FilterRegistrationBean:258 - Mapping filter: 'applicationContextIdFilter' to: [/*]
 2017-05-27 18:03:19,090  INFO CglibAopProxy:274 - Method [java.util.List springfox.documentation.schema.property.OptimizedModelPropertiesProvider.candidateProperties(com.fasterxml.classmate.ResolvedType,com.fasterxml.jackson.databind.introspect.AnnotatedMember,com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition,springfox.documentation.spi.schema.contexts.ModelContext)] is package-visible across different ClassLoaders and cannot get proxied via CGLIB: Declare this method as public or protected if you need to support invocations through the proxy.
 2017-05-27 18:03:22,043  INFO RequestMappingHandlerMapping:543 - Mapped "{[/switchDate]}" onto public java.lang.String com.spring.web.configTest.switchDate()
-2017-05-27 18:03:22,049  INFO RequestMappingHandlerMapping:543 - Mapped "{[/addUser],methods=[POST]}" onto public com.spring.domain.model.response.UserResponse com.spring.web.UserController.addUser(com.spring.domain.model.User)
+2017-05-27 18:03:22,049  INFO RequestMappingHandlerMapping:543 - Mapped "{[/addUser],methods=[POST]}" onto public com.spring.domain.model.response.UserResponse com.spring.web.UserController.addUser(User)
 2017-05-27 18:03:22,052  INFO RequestMappingHandlerMapping:543 - Mapped "{[/v2/api-docs],methods=[GET]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String)
 2017-05-27 18:03:22,061  INFO RequestMappingHandlerMapping:543 - Mapped "{[/configuration/security]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
 2017-05-27 18:03:22,069  INFO RequestMappingHandlerMapping:543 - Mapped "{[/configuration/ui]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
@@ -2854,14 +2854,14 @@ Caused by: java.net.ConnectException: Connection refused: connect
 2017-05-27 18:03:47,249  INFO CachingAspect:79 - Caching aspect applied for cache modelDependencies with key com.spring.domain.model.response.UserResponse(true)
 2017-05-27 18:03:47,250  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.model.response.UserResponse(true)
 2017-05-27 18:03:47,250  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key com.spring.domain.model.response.UserResponse(true)
-2017-05-27 18:03:47,253  INFO ModelContextKeyGenerator:46 - Cache Key Generated: com.spring.domain.model.User(false)
-2017-05-27 18:03:47,254  INFO CachingAspect:79 - Caching aspect applied for cache models with key com.spring.domain.model.User(false)
-2017-05-27 18:03:47,255  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.model.User(false)
-2017-05-27 18:03:47,255  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key com.spring.domain.model.User(false)
-2017-05-27 18:03:47,266  INFO ModelContextKeyGenerator:46 - Cache Key Generated: com.spring.domain.model.User(false)
-2017-05-27 18:03:47,267  INFO CachingAspect:79 - Caching aspect applied for cache modelDependencies with key com.spring.domain.model.User(false)
-2017-05-27 18:03:47,268  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.model.User(false)
-2017-05-27 18:03:47,269  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key com.spring.domain.model.User(false)
+2017-05-27 18:03:47,253  INFO ModelContextKeyGenerator:46 - Cache Key Generated: User(false)
+2017-05-27 18:03:47,254  INFO CachingAspect:79 - Caching aspect applied for cache models with key User(false)
+2017-05-27 18:03:47,255  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: User(false)
+2017-05-27 18:03:47,255  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key User(false)
+2017-05-27 18:03:47,266  INFO ModelContextKeyGenerator:46 - Cache Key Generated: User(false)
+2017-05-27 18:03:47,267  INFO CachingAspect:79 - Caching aspect applied for cache modelDependencies with key User(false)
+2017-05-27 18:03:47,268  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: User(false)
+2017-05-27 18:03:47,269  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key User(false)
 2017-05-27 18:03:47,271  INFO OperationsKeyGenerator:51 - Cache key generated: /addUser.com.spring.web.UserController.addUser.DefaultGenericTypeNamingStrategy
 2017-05-27 18:03:47,272  INFO CachingAspect:68 - Caching aspect applied for cache operations with key /addUser.com.spring.web.UserController.addUser.DefaultGenericTypeNamingStrategy
 2017-05-27 18:03:47,297  INFO ClassOrApiAnnotationResourceGrouping:100 - Group for method addUser was user-controller
@@ -3006,7 +3006,7 @@ java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.Futur
 2017-05-27 18:04:42,162  INFO FilterRegistrationBean:271 - Mapping filter: 'webStatFilter' to urls: [/*]
 2017-05-27 18:04:42,162  INFO FilterRegistrationBean:258 - Mapping filter: 'applicationContextIdFilter' to: [/*]
 2017-05-27 18:04:44,806  INFO CglibAopProxy:274 - Method [java.util.List springfox.documentation.schema.property.OptimizedModelPropertiesProvider.candidateProperties(com.fasterxml.classmate.ResolvedType,com.fasterxml.jackson.databind.introspect.AnnotatedMember,com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition,springfox.documentation.spi.schema.contexts.ModelContext)] is package-visible across different ClassLoaders and cannot get proxied via CGLIB: Declare this method as public or protected if you need to support invocations through the proxy.
-2017-05-27 18:04:46,495  INFO RequestMappingHandlerMapping:543 - Mapped "{[/addProduct],methods=[POST]}" onto public com.spring.domain.response.ProductResponse com.spring.web.ProductController.addProduct(com.spring.domain.model.Product)
+2017-05-27 18:04:46,495  INFO RequestMappingHandlerMapping:543 - Mapped "{[/addProduct],methods=[POST]}" onto public com.spring.domain.response.ProductResponse com.spring.web.ProductController.addProduct(Product)
 2017-05-27 18:04:46,497  INFO RequestMappingHandlerMapping:543 - Mapped "{[/v2/api-docs],methods=[GET]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String)
 2017-05-27 18:04:46,500  INFO RequestMappingHandlerMapping:543 - Mapped "{[/swagger-resources]}" onto org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
 2017-05-27 18:04:46,501  INFO RequestMappingHandlerMapping:543 - Mapped "{[/configuration/ui]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
@@ -3121,14 +3121,14 @@ Caused by: java.net.ConnectException: Connection refused: connect
 2017-05-27 18:04:55,850  INFO ClassOrApiAnnotationResourceGrouping:100 - Group for method addProduct was product-controller
 2017-05-27 18:04:55,854  INFO ApiListingReferenceScanner:72 - Request mapping: addProduct belongs to groups: [[ResourceGroup{groupName='product-controller', position=0, controller=com.spring.web.ProductController}]] 
 2017-05-27 18:04:55,861  INFO ApiListingReferenceScanner:84 - Created resource listing Path: /default/product-controller Description: product-controller Position: 0
-2017-05-27 18:04:55,893  INFO ModelContextKeyGenerator:46 - Cache Key Generated: com.spring.domain.model.Product(false)
-2017-05-27 18:04:55,894  INFO CachingAspect:79 - Caching aspect applied for cache models with key com.spring.domain.model.Product(false)
-2017-05-27 18:04:55,904  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.model.Product(false)
-2017-05-27 18:04:55,904  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key com.spring.domain.model.Product(false)
-2017-05-27 18:04:55,927  INFO ModelContextKeyGenerator:46 - Cache Key Generated: com.spring.domain.model.Product(false)
-2017-05-27 18:04:55,927  INFO CachingAspect:79 - Caching aspect applied for cache modelDependencies with key com.spring.domain.model.Product(false)
-2017-05-27 18:04:55,934  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.model.Product(false)
-2017-05-27 18:04:55,935  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key com.spring.domain.model.Product(false)
+2017-05-27 18:04:55,893  INFO ModelContextKeyGenerator:46 - Cache Key Generated: Product(false)
+2017-05-27 18:04:55,894  INFO CachingAspect:79 - Caching aspect applied for cache models with key Product(false)
+2017-05-27 18:04:55,904  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: Product(false)
+2017-05-27 18:04:55,904  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key Product(false)
+2017-05-27 18:04:55,927  INFO ModelContextKeyGenerator:46 - Cache Key Generated: Product(false)
+2017-05-27 18:04:55,927  INFO CachingAspect:79 - Caching aspect applied for cache modelDependencies with key Product(false)
+2017-05-27 18:04:55,934  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: Product(false)
+2017-05-27 18:04:55,935  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key Product(false)
 2017-05-27 18:04:55,938  INFO ModelContextKeyGenerator:46 - Cache Key Generated: com.spring.domain.response.ProductResponse(true)
 2017-05-27 18:04:55,938  INFO CachingAspect:79 - Caching aspect applied for cache models with key com.spring.domain.response.ProductResponse(true)
 2017-05-27 18:04:55,939  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.response.ProductResponse(true)
@@ -3599,7 +3599,7 @@ java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.Futur
 2017-05-27 18:10:17,427  INFO FilterRegistrationBean:271 - Mapping filter: 'webStatFilter' to urls: [/*]
 2017-05-27 18:10:17,427  INFO FilterRegistrationBean:258 - Mapping filter: 'applicationContextIdFilter' to: [/*]
 2017-05-27 18:10:20,110  INFO CglibAopProxy:274 - Method [java.util.List springfox.documentation.schema.property.OptimizedModelPropertiesProvider.candidateProperties(com.fasterxml.classmate.ResolvedType,com.fasterxml.jackson.databind.introspect.AnnotatedMember,com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition,springfox.documentation.spi.schema.contexts.ModelContext)] is package-visible across different ClassLoaders and cannot get proxied via CGLIB: Declare this method as public or protected if you need to support invocations through the proxy.
-2017-05-27 18:10:21,725  INFO RequestMappingHandlerMapping:543 - Mapped "{[/addProduct],methods=[POST]}" onto public com.spring.domain.response.ProductResponse com.spring.web.ProductController.addProduct(com.spring.domain.model.Product)
+2017-05-27 18:10:21,725  INFO RequestMappingHandlerMapping:543 - Mapped "{[/addProduct],methods=[POST]}" onto public com.spring.domain.response.ProductResponse com.spring.web.ProductController.addProduct(Product)
 2017-05-27 18:10:21,728  INFO RequestMappingHandlerMapping:543 - Mapped "{[/v2/api-docs],methods=[GET]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String)
 2017-05-27 18:10:21,733  INFO RequestMappingHandlerMapping:543 - Mapped "{[/configuration/security]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
 2017-05-27 18:10:21,734  INFO RequestMappingHandlerMapping:543 - Mapped "{[/swagger-resources]}" onto org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
@@ -3714,14 +3714,14 @@ Caused by: java.net.ConnectException: Connection refused: connect
 2017-05-27 18:10:33,629  INFO ClassOrApiAnnotationResourceGrouping:100 - Group for method addProduct was product-controller
 2017-05-27 18:10:33,632  INFO ApiListingReferenceScanner:72 - Request mapping: addProduct belongs to groups: [[ResourceGroup{groupName='product-controller', position=0, controller=com.spring.web.ProductController}]] 
 2017-05-27 18:10:33,641  INFO ApiListingReferenceScanner:84 - Created resource listing Path: /default/product-controller Description: product-controller Position: 0
-2017-05-27 18:10:33,668  INFO ModelContextKeyGenerator:46 - Cache Key Generated: com.spring.domain.model.Product(false)
-2017-05-27 18:10:33,668  INFO CachingAspect:79 - Caching aspect applied for cache models with key com.spring.domain.model.Product(false)
-2017-05-27 18:10:33,678  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.model.Product(false)
-2017-05-27 18:10:33,679  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key com.spring.domain.model.Product(false)
-2017-05-27 18:10:33,703  INFO ModelContextKeyGenerator:46 - Cache Key Generated: com.spring.domain.model.Product(false)
-2017-05-27 18:10:33,704  INFO CachingAspect:79 - Caching aspect applied for cache modelDependencies with key com.spring.domain.model.Product(false)
-2017-05-27 18:10:33,711  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.model.Product(false)
-2017-05-27 18:10:33,712  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key com.spring.domain.model.Product(false)
+2017-05-27 18:10:33,668  INFO ModelContextKeyGenerator:46 - Cache Key Generated: Product(false)
+2017-05-27 18:10:33,668  INFO CachingAspect:79 - Caching aspect applied for cache models with key Product(false)
+2017-05-27 18:10:33,678  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: Product(false)
+2017-05-27 18:10:33,679  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key Product(false)
+2017-05-27 18:10:33,703  INFO ModelContextKeyGenerator:46 - Cache Key Generated: Product(false)
+2017-05-27 18:10:33,704  INFO CachingAspect:79 - Caching aspect applied for cache modelDependencies with key Product(false)
+2017-05-27 18:10:33,711  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: Product(false)
+2017-05-27 18:10:33,712  INFO CachingAspect:68 - Caching aspect applied for cache modelProperties with key Product(false)
 2017-05-27 18:10:33,716  INFO ModelContextKeyGenerator:46 - Cache Key Generated: com.spring.domain.response.ProductResponse(true)
 2017-05-27 18:10:33,716  INFO CachingAspect:79 - Caching aspect applied for cache models with key com.spring.domain.response.ProductResponse(true)
 2017-05-27 18:10:33,717  INFO ModelPropertiesKeyGenerator:48 - Cache key generated: com.spring.domain.response.ProductResponse(true)

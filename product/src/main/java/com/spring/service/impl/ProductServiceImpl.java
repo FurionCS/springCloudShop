@@ -2,13 +2,12 @@ package com.spring.service.impl;
 
 import com.spring.common.model.model.RedisKey;
 import com.spring.common.model.util.tools.BeanToMapUtil;
-import com.spring.domain.model.Product;
+import com.spring.domain.Product;
 import com.spring.domain.request.ProductUpdateRequest;
 import com.spring.persistence.ProductMapper;
 import com.spring.service.ProductService;
 import com.sun.istack.internal.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,8 +18,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.spring.common.model.model.RedisKey.product;
 
 /**
  * @Description 产品service实现

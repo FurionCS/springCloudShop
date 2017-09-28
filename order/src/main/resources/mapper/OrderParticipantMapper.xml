@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.persistence.OrderParticipantMapper">
-    <resultMap id="BaseResultMap" type="com.spring.domain.model.OrderParticipant">
+    <resultMap id="BaseResultMap" type="com.spring.domain.OrderParticipant">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -14,7 +14,7 @@
         id,create_time,update_time,delete_time,expire_time,uri,order_id
     </sql>
     
-    <insert id="addOrderParticipant" parameterType="com.spring.domain.model.OrderParticipant" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addOrderParticipant" parameterType="com.spring.domain.OrderParticipant" useGeneratedKeys="true" keyProperty="id">
         insert into t_order_participant(create_time,update_time,delete_time,expire_time,uri,order_id)
         VALUE (#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{expireTime,jdbcType=TIMESTAMP},#{uri,jdbcType=VARCHAR},#{orderId,jdbcType=INTEGER})
     </insert>

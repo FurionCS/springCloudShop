@@ -1,6 +1,6 @@
 package com.spring.service;
 
-import com.spring.domain.model.ProductStockTcc;
+import com.spring.domain.ProductStockTcc;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;

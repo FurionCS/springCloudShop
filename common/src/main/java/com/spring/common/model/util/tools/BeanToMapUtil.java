@@ -1,5 +1,8 @@
 package com.spring.common.model.util.tools;
 
+import com.sun.istack.internal.logging.Logger;
+import org.hibernate.validator.internal.xml.PropertyType;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -13,6 +16,7 @@ import java.util.Map;
  * Created by Mr.Cheng on 2017/9/24.
  */
 public class BeanToMapUtil {
+        private static final Logger LOGGER= Logger.getLogger(BeanToMapUtil.class);
 
         private BeanToMapUtil(){}
         /**
@@ -47,8 +51,16 @@ public class BeanToMapUtil {
 
                     Object[] args = new Object[1];
                     args[0] = value;
-
-                    descriptor.getWriteMethod().invoke(obj, args);
+                    try {
+                        Class classes=descriptor.getPropertyType();
+                        if(classes.isEnum()){
+                            descriptor.getWriteMethod().invoke(obj,Enum.valueOf(classes,value.toString()));
+                        }else {
+                            descriptor.getWriteMethod().invoke(obj, args[0]);
+                        }
+                    }catch (Exception e){
+                        LOGGER.warning("转换类型失败：",args);
+                    }
                 }
             }
             return obj;

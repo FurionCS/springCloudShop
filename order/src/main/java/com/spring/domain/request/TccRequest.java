@@ -1,8 +1,7 @@
 package com.spring.domain.request;
 
 import com.spring.common.model.request.RestfulRequest;
-import com.spring.domain.model.OrderParticipant;
-import com.spring.domain.model.Participant;
+import com.spring.domain.OrderParticipant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 

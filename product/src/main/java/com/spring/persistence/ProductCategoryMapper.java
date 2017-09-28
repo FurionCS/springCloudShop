@@ -1,6 +1,6 @@
 package com.spring.persistence;
 
-import com.spring.domain.model.ProductCategory;
+import com.spring.domain.ProductCategory;
 import com.spring.domain.type.ProductCategoryStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

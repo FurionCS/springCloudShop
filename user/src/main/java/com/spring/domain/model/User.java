@@ -1,6 +1,6 @@
 package com.spring.domain.model;
 
-import com.spring.domain.model.type.UserStatus;
+import com.spring.domain.type.UserStatus;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -25,10 +25,10 @@ public class User implements Serializable{
      */
     private Integer id;
     @NotNull
-    @Length(min=6,max=50,message = "用户名长度必须在6-50位之间")
+    @Length(min=3,max=50,message = "用户名长度必须在6-50位之间")
     private String userName;
     @NotNull
-    @Length(min=6,max=16,message = "密码长度必须在6-16位之间")
+    @Length(min=6,max=50,message = "密码长度必须在6-16位之间")
     private String password;
     private String idCard;
     /**

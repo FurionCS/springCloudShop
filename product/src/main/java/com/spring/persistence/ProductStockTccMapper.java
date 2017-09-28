@@ -1,6 +1,6 @@
 package com.spring.persistence;
 
-import com.spring.domain.model.ProductStockTcc;
+import com.spring.domain.ProductStockTcc;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

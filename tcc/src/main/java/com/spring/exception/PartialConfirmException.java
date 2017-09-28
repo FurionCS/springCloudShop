@@ -1,7 +1,7 @@
 package com.spring.exception;
 
 
-import com.spring.domain.model.TccErrorResponse;
+import com.spring.domain.TccErrorResponse;
 
 /**
  * @author Zhao Junjian

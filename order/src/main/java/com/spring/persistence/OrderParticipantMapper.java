@@ -1,6 +1,6 @@
 package com.spring.persistence;
 
-import com.spring.domain.model.OrderParticipant;
+import com.spring.domain.OrderParticipant;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

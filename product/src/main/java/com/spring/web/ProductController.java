@@ -1,10 +1,9 @@
 package com.spring.web;
 
 
-import com.google.common.base.Strings;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.response.ObjectDataResponse;
-import com.spring.domain.model.Product;
+import com.spring.domain.Product;
 import com.spring.domain.request.ProductUpdateRequest;
 
 import com.spring.service.ProductService;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 

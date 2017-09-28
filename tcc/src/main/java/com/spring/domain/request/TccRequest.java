@@ -1,10 +1,8 @@
 package com.spring.domain.request;
 
 import com.spring.common.model.request.RestfulRequest;
-import com.spring.common.model.response.RestfulResponse;
-import com.spring.domain.model.Participant;
+import com.spring.domain.Participant;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
 import lombok.*;
 
 import javax.validation.Valid;

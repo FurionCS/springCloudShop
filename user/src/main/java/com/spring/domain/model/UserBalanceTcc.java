@@ -1,7 +1,7 @@
 package com.spring.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.spring.domain.model.type.TccStatus;
+import com.spring.domain.type.TccStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

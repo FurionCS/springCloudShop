@@ -1,7 +1,7 @@
 package com.spring.service;
 
 import com.spring.domain.model.Role;
-import com.spring.domain.model.vo.RoleResourcesVO;
+import com.spring.domain.vo.RoleResourcesVO;
 
 import java.util.List;
 

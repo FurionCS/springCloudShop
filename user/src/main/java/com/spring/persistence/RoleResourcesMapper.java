@@ -1,7 +1,7 @@
 package com.spring.persistence;
 
 import com.spring.domain.model.RoleResource;
-import com.spring.domain.model.vo.RoleResourcesVO;
+import com.spring.domain.vo.RoleResourcesVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

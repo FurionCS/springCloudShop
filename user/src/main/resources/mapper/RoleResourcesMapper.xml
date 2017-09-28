@@ -20,7 +20,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     
-    <resultMap id="roleResourcesVO" type="com.spring.domain.model.vo.RoleResourcesVO">
+    <resultMap id="roleResourcesVO" type="com.spring.domain.vo.RoleResourcesVO">
         <id column="role_id" jdbcType="INTEGER" property="roleId"/>
         <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
         <collection property="resources" resultMap="resourceMap" />

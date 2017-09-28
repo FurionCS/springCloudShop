@@ -3,7 +3,7 @@ package com.spring.web.client;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.model.ErrorInfo;
 import com.spring.common.model.response.ObjectDataResponse;
-import com.spring.domain.model.User;
+import com.spring.domain.User;
 import com.spring.domain.request.BalanceReservationRequest;
 import com.spring.repository.ErrorRepository;
 import feign.hystrix.FallbackFactory;

@@ -10,14 +10,14 @@
         <result column="amount" jdbcType="DECIMAL" property="amount"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="status" jdbcType="INTEGER" property="status"
-                typeHandler="com.spring.domain.model.type.handler.TccStatusTypeHandler"/>
+                typeHandler="com.spring.domain.type.handler.TccStatusTypeHandler"/>
     </resultMap>
     <sql id="base_column">
         id,expire_time,create_time,update_time,delete_time,amount,user_id,status
     </sql>
     <insert id="addUserBalanceTcc" parameterType="com.spring.domain.model.UserBalanceTcc" useGeneratedKeys="true" keyProperty="id">
         insert into t_user_balance_tcc(expire_time,create_time,update_time,delete_time,amount,user_id,status)
-        VALUE (#{expireTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{amount,jdbcType=DECIMAL},#{userId,jdbcType=INTEGER},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.model.type.handler.TccStatusTypeHandler})
+        VALUE (#{expireTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{amount,jdbcType=DECIMAL},#{userId,jdbcType=INTEGER},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.TccStatusTypeHandler})
     </insert>
 
     <select id="getUserBalanceTcc" parameterType="java.lang.Integer" resultMap="BaseResultMap">

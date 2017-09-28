@@ -3,7 +3,7 @@ package com.spring.service.impl;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.spring.common.model.model.RedisKey;
-import com.spring.domain.model.ProductCategory;
+import com.spring.domain.ProductCategory;
 import com.spring.domain.type.ProductCategoryStatus;
 import com.spring.persistence.ProductCategoryMapper;
 import com.spring.service.ProductCategoryService;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.*;
 
 

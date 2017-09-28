@@ -5,7 +5,7 @@ import com.spring.common.model.exception.GlobalException;
 import com.spring.domain.model.Resource;
 import com.spring.domain.model.Role;
 import com.spring.domain.model.RoleResource;
-import com.spring.domain.model.vo.RoleResourcesVO;
+import com.spring.domain.vo.RoleResourcesVO;
 import com.spring.persistence.ResourcesMapper;
 import com.spring.persistence.RoleMapper;
 import com.spring.persistence.RoleResourcesMapper;

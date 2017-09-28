@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.persistence.OrderMapper">
-    <resultMap id="BaseResultMap" type="com.spring.domain.model.Order">
+    <resultMap id="BaseResultMap" type="com.spring.domain.Order">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -18,7 +18,7 @@
        select <include refid="base_column"/>
         from t_order
     </select>
-    <insert id="addOrder" parameterType="com.spring.domain.model.Order" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addOrder" parameterType="com.spring.domain.Order" useGeneratedKeys="true" keyProperty="id">
         insert into t_order(create_time,update_time,delete_time,user_id,product_id,price,status)
         value(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{userId,jdbcType=INTEGER},#{productId,jdbcType=INTEGER},#{price,jdbcType=DECIMAL},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.OrderStatusHandler})
     </insert>
@@ -27,7 +27,7 @@
         from t_order
         where id=#{orderId,jdbcType=INTEGER}
     </select>
-    <update id="updateOrder" parameterType="com.spring.domain.model.Order">
+    <update id="updateOrder" parameterType="com.spring.domain.Order">
         update t_order
         <set>
             <if test="createTime != null">

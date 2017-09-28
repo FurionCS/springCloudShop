@@ -1,13 +1,10 @@
 package com.spring.event.listener;
 
 import com.google.common.base.Preconditions;
-import com.spring.domain.model.ProductStockTcc;
+import com.spring.domain.ProductStockTcc;
 import com.spring.event.ProductStockCancellationEvent;
 import com.spring.service.ProductStockTccService;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;

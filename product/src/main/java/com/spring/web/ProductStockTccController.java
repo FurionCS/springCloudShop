@@ -1,8 +1,8 @@
 package com.spring.web;
 
 import com.spring.common.model.response.ObjectDataResponse;
-import com.spring.domain.model.Participant;
-import com.spring.domain.model.ProductStockTcc;
+import com.spring.domain.Participant;
+import com.spring.domain.ProductStockTcc;
 import com.spring.domain.request.StockReservationRequest;
 import com.spring.service.ProductStockTccService;
 import io.swagger.annotations.ApiOperation;

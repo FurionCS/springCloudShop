@@ -1,6 +1,6 @@
 package com.spring.event;
 
-import com.spring.domain.model.ProductStockTcc;
+import com.spring.domain.ProductStockTcc;
 import org.springframework.context.ApplicationEvent;
 
 /**

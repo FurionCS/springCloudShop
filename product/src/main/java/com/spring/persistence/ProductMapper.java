@@ -1,6 +1,6 @@
 package com.spring.persistence;
 
-import com.spring.domain.model.Product;
+import com.spring.domain.Product;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

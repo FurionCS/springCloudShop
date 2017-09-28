@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.persistence.ProductStockTccMapper">
-    <resultMap id="BaseResultMap" type="com.spring.domain.model.ProductStockTcc">
+    <resultMap id="BaseResultMap" type="com.spring.domain.ProductStockTcc">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -14,7 +14,7 @@
     <sql id="base_column">
         id,create_time,update_time,delete_time,expire_time,stock,product_id,status
     </sql>
-    <insert id="addProductStockTcc" parameterType="com.spring.domain.model.ProductStockTcc" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addProductStockTcc" parameterType="com.spring.domain.ProductStockTcc" useGeneratedKeys="true" keyProperty="id">
         insert INTO t_product_stock_tcc(create_time,update_time,delete_time,expire_time,stock,product_id,status)
         VALUE (#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{deleteTime,jdbcType=TIMESTAMP},#{expireTime,jdbcType=TIMESTAMP},#{stock,jdbcType=INTEGER},#{productId,jdbcType=INTEGER},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.TccStatusTypeHandler})
     </insert>

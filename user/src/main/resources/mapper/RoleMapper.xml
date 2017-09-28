@@ -15,7 +15,7 @@
         id,role_name,description,status,create_user,create_time,update_time
     </sql>
 
-    <insert id="addRole" parameterType="com.spring.domain.model.Role"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="addRole" parameterType="com.spring.domain.model.Role" useGeneratedKeys="true" keyProperty="id">
         insert into t_role(role_name,description,status,create_user,create_time,update_time)
         value(
          #{roleName,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}

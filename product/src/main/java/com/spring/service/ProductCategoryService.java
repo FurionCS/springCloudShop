@@ -1,6 +1,6 @@
 package com.spring.service;
 
-import com.spring.domain.model.ProductCategory;
+import com.spring.domain.ProductCategory;
 import com.spring.domain.type.ProductCategoryStatus;
 
 import java.util.List;

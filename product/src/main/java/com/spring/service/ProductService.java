@@ -1,6 +1,6 @@
 package com.spring.service;
 
-import com.spring.domain.model.Product;
+import com.spring.domain.Product;
 import com.spring.domain.request.ProductUpdateRequest;
 
 import java.beans.IntrospectionException;

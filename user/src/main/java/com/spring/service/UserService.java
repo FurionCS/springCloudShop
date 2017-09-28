@@ -1,9 +1,9 @@
 package com.spring.service;
 
 import com.spring.domain.model.User;
-import com.spring.domain.model.type.UserStatus;
-import com.spring.domain.model.vo.UserRoleVO;
-import com.spring.domain.model.request.UserUpdateRequest;
+import com.spring.domain.type.UserStatus;
+import com.spring.domain.vo.UserRoleVO;
+import com.spring.domain.request.UserUpdateRequest;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;

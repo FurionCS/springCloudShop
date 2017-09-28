@@ -1,7 +1,7 @@
 package com.spring.persistence;
 
 import com.spring.domain.model.User;
-import com.spring.domain.model.type.UserStatus;
+import com.spring.domain.type.UserStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

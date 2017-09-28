@@ -1,10 +1,9 @@
 package com.spring.web;
 
-import com.google.common.base.Preconditions;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.common.model.response.PageResponse;
-import com.spring.domain.model.ProductCategory;
+import com.spring.domain.ProductCategory;
 import com.spring.domain.request.ProductCategoryRequest;
 import com.spring.domain.request.UpdateProductCategoryRequest;
 import com.spring.service.ProductCategoryService;

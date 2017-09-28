@@ -3,7 +3,7 @@ package com.spring.web.client;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.model.ErrorInfo;
 import com.spring.common.model.response.ObjectDataResponse;
-import com.spring.domain.model.Product;
+import com.spring.domain.Product;
 import com.spring.domain.request.StockReservationRequest;
 
 import com.spring.repository.ErrorRepository;

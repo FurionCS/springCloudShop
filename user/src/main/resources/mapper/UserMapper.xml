@@ -9,7 +9,7 @@
         <result column="balance" jdbcType="DECIMAL" property="balance"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="leastTime" jdbcType="TIMESTAMP" property="leastTime"/>
-        <result column="status" javaType="INTEGER" property="status" typeHandler="com.spring.domain.model.type.handler.UserStatusTypeHandler"/>
+        <result column="status" javaType="INTEGER" property="status" typeHandler="com.spring.domain.type.handler.UserStatusTypeHandler"/>
     </resultMap>
     <sql id="base_column">
         id,user_name,password,idCard,balance,createTime,leastTime,status
@@ -76,7 +76,7 @@
                 and createTime &lt;=to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss'})
             </if>
             <if test="status!=null">
-                and status=#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.model.type.handler.UserStatusTypeHandler}
+                and status=#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.UserStatusTypeHandler}
             </if>
             limit #{startIndex} , #{endIndex}
         </where>
