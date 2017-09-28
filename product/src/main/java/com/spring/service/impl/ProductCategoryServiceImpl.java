@@ -78,12 +78,12 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         //先获得旧类型，更新数据库，获得新类型
         ProductCategory productCategory=productCategoryMapper.getProductCategoryById(id);
         Integer count=productCategoryMapper.updateProductCategory(id, name, sortOrder, status);
+        redisTemplate.opsForZSet().remove(RedisKey.productCategory+productCategory.getStatus().getStatus(),productCategory);
         ProductCategory productCategoryNew=productCategoryMapper.getProductCategoryById(id);
-        if(Objects.equals(ProductCategoryStatus.停用,status)){
-            redisTemplate.opsForZSet().add(RedisKey.producth+status.getStatus(),productCategoryNew,productCategoryNew.getSortOrder());
+        if(Objects.equals(productCategory.getStatus(),status)){
+            redisTemplate.opsForZSet().add(RedisKey.productCategory+productCategory.getStatus().getStatus(),productCategoryNew,productCategoryNew.getSortOrder());
         }else{
-            redisTemplate.opsForZSet().remove(RedisKey.producth+productCategory.getStatus(),productCategory);
-            redisTemplate.opsForZSet().add(RedisKey.producth+productCategory.getStatus(),productCategoryNew,productCategoryNew.getSortOrder());
+            redisTemplate.opsForZSet().add(RedisKey.productCategory+status.getStatus(),productCategoryNew,productCategoryNew.getSortOrder());
         }
         return count;
     }
