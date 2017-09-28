@@ -48,4 +48,11 @@ public interface ProductCategoryMapper {
      * @return
      */
     ProductCategory getProductCategoryById(@Param("id") Integer id);
+
+    /**
+     * 新增产品分类
+     * @param productCategory
+     * @return
+     */
+    Integer addProductCategory(ProductCategory productCategory);
 }

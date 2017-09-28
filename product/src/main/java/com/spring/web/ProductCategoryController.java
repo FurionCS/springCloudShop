@@ -45,10 +45,20 @@ public class ProductCategoryController {
     public ObjectDataResponse updateProductCategory(@Validated @RequestBody UpdateProductCategoryRequest request, BindingResult result){
         Integer count=productCategoryService.updateProductCategory(request.getId(),request.getName(),request.getSortOrder(),request.getStatus());
         if(count>0) {
-            return new ObjectDataResponse(StatusCode.Success,"成功更新"+count);
+            return new ObjectDataResponse(StatusCode.Success,"成功更新："+count);
         }else{
             return new ObjectDataResponse(StatusCode.Update_Fail,"更新失败");
         }
     }
 
+    @PostMapping("/addProductCategory")
+    @ApiOperation("新增产品分类")
+    public ObjectDataResponse addProductCategory(@Validated @RequestBody ProductCategory request,BindingResult result){
+        boolean flag=productCategoryService.addProductCategory(request);
+        if(flag) {
+            return new ObjectDataResponse();
+        }else{
+            return new ObjectDataResponse(StatusCode.Update_Fail,"新增失败");
+        }
+    }
 }

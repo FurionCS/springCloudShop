@@ -14,6 +14,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 
@@ -86,5 +89,23 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
             redisTemplate.opsForZSet().add(RedisKey.productCategory+status.getStatus(),productCategoryNew,productCategoryNew.getSortOrder());
         }
         return count;
+    }
+
+
+    @Override
+    public boolean addProductCategory(ProductCategory productCategory) {
+        Preconditions.checkNotNull(productCategory);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(productCategory.getName()));
+        Preconditions.checkArgument(Objects.nonNull(productCategory.getSortOrder()) && productCategory.getSortOrder()>=0);
+        Preconditions.checkArgument(Objects.nonNull(productCategory.getStatus()));
+        productCategory.setCreateTime(Timestamp.from(Instant.now()));
+        productCategory.setUpdateTime(productCategory.getCreateTime());
+        Integer count=productCategoryMapper.addProductCategory(productCategory);
+        if(count>0) {
+            redisTemplate.opsForZSet().add(RedisKey.productCategory + productCategory.getStatus().getStatus(), productCategory, productCategory.getSortOrder());
+            return true;
+        }else{
+            return false;
+        }
     }
 }

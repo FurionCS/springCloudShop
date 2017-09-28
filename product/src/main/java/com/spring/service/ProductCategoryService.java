@@ -38,4 +38,11 @@ public interface ProductCategoryService {
      * @return
      */
     Integer updateProductCategory(Integer id,String name,Integer sortOrder,ProductCategoryStatus status);
+
+    /**
+     * 新增产品分类
+     * @param productCategory
+     * @return
+     */
+    boolean addProductCategory(ProductCategory productCategory);
 }

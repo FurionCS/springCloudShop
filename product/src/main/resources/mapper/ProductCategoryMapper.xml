@@ -65,4 +65,9 @@
         from t_product_category
         where id=#{id,jdbcType=INTEGER}
     </select>
+
+    <insert id="addProductCategory" parameterType="com.spring.domain.model.ProductCategory" keyProperty="id" useGeneratedKeys="true">
+        insert into t_product_category(name,sort_order,create_time,update_time,status)
+        value(#{name,jdbcType=VARCHAR},#{sortOrder,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.ProductCategoryStatusTypeHandler})
+    </insert>
 </mapper>
