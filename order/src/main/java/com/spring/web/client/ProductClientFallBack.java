@@ -24,7 +24,7 @@ import java.time.OffsetDateTime;
 @Component
 public class ProductClientFallBack implements FallbackFactory<ProductClient> {
 
-    Logger logger=Logger.getLogger(ProductClientFallBack.class);
+    private static  final Logger logger=Logger.getLogger(ProductClientFallBack.class);
 
     @Autowired
     private ErrorRepository errorRepository;

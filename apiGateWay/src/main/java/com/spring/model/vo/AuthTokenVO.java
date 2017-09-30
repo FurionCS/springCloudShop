@@ -1,5 +1,5 @@
 
-package com.spring.model.VO;
+package com.spring.model.vo;
 
 import lombok.Data;
 

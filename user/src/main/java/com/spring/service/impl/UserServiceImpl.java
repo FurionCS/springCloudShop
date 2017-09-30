@@ -97,7 +97,9 @@ public class UserServiceImpl implements UserService {
         Map userM = redisTemplate.opsForHash().entries(RedisKey.userh+userId);
         if (Objects.isNull(userM) || userM.isEmpty()) {
             User user = userMapper.getUserById(userId);
-            redisTemplate.opsForHash().putAll(RedisKey.userh+userId,BeanToMapUtil.convertBean(user));
+            if(Objects.nonNull(user)) {
+                redisTemplate.opsForHash().putAll(RedisKey.userh + userId, BeanToMapUtil.convertBean(user));
+            }
             return user;
         }
         return (User)BeanToMapUtil.convertMap(User.class,userM);

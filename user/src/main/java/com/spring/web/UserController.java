@@ -42,23 +42,19 @@ public class UserController {
     public ObjectDataResponse login(@Validated @RequestBody UserRequest userRequest, BindingResult result) {
         final String userName = userRequest.getUserName();
         final String password = userRequest.getPassword();
-        if ("".equals(userName) || "".equals(password)) {
-            throw new GlobalException("参数不对");
-        } else {
-            User user = userService.getUserByName(userName);
-            try {
-                String password1 = SecurityUtil.md5(userName, password, 32);
-                if (user != null && user.getPassword().equals(password1)) {
-                    UserRoleVO userRoleVO = userService.listUserRoleVO(user.getId());
-                    return new ObjectDataResponse(userRoleVO);
-                } else {
-                    throw new GlobalException("用户密码不正确");
-                }
-            } catch (NoSuchAlgorithmException e) {
-                logger.error(e.getMessage());
+        User user = userService.getUserByName(userName);
+        try {
+            String password1 = SecurityUtil.md5(userName, password, 32);
+            if (user != null && user.getPassword().equals(password1)) {
+                UserRoleVO userRoleVO = userService.listUserRoleVO(user.getId());
+                return new ObjectDataResponse(userRoleVO);
+            } else {
+                throw new GlobalException("用户密码不正确");
             }
+        } catch (NoSuchAlgorithmException e) {
+            logger.error(e.getMessage());
         }
-        return null;
+        return new ObjectDataResponse(StatusCode.Fail_Code,"登陆失败");
     }
 
     @ApiOperation(value = "添加用户")

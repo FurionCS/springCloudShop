@@ -8,7 +8,7 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.spring.jwt.AuthTokenDetails;
 import com.spring.jwt.JsonWebTokenUtility;
-import com.spring.model.VO.AuthTokenVO;
+import com.spring.model.vo.AuthTokenVO;
 import com.sun.istack.internal.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

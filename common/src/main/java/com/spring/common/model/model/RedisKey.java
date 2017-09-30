@@ -26,4 +26,8 @@ public class RedisKey {
      * expamle:shop:product:category:1(状态)
      */
     public static final String productCategory="shop:product:category:";
+    /**
+     * expamle:shop:user:addr:1
+     */
+    public static final String userAddr="shop:user:addr:";
 }

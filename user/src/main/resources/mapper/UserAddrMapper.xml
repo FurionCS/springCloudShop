@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.persistence.UserAddrMapper">
+    <resultMap id="BaseResultMap" type="com.spring.domain.model.UserAddr">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="INTEGER"/>
+        <result column="receiverName" property="receiverName" jdbcType="VARCHAR"/>
+        <result column="receiverPhone" property="receiverPhone" jdbcType="VARCHAR"/>
+        <result column="receiverCity" property="receiverCity" jdbcType="VARCHAR"/>
+        <result column="receiverDistrict" property="receiverDistrict" jdbcType="VARCHAR"/>
+        <result column="receiverAddress" property="receiverAddress" jdbcType="VARCHAR"/>
+        <result column="receiverCode" property="receiverCode" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER" typeHandler="com.spring.domain.type.handler.UserAddrStatusTypeHandler"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        id,user_id userId,receiver_name receiverName,receiver_phone receiverPhone, receiver_city receiverCity
+        ,receiver_district receiverDistrict,receiver_address receiverAdress,receiver_code receiverCode,create_time  createTime
+        ,update_time updateTime,status
+    </sql>
+    <insert id="addUserAddr"  keyProperty="id" useGeneratedKeys="true" >
+        insert into t_user_addr(user_id,receiver_name,receiver_phone, receiver_city
+        ,receiver_district,receiver_address,receiver_code,create_time
+        ,update_time,status)
+        value(#{userId,jdbcType=INTEGER},#{receiverName,jdbcType=VARCHAR},#{receiverPhone,jdbcType=VARCHAR},#{receiverCity,jdbcType=VARCHAR}
+        ,#{receiverDistrict,jdbcType=VARCHAR},#{receiverAddress,jdbcType=VARCHAR},#{receiverCode,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        ,#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.UserAddrStatusTypeHandler})
+    </insert>
+</mapper>

@@ -8,9 +8,7 @@ import com.spring.common.model.exception.GlobalException;
 import com.spring.common.model.model.ErrorInfo;
 import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.domain.*;
-import com.spring.domain.model.*;
 import com.spring.domain.request.*;
-
 import com.spring.domain.type.OrderStatus;
 import com.spring.exception.PartialConfirmException;
 import com.spring.exception.ReservationExpireException;

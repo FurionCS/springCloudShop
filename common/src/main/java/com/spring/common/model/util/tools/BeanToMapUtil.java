@@ -1,7 +1,6 @@
 package com.spring.common.model.util.tools;
 
 import com.sun.istack.internal.logging.Logger;
-import org.hibernate.validator.internal.xml.PropertyType;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
