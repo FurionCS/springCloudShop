@@ -2,8 +2,9 @@ package com.spring.web;
 
 import com.spring.domain.request.TccRequest;
 import com.spring.service.TccService;
-import com.sun.istack.internal.logging.Logger;
+
 import io.swagger.annotations.ApiOperation;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 @RequestMapping(value="/tcc")
 public class CoordinateController {
 
-    Logger logger= Logger.getLogger(CoordinateController.class);
+    private static final Logger logger= Logger.getLogger(CoordinateController.class);
 
     @Autowired
     private TccService tccService;

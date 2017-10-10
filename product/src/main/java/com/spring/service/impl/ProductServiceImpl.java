@@ -6,7 +6,8 @@ import com.spring.domain.Product;
 import com.spring.domain.request.ProductUpdateRequest;
 import com.spring.persistence.ProductMapper;
 import com.spring.service.ProductService;
-import com.sun.istack.internal.logging.Logger;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ import java.util.Objects;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    Logger logger= Logger.getLogger(ProductServiceImpl.class);
+    private static final Logger logger= Logger.getLogger(ProductServiceImpl.class);
 
     @Autowired
     private ProductMapper productMapper;
