@@ -9,7 +9,8 @@ import com.netflix.zuul.context.RequestContext;
 import com.spring.jwt.AuthTokenDetails;
 import com.spring.jwt.JsonWebTokenUtility;
 import com.spring.model.vo.AuthTokenVO;
-import com.sun.istack.internal.logging.Logger;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  */
 public class LoginFilter extends ZuulFilter {
 
-    private  static  final  Logger logger= Logger.getLogger(LoginFilter.class);
+    private  static  final Logger logger= Logger.getLogger(LoginFilter.class);
 
     @Autowired
     private JsonWebTokenUtility tokenService;

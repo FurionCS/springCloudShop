@@ -12,10 +12,9 @@
 	<description>spring cloud tcc</description>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.6.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.spring</groupId>
+		<artifactId>shop</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<properties>
