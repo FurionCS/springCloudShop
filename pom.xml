@@ -21,7 +21,6 @@
 		<module>admin</module>
 		<module>hystrixdashboard</module>
 		<module>server</module>
-		<module>admin</module>
 		<module>apiGateWay</module>
 	</modules>
 	<parent>
