@@ -6,11 +6,24 @@
 	<groupId>com.spring</groupId>
 	<artifactId>shop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
 	<name>shop</name>
 	<description>spring cloud shop</description>
 
+	<modules>
+		<module>common</module>
+		<module>order</module>
+		<module>user</module>
+		<module>product</module>
+		<module>tcc</module>
+		<module>config</module>
+		<module>admin</module>
+		<module>hystrixdashboard</module>
+		<module>server</module>
+		<module>admin</module>
+		<module>apiGateWay</module>
+	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -25,6 +38,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.spring</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>

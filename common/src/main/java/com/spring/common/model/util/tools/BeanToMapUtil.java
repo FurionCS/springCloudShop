@@ -1,6 +1,10 @@
 package com.spring.common.model.util.tools;
 
-import com.sun.istack.internal.logging.Logger;
+
+
+
+
+import org.apache.log4j.Logger;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -58,7 +62,7 @@ public class BeanToMapUtil {
                             descriptor.getWriteMethod().invoke(obj, args[0]);
                         }
                     }catch (Exception e){
-                        LOGGER.warning("转换类型失败：",args);
+                        LOGGER.warn("转换类型失败：");
                     }
                 }
             }

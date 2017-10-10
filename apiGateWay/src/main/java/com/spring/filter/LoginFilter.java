@@ -67,7 +67,7 @@ public class LoginFilter extends ZuulFilter {
                     JSONArray jsonArray =JSONObject.parseArray(data.get("roles").toString());
                     List<String> roleNameList= jsonArray.stream().map(json->{
                         Map<String,String> map=JSONObject.parseObject(json.toString(),Map.class);
-                        return map.get("roleName").toString();
+                        return map.get("roleName");
                     }).collect(Collectors.toList());
                     AuthTokenDetails authTokenDetails = new AuthTokenDetails(Long.valueOf(data.get("userId").toString()),data.get("userName").toString(),null,roleNameList,null);
                     String jwt=tokenService.initKey().createJsonWebToken(authTokenDetails);

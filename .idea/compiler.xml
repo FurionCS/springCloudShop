@@ -14,7 +14,6 @@
         <module name="order" />
         <module name="product" />
         <module name="server" />
-        <module name="shop" />
         <module name="tcc" />
         <module name="user" />
       </profile>
