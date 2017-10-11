@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.persistence.UserIntegralMapper">
+    <resultMap id="BaseResultMap" type="com.spring.domain.model.UserIntegral">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="userId" property="userId" jdbcType="INTEGER"/>
+        <result column="nowSource" property="nowSource" jdbcType="BIGINT" />
+        <result column="hisSource" property="hisSource" jdbcType="BIGINT"/>
+        <result column="usedSource" property="usedSource" jdbcType="BIGINT"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="base_column">
+        id,user_id userId,now_source nowSource,used_source usedSource,create_time createTime,update_time updateTime
+    </sql>
+
+</mapper>

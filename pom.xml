@@ -16,10 +16,11 @@
 		<module>user</module>
 		<module>product</module>
 		<module>tcc</module>
-		<module>config</module>
 		<module>admin</module>
+		<module>common</module>
 		<module>hystrixdashboard</module>
 		<module>apiGateWay</module>
+		<module>integral</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>

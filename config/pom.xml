@@ -12,9 +12,10 @@
 	<description>spring cloud config</description>
 
 	<parent>
-		<groupId>com.spring</groupId>
-		<artifactId>shop</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.6.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
