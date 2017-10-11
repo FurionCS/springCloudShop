@@ -22,8 +22,9 @@ public class IntegralChangeController {
 
     @PostMapping("/add")
     @ApiOperation("新增积分规则")
-    private ObjectDataResponse addIntegralChange(@RequestBody IntegralChange integralChange){
+    public ObjectDataResponse addIntegralChange(@RequestBody IntegralChange integralChange){
         integralChangeService.addIntegralChange(integralChange);
         return new ObjectDataResponse();
     }
+
 }
