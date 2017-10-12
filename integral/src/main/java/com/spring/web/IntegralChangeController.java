@@ -55,5 +55,4 @@ public class IntegralChangeController {
             return new ObjectDataResponse(StatusCode.Update_Fail,"更新积分规则失败");
         }
     }
-
 }

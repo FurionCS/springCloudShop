@@ -10,6 +10,8 @@ import com.spring.service.IntegralChangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -61,6 +63,7 @@ public class IntegralChangeServiceImpl implements IntegralChangeService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Integer updateIntegral(IntegralChange integralChange) {
         Preconditions.checkNotNull(integralChange);
         //从数据库中获得旧的
