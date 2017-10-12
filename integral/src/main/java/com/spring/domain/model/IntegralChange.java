@@ -39,5 +39,10 @@ public class IntegralChange {
      * 更新时间
      */
     private Timestamp updateTime;
+    /**
+     * 数学公式
+     */
+    private String math;
+
 
 }

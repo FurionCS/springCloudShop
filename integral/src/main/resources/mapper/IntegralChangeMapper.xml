@@ -7,16 +7,46 @@
         <result column="changeDep" property="changeDep" jdbcType="VARCHAR" />
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="math" property="math" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER" typeHandler="com.spring.domain.type.handler.IntegralChangeStatusHandler"/>
     </resultMap>
 
     <sql id="base_column">
-        id,change_name changeName,change_dep changeDep,create_time createTime,update_time updateTime,status
+        id,change_name changeName,change_dep changeDep,create_time createTime,update_time updateTime,status,math
     </sql>
 
     <insert id="addIntegralChange" useGeneratedKeys="true" keyProperty="id">
-        insert into t_integral_change(change_name,change_dep,create_time,update_time,status)
-        VALUE (#{changeName,jdbcType=VARCHAR},#{changeDep,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler})
+        insert into t_integral_change(change_name,change_dep,create_time,update_time,status,math)
+        VALUE (#{changeName,jdbcType=VARCHAR},#{changeDep,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler},#{math,jdbcType=VARCHAR})
     </insert>
 
+    <select id="listIntegralChange" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_integral_change
+        where status=#{integralChangeStatus,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler}
+    </select>
+
+    <update id="updateIntegralChange">
+        update t_integral_change
+        set update_time=now()
+        <if test="changeName!=null and changeName !=''">
+            ,change_name=#{changeName,jdbcType=VARCHAR}
+        </if>
+        <if test="changeDep!=null and changeDep!=''">
+            ,change_dep=#{changeDep,jdbcType=VARCHAR}
+        </if>
+        <if test="status!=null">
+            ,status=#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler}
+        </if>
+        <if test="math!=null and math!=''">
+            ,math=#{math,jdbcType=VARCHAR}
+        </if>
+        where id=#{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="getIntegralChange" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_integral_change
+        where id=#{id,jdbcType=INTEGER}
+    </select>
 </mapper>

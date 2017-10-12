@@ -30,4 +30,8 @@ public class RedisKey {
      * expamle:shop:user:addr:1
      */
     public static final String userAddr="shop:user:addr:";
+    /**
+     * expamle:shop:integral:
+     */
+    public static final String integralChange="shop:integral:";
 }

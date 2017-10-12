@@ -42,16 +42,6 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/tcc/pom.xml" />
-        <option value="$PROJECT_DIR$/apiGateWay/pom.xml" />
-        <option value="$PROJECT_DIR$/admin/pom.xml" />
-        <option value="$PROJECT_DIR$/common/pom.xml" />
-        <option value="$PROJECT_DIR$/config/pom.xml" />
-        <option value="$PROJECT_DIR$/hystrixdashboard/pom.xml" />
-        <option value="$PROJECT_DIR$/order/pom.xml" />
-        <option value="$PROJECT_DIR$/product/pom.xml" />
-        <option value="$PROJECT_DIR$/server/pom.xml" />
-        <option value="$PROJECT_DIR$/user/pom.xml" />
       </list>
     </option>
   </component>
