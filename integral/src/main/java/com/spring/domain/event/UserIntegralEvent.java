@@ -1,6 +1,7 @@
 package com.spring.domain.event;
 
 import com.spring.domain.eventBus.DomainEvent;
+import com.spring.domain.type.IntegralChangeType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class UserIntegralEvent extends DomainEvent {
     /**
      * 积分改变类型
      */
-    private Integer changeType;
+    private IntegralChangeType changeTypeStatus;
     @Override
     protected String identify() {
         return "user_integral_publisher";

@@ -8,16 +8,19 @@
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="math" property="math" jdbcType="VARCHAR"/>
+        <result column="changeType" property="changeType" jdbcType="INTEGER" typeHandler="com.spring.domain.type.handler.IntegralChangeTypeHandler" />
         <result column="status" property="status" jdbcType="INTEGER" typeHandler="com.spring.domain.type.handler.IntegralChangeStatusHandler"/>
     </resultMap>
 
     <sql id="base_column">
-        id,change_name changeName,change_dep changeDep,create_time createTime,update_time updateTime,status,math
+        id,change_name changeName,change_dep changeDep,create_time createTime,update_time updateTime,change_type changeType,status,math
     </sql>
 
     <insert id="addIntegralChange" useGeneratedKeys="true" keyProperty="id">
-        insert into t_integral_change(change_name,change_dep,create_time,update_time,status,math)
-        VALUE (#{changeName,jdbcType=VARCHAR},#{changeDep,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler},#{math,jdbcType=VARCHAR})
+        insert into t_integral_change(change_name,change_dep,create_time,update_time,status,math,change_type)
+        VALUE (#{changeName,jdbcType=VARCHAR},#{changeDep,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler},#{math,jdbcType=VARCHAR},
+          ,#{changeType,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeTypeHandler}
+        )
     </insert>
 
     <select id="listIntegralChange" resultMap="BaseResultMap">
@@ -37,6 +40,9 @@
         </if>
         <if test="status!=null">
             ,status=#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler}
+        </if>
+        <if test="changeType!=null">
+            ,change_type=#{changeType,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeTypeHandler}
         </if>
         <if test="math!=null and math!=''">
             ,math=#{math,jdbcType=VARCHAR}

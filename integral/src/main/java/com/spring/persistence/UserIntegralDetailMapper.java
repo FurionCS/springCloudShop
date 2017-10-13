@@ -1,5 +1,6 @@
 package com.spring.persistence;
 
+import com.spring.domain.model.UserIntegralDetail;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -7,4 +8,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserIntegralDetailMapper {
+    /**
+     * 新增用户积分详情
+     * @param userIntegralDetail
+     * @return
+     */
+    Integer addUserIntegralDetail(UserIntegralDetail userIntegralDetail);
 }

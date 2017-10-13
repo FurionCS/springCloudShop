@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.persistence.UserIntegralDetailMapper">
     <resultMap id="BaseResultMap" type="com.spring.domain.model.UserIntegralDetail">
-        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="userId" property="userId" jdbcType="INTEGER"/>
         <result column="changeSource" property="changeSource" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -13,5 +13,11 @@
     <sql id="base_column">
         id,user_id userId,change_source changeSource,remark,change_type changeType,create_time createTime
     </sql>
+
+    <insert id="addUserIntegralDetail">
+        insert into t_user_integral_detail(id,user_id,change_source,remark,change_type,create_time)
+        value(#{id,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{changeSource,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},#{changeType,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
 
 </mapper>

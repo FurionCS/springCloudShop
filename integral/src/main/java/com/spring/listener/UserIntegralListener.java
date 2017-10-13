@@ -1,8 +1,11 @@
 package com.spring.listener;
 
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
 import com.spring.domain.event.UserIntegralEvent;
 import com.spring.publisher.UserIntegralPublisher;
+import com.spring.repository.IntegralListenerRepository;
+import com.spring.service.UserIntegralService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserIntegralListener{
     private static final Logger LOGGER= LoggerFactory.getLogger(UserIntegralListener.class);
+
+    @Autowired
+    private UserIntegralService userIntegralService;
+
+
+
     /**
      * 监听器
      * @param userIntegralPublisher
@@ -28,8 +37,8 @@ public class UserIntegralListener{
      */
     @Subscribe
     public void regHandler(UserIntegralEvent userIntegralEvent) throws InterruptedException {
-            //TODO 判断对象是否合法，不合法放入mongo中记录
-            //TODO 合法就更改用户积分
-            LOGGER.info("send emial:welcome to,join us ! {}",userIntegralEvent.getUserId());
+        //TODO  判断对象是否合法，不合法放入mongo中记录
+        //TODO 合法就更改用户积分
+        userIntegralService.updateUserIntegral(userIntegralEvent);
     }
 }

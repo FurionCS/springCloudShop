@@ -1,6 +1,7 @@
 package com.spring.domain.model;
 
 import com.spring.domain.type.IntegralChangeStatus;
+import com.spring.domain.type.IntegralChangeType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -31,6 +32,10 @@ public class IntegralChange {
      * 创建时间
      */
     private Timestamp createTime;
+    /**
+     * 积分变化类型
+     */
+    private IntegralChangeType changeType;
     /**
      * 状态
      */
