@@ -8,18 +8,19 @@
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="math" property="math" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR" />
         <result column="changeType" property="changeType" jdbcType="INTEGER" typeHandler="com.spring.domain.type.handler.IntegralChangeTypeHandler" />
         <result column="status" property="status" jdbcType="INTEGER" typeHandler="com.spring.domain.type.handler.IntegralChangeStatusHandler"/>
     </resultMap>
 
     <sql id="base_column">
-        id,change_name changeName,change_dep changeDep,create_time createTime,update_time updateTime,change_type changeType,status,math
+        id,change_name changeName,change_dep changeDep,create_time createTime,update_time updateTime,change_type changeType,status,math,code
     </sql>
 
     <insert id="addIntegralChange" useGeneratedKeys="true" keyProperty="id">
-        insert into t_integral_change(change_name,change_dep,create_time,update_time,status,math,change_type)
+        insert into t_integral_change(change_name,change_dep,create_time,update_time,status,math,change_type,code)
         VALUE (#{changeName,jdbcType=VARCHAR},#{changeDep,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler},#{math,jdbcType=VARCHAR},
-          ,#{changeType,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeTypeHandler}
+          ,#{changeType,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeTypeHandler},#{code,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -47,6 +48,9 @@
         <if test="math!=null and math!=''">
             ,math=#{math,jdbcType=VARCHAR}
         </if>
+        <if test="code!=null and code!=''">
+            ,code=#{code,jdbcType=VARCHAR}
+        </if>
         where id=#{id,jdbcType=INTEGER}
     </update>
     
@@ -54,5 +58,11 @@
         select <include refid="base_column"/>
         from t_integral_change
         where id=#{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getIntegralChangeByCode" resultMap="BaseResultMap">
+        select <include refid="base_column"/>
+        from t_integral_change
+        where code=#{code,jdbcType=VARCHAR}
     </select>
 </mapper>

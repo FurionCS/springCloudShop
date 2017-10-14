@@ -38,4 +38,11 @@ public interface IntegralChangeMapper {
      * @return
      */
     IntegralChange getIntegralChange(int id);
+
+    /**
+     * 获得积分规则通过code
+     * @param code
+     * @return
+     */
+    IntegralChange getIntegralChangeByCode(String code);
 }

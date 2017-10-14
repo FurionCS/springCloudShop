@@ -1,45 +1,36 @@
-package com.spring.domain.model;
+package com.spring.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/**
- * 用户积分详情
- * Created by ErnestCheng on 2017/10/11.
- */
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserIntegralDetail {
-    /**
-     * 用户积分详情id uuid
-     */
-    private String id;
+public class UserLoginEvent {
     /**
      * 用户id
      */
     private Integer userId;
     /**
-     * 更新时间
+     * 创建时间
      */
     private Timestamp createTime;
-    /**
-     * 积分改变多少
-     */
-    private Integer changeSource;
     /**
      * 备注
      */
     private String remark;
     /**
-     * 积分改变类型id
+     * 积分变化编码
      */
-    private Integer changeId;
-
-
+    private String code;
+    /**
+     * 参数变量
+     */
+    private BigDecimal num;
 }

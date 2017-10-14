@@ -25,6 +25,10 @@ public class IntegralChange {
      */
     private String changeName;
     /**
+     * 规则编码
+     */
+    private String code;
+    /**
      * 描述
      */
     private String changeDep;

@@ -1,10 +1,8 @@
 package com.spring.listener;
 
-import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
 import com.spring.domain.event.UserIntegralEvent;
 import com.spring.publisher.UserIntegralPublisher;
-import com.spring.repository.IntegralListenerRepository;
 import com.spring.service.UserIntegralService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

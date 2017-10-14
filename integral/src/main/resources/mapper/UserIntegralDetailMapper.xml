@@ -6,17 +6,17 @@
         <result column="userId" property="userId" jdbcType="INTEGER"/>
         <result column="changeSource" property="changeSource" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="changeType" property="changeType" jdbcType="INTEGER"/>
+        <result column="changeId" property="changeId" jdbcType="INTEGER"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="base_column">
-        id,user_id userId,change_source changeSource,remark,change_type changeType,create_time createTime
+        id,user_id userId,change_source changeSource,remark,change_id changeId,create_time createTime
     </sql>
 
     <insert id="addUserIntegralDetail">
-        insert into t_user_integral_detail(id,user_id,change_source,remark,change_type,create_time)
-        value(#{id,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{changeSource,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},#{changeType,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+        insert into t_user_integral_detail(id,user_id,change_source,remark,change_id,create_time)
+        value(#{id,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{changeSource,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},#{changeId,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
 

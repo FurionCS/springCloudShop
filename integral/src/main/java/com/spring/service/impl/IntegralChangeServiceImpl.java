@@ -77,4 +77,16 @@ public class IntegralChangeServiceImpl implements IntegralChangeService {
         }
         return 0;
     }
+
+    @Override
+    public IntegralChange getIntegralChange(Integer id) {
+        Preconditions.checkNotNull(id);
+        return integralChangeMapper.getIntegralChange(id);
+    }
+
+    @Override
+    public IntegralChange getIntegralChangeByCode(String code) {
+        Preconditions.checkNotNull(code);
+        return integralChangeMapper.getIntegralChangeByCode(code);
+    }
 }

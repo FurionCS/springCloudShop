@@ -36,7 +36,7 @@ public class UserIntegralServiceImpl implements UserIntegralService{
              //添加
              // 如果没有用户积分记录，并且这次改变的积分小于0,则不符合逻辑，抛出异常
              Preconditions.checkArgument(userIntegralEvent.getChangeSource()>0);
-             userIntegral=new UserIntegral(UUID.randomUUID().toString(),userIntegral.getUserId(), Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()),
+             userIntegral=new UserIntegral(UUID.randomUUID().toString(),userIntegralEvent.getUserId(), Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()),
                      userIntegralEvent.getChangeSource().longValue(),userIntegralEvent.getChangeSource().longValue(),0l);
             return userIntegralMapper.addUserIntegral(userIntegral);
         }else{  //有就更新

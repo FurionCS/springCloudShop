@@ -8,6 +8,7 @@ import com.spring.common.model.util.tools.SecurityUtil;
 import com.spring.domain.model.User;
 import com.spring.domain.request.*;
 import com.spring.domain.vo.UserRoleVO;
+import com.spring.event.publisher.UserLoginPublisher;
 import com.spring.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
@@ -37,6 +38,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserLoginPublisher userLoginPublisher;
+
     @ApiOperation("用户登入")
     @PostMapping(value = "/login")
     public ObjectDataResponse login(@Validated @RequestBody UserRequest userRequest, BindingResult result) {
@@ -47,6 +51,8 @@ public class UserController {
             String password1 = SecurityUtil.md5(userName, password, 32);
             if (user != null && user.getPassword().equals(password1)) {
                 UserRoleVO userRoleVO = userService.listUserRoleVO(user.getId());
+                // 发送用户登录事件
+                userLoginPublisher.sendUserLoginEvent("login",user.getId(),"用户登录");
                 return new ObjectDataResponse(userRoleVO);
             } else {
                 throw new GlobalException("用户密码不正确");

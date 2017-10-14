@@ -29,4 +29,18 @@ public interface IntegralChangeService {
      * @return
      */
    Integer updateIntegral(IntegralChange integralChange);
+
+    /**
+     * 获得积分规则
+     * @param id
+     * @return
+     */
+   IntegralChange getIntegralChange(Integer id);
+
+    /**
+     * 获得积分规则通过编码
+     * @param code
+     * @return
+     */
+    IntegralChange getIntegralChangeByCode(String code);
 }
