@@ -1,11 +1,8 @@
 package com.spring.listener;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.Channel;
 import com.spring.common.model.util.tools.JavaScriptEngine;
-import com.spring.common.model.util.tools.ObjectToByteUtil;
-import com.spring.domain.event.UserIntegralEvent;
 import com.spring.domain.event.UserLoginEvent;
 import com.spring.domain.model.IntegralChange;
 import com.spring.domain.model.UserIntegralDetail;

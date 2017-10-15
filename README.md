@@ -19,9 +19,9 @@
 
 | 模块名称|     作用|   备注|
 | :-------- | --------:| :------: |
-| admin|   spring-boot-admin,用于监控|  |
+| admin|   spring-boot-admin,用于监控| 
 |apiGateWay|spring-cloud-zuul,用于做路由，负载均衡|
-|common|整个项目的工具类|
+|common|整个项目的工具类
 |config|配置中心|
 |hystrixdashboard|hystrix,断融监控|
 |order|订单模块|
@@ -29,6 +29,7 @@
 |server|eureka-server,注册中心|
 |user|用户模块|
 |tcc|tcc事务模块|
+|integral|用户积分模块|接受各种事件，进行积分变化
 
 
 ## 启动方式
@@ -75,6 +76,10 @@ RESTful TCC模式分3个阶段执行
 <!--more-->
 因为用户的状态在服务端的内存中是不存储的，所以这是一种 无状态 的认证机制。服务端的保护路由将会检查请求头 Authorization 中的JWT信息，如果合法，则允许用户的行为。由于JWT是自包含的，因此减少了需要查询数据库的需要。
 
+
+
+## 事件驱动编程
+    改变传统的事件
 
 ### apiGateWay模块
 该模块主要是用于路由，授权，鉴权

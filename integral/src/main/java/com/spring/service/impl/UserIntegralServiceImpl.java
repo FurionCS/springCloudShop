@@ -31,30 +31,31 @@ public class UserIntegralServiceImpl implements UserIntegralService{
         Preconditions.checkArgument(userIntegralEvent.getUserId()>0);
         //TODO 这里有并发问题要解决
         //先判断有没有这个用户积分记录
-        UserIntegral userIntegral=userIntegralMapper.getUserIntegral(userIntegralEvent.getUserId());
-        if(Objects.isNull(userIntegral)){
-             //添加
-             // 如果没有用户积分记录，并且这次改变的积分小于0,则不符合逻辑，抛出异常
-             Preconditions.checkArgument(userIntegralEvent.getChangeSource()>0);
-             userIntegral=new UserIntegral(UUID.randomUUID().toString(),userIntegralEvent.getUserId(), Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()),
-                     userIntegralEvent.getChangeSource().longValue(),userIntegralEvent.getChangeSource().longValue(),0l);
+        UserIntegral userIntegral = userIntegralMapper.getUserIntegral(userIntegralEvent.getUserId());
+        if (Objects.isNull(userIntegral)) {
+            //添加
+            // 如果没有用户积分记录，并且这次改变的积分小于0,则不符合逻辑，抛出异常
+            Preconditions.checkArgument(userIntegralEvent.getChangeSource() > 0);
+            userIntegral = new UserIntegral(UUID.randomUUID().toString(), userIntegralEvent.getUserId(), Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()),
+                    userIntegralEvent.getChangeSource().longValue(), userIntegralEvent.getChangeSource().longValue(), 0l);
             return userIntegralMapper.addUserIntegral(userIntegral);
-        }else{  //有就更新
+        } else {  //有就更新
             //获得历史积分，只有加积分时，或者红字情况下会改变历史积分
-            long hisSource=userIntegral.getHisSource();
-            if(Objects.equals(userIntegralEvent.getChangeTypeStatus(), IntegralChangeType.add)||Objects.equals(userIntegralEvent.getChangeTypeStatus(), IntegralChangeType.red)){
-                hisSource+=userIntegralEvent.getChangeSource().longValue();
+            long hisSource = userIntegral.getHisSource();
+            if (Objects.equals(userIntegralEvent.getChangeTypeStatus(), IntegralChangeType.add) || Objects.equals(userIntegralEvent.getChangeTypeStatus(), IntegralChangeType.red)) {
+                hisSource += userIntegralEvent.getChangeSource().longValue();
             }
             //获得现有积分，加积分，和消费积分，红字情况下
-            long nowSource=userIntegral.getNowSource()+userIntegralEvent.getChangeSource().longValue();
+            long nowSource = userIntegral.getNowSource() + userIntegralEvent.getChangeSource().longValue();
             //获得使用过的积分，消费积分，积分购买不能退积分
-            long usedSource=userIntegral.getUsedSource();
-            if(Objects.equals(userIntegralEvent.getChangeTypeStatus(), IntegralChangeType.used)){
+            long usedSource = userIntegral.getUsedSource();
+            if (Objects.equals(userIntegralEvent.getChangeTypeStatus(), IntegralChangeType.used)) {
                 //消费积分应该是小于0的
-                Preconditions.checkArgument(userIntegralEvent.getChangeSource()<0);
-                usedSource+=userIntegralEvent.getChangeSource();
+                Preconditions.checkArgument(userIntegralEvent.getChangeSource() < 0);
+                usedSource += userIntegralEvent.getChangeSource();
             }
-            return userIntegralMapper.updateUserIntegral(userIntegralEvent.getUserId(),nowSource,hisSource,usedSource);
+            return userIntegralMapper.updateUserIntegral(userIntegralEvent.getUserId(), nowSource, hisSource, usedSource);
         }
+
     }
 }
