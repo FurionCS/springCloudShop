@@ -30,12 +30,12 @@ public class UserIntegralDetailServiceImpl implements UserIntegralDetailService 
     private UserIntegralPublisher userIntegralPublisher;
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = RuntimeException.class)
     public Integer addUserIntegralDetail(UserIntegralDetail userIntegralDetail) {
         Preconditions.checkNotNull(userIntegralDetail);
         //添加用户积分
-        int flag=userIntegralDetailMapper.addUserIntegralDetail(userIntegralDetail);
-        if(flag>0) {
+        int flag = userIntegralDetailMapper.addUserIntegralDetail(userIntegralDetail);
+        if (flag > 0) {
             //组装数据
             IntegralChange integralChange = integralChangeMapper.getIntegralChange(userIntegralDetail.getChangeId());
             UserIntegralEvent userIntegralEvent = new UserIntegralEvent(userIntegralDetail.getUserId(), userIntegralDetail.getChangeSource(), userIntegralDetail.getRemark(), integralChange.getChangeType());

@@ -14,7 +14,7 @@ import org.jboss.logging.Logger;
 
 /**
  * @Description mongodb
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/19.
  */
 public class MongoAppender extends AppenderSkeleton {
@@ -41,11 +41,13 @@ public class MongoAppender extends AppenderSkeleton {
         }
     }
 
+    @Override
     public void close() {
         if(mongoClient != null) {
             mongoClient.close();
         }
     }
+    @Override
     public boolean requiresLayout() {
         return false;
     }

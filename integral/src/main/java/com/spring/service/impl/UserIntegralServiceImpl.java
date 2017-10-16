@@ -19,7 +19,7 @@ import java.util.UUID;
  * Created by ErnestCheng on 2017/10/11.
  */
 @Service
-public class UserIntegralServiceImpl implements UserIntegralService{
+public class UserIntegralServiceImpl implements UserIntegralService {
 
 
     @Autowired
@@ -28,7 +28,7 @@ public class UserIntegralServiceImpl implements UserIntegralService{
     @Override
     public Integer updateUserIntegral(UserIntegralEvent userIntegralEvent) {
         Preconditions.checkNotNull(userIntegralEvent);
-        Preconditions.checkArgument(userIntegralEvent.getUserId()>0);
+        Preconditions.checkArgument(userIntegralEvent.getUserId() > 0);
         //TODO 这里有并发问题要解决
         //先判断有没有这个用户积分记录
         UserIntegral userIntegral = userIntegralMapper.getUserIntegral(userIntegralEvent.getUserId());
@@ -37,7 +37,7 @@ public class UserIntegralServiceImpl implements UserIntegralService{
             // 如果没有用户积分记录，并且这次改变的积分小于0,则不符合逻辑，抛出异常
             Preconditions.checkArgument(userIntegralEvent.getChangeSource() > 0);
             userIntegral = new UserIntegral(UUID.randomUUID().toString(), userIntegralEvent.getUserId(), Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()),
-                    userIntegralEvent.getChangeSource().longValue(), userIntegralEvent.getChangeSource().longValue(), 0l);
+                    userIntegralEvent.getChangeSource().longValue(), userIntegralEvent.getChangeSource().longValue(), 0L);
             return userIntegralMapper.addUserIntegral(userIntegral);
         } else {  //有就更新
             //获得历史积分，只有加积分时，或者红字情况下会改变历史积分

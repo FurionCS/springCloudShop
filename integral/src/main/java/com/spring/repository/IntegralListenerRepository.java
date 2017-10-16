@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * 积分监听存储
+ * @author ErnestCheng
  */
 @Repository
 public interface IntegralListenerRepository  extends MongoRepository<UserLoginEvent,Long> {

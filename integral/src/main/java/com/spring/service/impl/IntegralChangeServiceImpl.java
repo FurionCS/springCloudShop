@@ -36,10 +36,10 @@ public class IntegralChangeServiceImpl implements IntegralChangeService {
         //  新增积分规则
         integralChange.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
         integralChange.setUpdateTime(integralChange.getCreateTime());
-        Integer flag=integralChangeMapper.addIntegralChange(integralChange);
-        if(flag==1) {
+        Integer flag = integralChangeMapper.addIntegralChange(integralChange);
+        if (flag == 1) {
             //插入到redis积分列表中
-            redisTemplate.opsForList().leftPush(RedisKey.integralChange+integralChange.getStatus().getStatus(), integralChange);
+            redisTemplate.opsForList().leftPush(RedisKey.integralChange + integralChange.getStatus().getStatus(), integralChange);
         }
         return flag;
     }
@@ -48,31 +48,31 @@ public class IntegralChangeServiceImpl implements IntegralChangeService {
     public List<IntegralChange> listIntegralChange(IntegralChangeStatus integralChangeStatus) {
         Preconditions.checkNotNull(integralChangeStatus);
         //从redis中获得
-        List<IntegralChange> integralChangeList=redisTemplate.opsForList().range(RedisKey.integralChange+integralChangeStatus.getStatus(),0,-1);
+        List<IntegralChange> integralChangeList = redisTemplate.opsForList().range(RedisKey.integralChange + integralChangeStatus.getStatus(), 0, -1);
         //有直接返回
-        if(Objects.nonNull(integralChangeList)&& !integralChangeList.isEmpty()){
+        if (Objects.nonNull(integralChangeList) && !integralChangeList.isEmpty()) {
             return integralChangeList;
-        }else{
+        } else {
             //没有查数据库
-            integralChangeList=integralChangeMapper.listIntegralChange(integralChangeStatus);
-            if(Objects.nonNull(integralChangeList)&& !integralChangeList.isEmpty()) {
+            integralChangeList = integralChangeMapper.listIntegralChange(integralChangeStatus);
+            if (Objects.nonNull(integralChangeList) && !integralChangeList.isEmpty()) {
                 redisTemplate.opsForList().leftPushAll(RedisKey.integralChange + integralChangeStatus.getStatus(), integralChangeList);
             }
-            return  integralChangeList;
+            return integralChangeList;
         }
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = RuntimeException.class)
     public Integer updateIntegral(IntegralChange integralChange) {
         Preconditions.checkNotNull(integralChange);
         //从数据库中获得旧的
-        IntegralChange integralChange1Old=integralChangeMapper.getIntegralChange(integralChange.getId());
-        if(Objects.nonNull(integralChange)){
+        IntegralChange integralChange1Old = integralChangeMapper.getIntegralChange(integralChange.getId());
+        if (Objects.nonNull(integralChange)) {
             integralChangeMapper.updateIntegralChange(integralChange);
-            redisTemplate.opsForList().remove(RedisKey.integralChange+integralChange1Old.getStatus().getStatus(),1,integralChange1Old);
-            int status=Objects.isNull(integralChange.getStatus())?integralChange1Old.getStatus().getStatus():integralChange.getStatus().getStatus();
-            redisTemplate.opsForList().leftPush(RedisKey.integralChange+status,integralChangeMapper.getIntegralChange(integralChange.getId()));
+            redisTemplate.opsForList().remove(RedisKey.integralChange + integralChange1Old.getStatus().getStatus(), 1, integralChange1Old);
+            int status = Objects.isNull(integralChange.getStatus()) ? integralChange1Old.getStatus().getStatus() : integralChange.getStatus().getStatus();
+            redisTemplate.opsForList().leftPush(RedisKey.integralChange + status, integralChangeMapper.getIntegralChange(integralChange.getId()));
             return 1;
         }
         return 0;
