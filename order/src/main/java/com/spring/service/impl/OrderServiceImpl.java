@@ -34,13 +34,13 @@ import java.util.Objects;
 
 /**
  * @Description 订单service实现
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/31.
  */
 @Service
 public class OrderServiceImpl implements OrderService{
 
-    Logger logger= Logger.getLogger(OrderServiceImpl.class);
+    private static final Logger logger= Logger.getLogger(OrderServiceImpl.class);
 
     @Autowired
     private OrderMapper orderMapper;
@@ -58,7 +58,9 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     private ErrorRepository errorRepository;
-    @Transactional(propagation = Propagation.REQUIRED)
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public ObjectDataResponse<Order> placeOrder(PlaceOrderRequest request){
         //参数检查，使用preconditions进行快速失败
         Preconditions.checkNotNull(request);
@@ -92,7 +94,7 @@ public class OrderServiceImpl implements OrderService{
      * @return
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public ObjectDataResponse<Order> confirm(PaymentRequest request) {
         Preconditions.checkNotNull(request);
         Integer orderId=request.getOrderId();
@@ -189,7 +191,7 @@ public class OrderServiceImpl implements OrderService{
         balanceReservationRequest.setUserId(order.getUserId());
         balanceReservationRequest.setAmount(order.getPrice());
         ObjectDataResponse<Participant> objectDataResponse=userClient.reserve(balanceReservationRequest);
-        if(objectDataResponse.getData()==null){
+        if(Objects.isNull(objectDataResponse) || Objects.isNull(objectDataResponse.getData())){
             throw new GlobalException(objectDataResponse.getMessage(),objectDataResponse.getCode());
         }
         //添加资源信息

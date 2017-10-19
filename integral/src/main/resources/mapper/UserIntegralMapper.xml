@@ -25,19 +25,19 @@
         update t_user_integral
         set update_time=now()
         <if test="usedSource!=null">
-            ,used_source=#{usedSource,jdbcType=BIGINT}
+            ,used_source=used_source+#{usedSource,jdbcType=BIGINT}
         </if>
         <if test="hisSource!=null">
-            ,his_source=#{hisSource,jdbcType=BIGINT}
+            ,his_source=his_source+#{hisSource,jdbcType=BIGINT}
         </if>
         <if test="nowSource!=null">
-            ,now_source=#{nowSource,jdbcType=BIGINT}
+            ,now_source=now_source+#{nowSource,jdbcType=BIGINT}
         </if>
         where user_id=#{userId,jdbcType=INTEGER}
     </update>
 
     <insert id="addUserIntegral">
-        insert into t_user_integral(id,user_id,now_source,used_source,his_source,create_time,update_time)
+        insert ignore into t_user_integral(id,user_id,now_source,used_source,his_source,create_time,update_time)
         VALUE (#{id,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{nowSource,jdbcType=BIGINT},#{usedSource,jdbcType=BIGINT},#{hisSource,jdbcType=BIGINT},now(),now())
     </insert>
 </mapper>

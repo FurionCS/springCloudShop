@@ -15,15 +15,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @Description 产品接口
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/31.
  */
 @FeignClient(name="product",fallbackFactory = ProductClientFallBack.class)
 public interface ProductClient {
-
+    /**
+     * 通过产品id获得产品
+     * @param productId
+     * @return
+     */
     @RequestMapping(value = "getProductById",method = RequestMethod.GET)
     ObjectDataResponse<Product> getProductById(@RequestParam("productId") Integer productId);
 
+    /**
+     * 预留库存
+     * @param stockReservationRequest
+     * @return
+     */
     @RequestMapping(value="/productStock/reservation",method = RequestMethod.POST)
     ObjectDataResponse<Participant> reserve(@RequestBody StockReservationRequest stockReservationRequest);
 

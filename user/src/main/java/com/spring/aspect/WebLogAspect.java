@@ -16,7 +16,7 @@ import java.util.*;
 
 /**
  * @Description 日志切面
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/19.
  */
 @Aspect
@@ -24,7 +24,7 @@ import java.util.*;
 @Component
 public class WebLogAspect {
 
-    private Logger logger = Logger.getLogger("mongodb");
+    private  static final Logger logger = Logger.getLogger("mongodb");
     @Pointcut("execution(public * com.spring.web..*.*(..))")
     public void webLog(){
         //do nothing

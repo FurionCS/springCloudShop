@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 
 /**
  * @Description 用户接口回调
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/31.
  */
 @Component

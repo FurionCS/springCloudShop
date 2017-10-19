@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * @Description 订单控制器
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/31.
  */
 @RestController
@@ -51,7 +51,7 @@ public class OrderController {
      * @return
      */
     @ApiOperation(value="下预订单")
-    @RequestMapping(value="plcaseOrder",method = RequestMethod.POST)
+    @RequestMapping(value="placeOrder",method = RequestMethod.POST)
     public ObjectDataResponse<Order> placeOrder(@Valid @RequestBody PlaceOrderRequest placeOrderRequest, BindingResult result){
        ObjectDataResponse<Order> objectDataResponse= orderService.placeOrder(placeOrderRequest);
         return objectDataResponse;

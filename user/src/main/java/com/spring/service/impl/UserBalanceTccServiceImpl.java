@@ -35,7 +35,7 @@ import java.util.Set;
 
 /**
  * @Description 用户余额tcc
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/31.
  */
 @Service
@@ -112,7 +112,7 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
         }
     }
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public void cancelReservation(UserBalanceTcc userBalanceTcc) {
         logger.info("------------cancelReservation-------------------------");
         Preconditions.checkNotNull(userBalanceTcc);
@@ -139,7 +139,7 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public void confirm(Integer reservationId) {
         Preconditions.checkNotNull(reservationId);
         UserBalanceTcc userBalanceTcc=userBalanceTccMapper.getUserBalanceTcc(reservationId);

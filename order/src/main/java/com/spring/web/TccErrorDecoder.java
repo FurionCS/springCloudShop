@@ -15,6 +15,11 @@ import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 
+/**
+ *
+ * @author cs
+ * @version 0.0.1
+ */
 public class TccErrorDecoder implements ErrorDecoder {
     private static final Logger LOGGER = LoggerFactory.getLogger(TccErrorDecoder.class);
 

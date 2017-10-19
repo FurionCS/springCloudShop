@@ -1,6 +1,5 @@
 package com.spring.service.impl;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.spring.common.model.model.RedisKey;
 import com.spring.domain.model.IntegralChange;

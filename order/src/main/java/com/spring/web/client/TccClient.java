@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @Description tcc调用
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/6/2.
  */
 @FeignClient(name="tcc",fallbackFactory = TccClientFallBack.class)

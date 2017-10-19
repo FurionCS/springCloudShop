@@ -16,15 +16,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @Description 用户接口
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/31.
  */
 @FeignClient(name="user",fallbackFactory = UserClientFallBack.class)
 public interface UserClient {
-
+    /**
+     * 通过用户id获得用户
+     * @param userId
+     * @return
+     */
     @RequestMapping(value="getUserById",method = RequestMethod.GET)
     ObjectDataResponse<User> getUserById(@RequestParam("userId") Integer userId);
 
+    /**
+     * 预留库存
+     * @param balanceReservationRequest
+     * @return
+     */
     @RequestMapping(value="/balances/reservation" ,method = RequestMethod.POST)
     ObjectDataResponse<Participant> reserve(@RequestBody BalanceReservationRequest balanceReservationRequest);
 }
