@@ -1,8 +1,8 @@
-package com.spring.event.listener;
+package com.spring.domain.event.listener;
 
 import com.google.common.base.Preconditions;
 import com.spring.domain.model.UserBalanceTcc;
-import com.spring.event.UserBalanceTccCancelEvent;
+import com.spring.domain.event.UserBalanceTccCancelEvent;
 import com.spring.service.UserBalanceTccService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;

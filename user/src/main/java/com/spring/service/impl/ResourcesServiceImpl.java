@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Description 资源
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/6/26.
  */
 @Service

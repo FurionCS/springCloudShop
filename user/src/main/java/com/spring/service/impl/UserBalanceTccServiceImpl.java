@@ -9,7 +9,7 @@ import com.spring.common.model.util.tools.BeanToMapUtil;
 import com.spring.domain.model.User;
 import com.spring.domain.model.UserBalanceTcc;
 import com.spring.domain.type.TccStatus;
-import com.spring.event.UserBalanceTccCancelEvent;
+import com.spring.domain.event.UserBalanceTccCancelEvent;
 import com.spring.persistence.UserBalanceTccMapper;
 import com.spring.persistence.UserMapper;
 import com.spring.repository.ErrorRepository;
