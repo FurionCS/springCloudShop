@@ -8,7 +8,7 @@ import com.spring.common.model.model.RedisKey;
 import com.spring.domain.Product;
 import com.spring.domain.ProductStockTcc;
 import com.spring.domain.type.TccStatus;
-import com.spring.event.ProductStockCancellationEvent;
+import com.spring.domain.event.ProductStockCancellationEvent;
 import com.spring.persistence.ProductMapper;
 import com.spring.persistence.ProductStockTccMapper;
 import com.spring.repository.ErrorRepository;
