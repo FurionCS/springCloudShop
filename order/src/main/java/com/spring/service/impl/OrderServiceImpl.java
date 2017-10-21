@@ -187,9 +187,7 @@ public class OrderServiceImpl implements OrderService{
      */
     private void reserveBalanceAndPersistParticipant(Order order){
         Preconditions.checkNotNull(order);
-        BalanceReservationRequest balanceReservationRequest=new BalanceReservationRequest();
-        balanceReservationRequest.setUserId(order.getUserId());
-        balanceReservationRequest.setAmount(order.getPrice());
+        BalanceReservationRequest balanceReservationRequest=BalanceReservationRequest.builder().userId(order.getUserId()).amount(order.getPrice()).build();
         ObjectDataResponse<Participant> objectDataResponse=userClient.reserve(balanceReservationRequest);
         if(Objects.isNull(objectDataResponse) || Objects.isNull(objectDataResponse.getData())){
             throw new GlobalException(objectDataResponse.getMessage(),objectDataResponse.getCode());

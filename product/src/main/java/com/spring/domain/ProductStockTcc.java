@@ -15,6 +15,7 @@ import java.time.OffsetDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductStockTcc {
     /**
      * 产品库存

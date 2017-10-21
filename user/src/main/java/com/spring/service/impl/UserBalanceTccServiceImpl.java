@@ -31,6 +31,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -66,7 +67,7 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
         Preconditions.checkArgument(userId>0);
         Preconditions.checkArgument(amount.compareTo(BigDecimal.ZERO)>0);
         final User user=userService.getUserById(userId);
-        if (user == null) {
+        if (Objects.isNull(user)) {
             throw new GlobalException("用户不存在", StatusCode.Data_Not_Exist);
         }
         //消费余额
@@ -77,16 +78,15 @@ public class UserBalanceTccServiceImpl implements UserBalanceTccService,Applicat
         //保存到redis
         user.setBalance(user.getBalance().subtract(amount));
         redisTemplate.opsForHash().putAll(RedisKey.userh+userId, BeanToMapUtil.convertBean(user));
-
-        UserBalanceTcc tcc=new UserBalanceTcc();
-        tcc.setAmount(amount);
-        tcc.setStatus(TccStatus.TRY);
-        tcc.setUserId(userId);
-        tcc.setExpireTime(OffsetDateTime.now().plusSeconds(expireSeconds));
-        tcc.setCreateTime(OffsetDateTime.now());
         OffsetDateTime defaultDateTime=OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.ofHours(8));
-        tcc.setUpdateTime(defaultDateTime);
-        tcc.setDeleteTime(defaultDateTime);
+        UserBalanceTcc tcc= UserBalanceTcc.builder()
+                .amount(amount)
+                .status(TccStatus.TRY)
+                .userId(userId)
+                .expireTime(OffsetDateTime.now().plusSeconds(expireSeconds))
+                .createTime(OffsetDateTime.now())
+                .updateTime(defaultDateTime)
+                .deleteTime(defaultDateTime).build();
         userBalanceTccMapper.addUserBalanceTcc(tcc);
         return tcc;
     }

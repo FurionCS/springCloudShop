@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public void addUserAndRole(User user, List<Integer> roleIds) {
         //添加用户
         this.addUser(user);
@@ -123,11 +123,11 @@ public class UserServiceImpl implements UserService {
             roleIds.forEach(roleId -> {
                 Role role = roleMapper.getRole(roleId);
                 if (role != null) {
-                    UserRole userRole = new UserRole();
-                    userRole.setRoleId(roleId);
-                    userRole.setUserId(user.getId());
-                    userRole.setCreateTime(OffsetDateTime.now());
-                    userRole.setStatus(1);
+                    UserRole userRole = UserRole.builder()
+                            .roleId(roleId)
+                            .userId(user.getId())
+                            .createTime(OffsetDateTime.now())
+                            .status(1).build();
                     userRoles.add(userRole);
                 } else {
                     throw new GlobalException("找不到id为" + roleId + "的角色");
@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public int updateUser(UserUpdateRequest userUpdateRequest) {
         int flag = userMapper.updateUser(userUpdateRequest.getId(), null, userUpdateRequest.getIdCard(), null);
         if (flag == 1) {
@@ -184,7 +184,6 @@ public class UserServiceImpl implements UserService {
         final int startIndex = (pageIndex - 1) * pageSize + 1;
         final int endIndex = startIndex + pageSize;
         //TODO 
-        List<User> userList = userMapper.findUser(status, startIndex, endIndex, startDate, endDate);
-        return userList;
+        return userMapper.findUser(status, startIndex, endIndex, startDate, endDate);
     }
 }

@@ -22,7 +22,7 @@ import java.util.Objects;
 
 /**
  * @Description 产品service实现
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/5/27.
  */
 @Service
@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public int deleteProductByProductId(Integer productId) {
         // 1：先删除数据库中的产品
         int flag=productMapper.deleteProductByProductId(productId);

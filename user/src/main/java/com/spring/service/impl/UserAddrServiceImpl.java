@@ -12,6 +12,7 @@ import com.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.IntrospectionException;
@@ -39,7 +40,7 @@ public class UserAddrServiceImpl implements UserAddrService {
     private RedisTemplate redisTemplate;
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public boolean addUserAddr(UserAddr userAddr) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         Preconditions.checkNotNull(userAddr,"用户地址不能为空");
         Preconditions.checkNotNull(userAddr.getUserId(),"用户id不能为空");

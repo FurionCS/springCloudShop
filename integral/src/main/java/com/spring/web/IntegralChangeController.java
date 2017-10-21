@@ -4,13 +4,18 @@ import com.google.common.base.Preconditions;
 import com.spring.common.model.StatusCode;
 import com.spring.common.model.response.ObjectDataResponse;
 import com.spring.common.model.response.PageResponse;
+import com.spring.domain.dto.IntegralChangeDTO;
 import com.spring.domain.model.IntegralChange;
 import com.spring.domain.type.IntegralChangeStatus;
 import com.spring.service.IntegralChangeService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -25,7 +30,9 @@ public class IntegralChangeController {
 
     @PostMapping("/add")
     @ApiOperation("新增积分规则")
-    public ObjectDataResponse addIntegralChange(@RequestBody IntegralChange integralChange){
+    public ObjectDataResponse addIntegralChange(@Validated @RequestBody IntegralChangeDTO integralChangeDTO, BindingResult result){
+        IntegralChange integralChange=integralChangeDTO.convertToIntegralChange();
+        integralChange.setUpdateTime(Timestamp.valueOf(LocalDateTime.now())).setCreateTime(integralChange.getUpdateTime());
         Integer flag=integralChangeService.addIntegralChange(integralChange);
         if(flag>0){
             return  new ObjectDataResponse();

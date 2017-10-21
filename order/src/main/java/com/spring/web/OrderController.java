@@ -41,9 +41,7 @@ public class OrderController {
     @RequestMapping(value="listOrder",method = RequestMethod.GET)
     public ObjectDataResponse listOrder(){
         List<Order> lo=orderService.listOrder();
-        ObjectDataResponse objectDataResponse=new ObjectDataResponse();
-        objectDataResponse.setData(lo);
-        return objectDataResponse;
+        return new ObjectDataResponse(lo);
     }
 
     /**
@@ -53,8 +51,7 @@ public class OrderController {
     @ApiOperation(value="下预订单")
     @RequestMapping(value="placeOrder",method = RequestMethod.POST)
     public ObjectDataResponse<Order> placeOrder(@Valid @RequestBody PlaceOrderRequest placeOrderRequest, BindingResult result){
-       ObjectDataResponse<Order> objectDataResponse= orderService.placeOrder(placeOrderRequest);
-        return objectDataResponse;
+        return orderService.placeOrder(placeOrderRequest);
     }
 
     @ApiOperation(value="支付订单")

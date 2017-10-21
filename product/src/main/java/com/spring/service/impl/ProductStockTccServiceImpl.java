@@ -77,21 +77,21 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
         redisTemplate.opsForHash().put(RedisKey.producth+productId,"stock",product.getStock()-num);
 
         // 插入产品预留资源
-        ProductStockTcc productStockTcc=new ProductStockTcc();
-        productStockTcc.setStock(num);
-        productStockTcc.setStatus(TccStatus.TRY);
-        productStockTcc.setProductId(productId);
-        productStockTcc.setCreateTime(OffsetDateTime.now());
-        productStockTcc.setExpireTime(OffsetDateTime.now().plusSeconds(expireSeconds));
         OffsetDateTime defaultDateTime=OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.ofHours(8));
-        productStockTcc.setUpdateTime(defaultDateTime);
-        productStockTcc.setDeleteTime(defaultDateTime);
+        ProductStockTcc productStockTcc=ProductStockTcc.builder()
+                .stock(num)
+                .status(TccStatus.TRY)
+                .productId(productId)
+                .createTime(OffsetDateTime.now())
+                .expireTime(OffsetDateTime.now().plusSeconds(expireSeconds))
+                .updateTime(defaultDateTime)
+                .deleteTime(defaultDateTime).build();
         productStockTccMapper.addProductStockTcc(productStockTcc);
         return productStockTcc;
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public void confirmReservation(Integer reservationId) {
         Preconditions.checkNotNull(reservationId);
         ProductStockTcc productStockTcc=productStockTccMapper.getProductStockTccById(reservationId);
@@ -131,7 +131,7 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
+    @Transactional(propagation=Propagation.REQUIRED,rollbackFor = RuntimeException.class)
     public void cancelReservation(ProductStockTcc res) {
         Preconditions.checkNotNull(res);
         Preconditions.checkArgument(res.getId()>0);

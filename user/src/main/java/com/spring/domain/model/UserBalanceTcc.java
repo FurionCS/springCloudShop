@@ -2,10 +2,7 @@ package com.spring.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spring.domain.type.TccStatus;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -15,6 +12,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public class UserBalanceTcc{
     private static final long serialVersionUID = 8291022579522014250L;
     private Integer id;

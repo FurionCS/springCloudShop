@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Description 用户Controller
@@ -84,13 +85,13 @@ public class UserController {
     @RequestMapping(value = "getUserById", method = RequestMethod.GET)
     public ObjectDataResponse<User> getUserById(@RequestParam Integer userId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         ObjectDataResponse objectDataResponse = new ObjectDataResponse();
-        if (userId == null || userId < 1) {
+        if (Objects.isNull(userId) || userId < 1) {
             objectDataResponse.setCode(StatusCode.Param_Error);
             objectDataResponse.setMessage("参数不对");
             return objectDataResponse;
         }
         User user = userService.getUserById(userId);
-        if (user == null) {
+        if (Objects.isNull(user)) {
             objectDataResponse.setCode(StatusCode.Data_Not_Exist);
             objectDataResponse.setMessage("数据不存在");
         } else {
@@ -134,7 +135,7 @@ public class UserController {
     @PostMapping(value = "/updatePassword")
     public ObjectDataResponse updatePassword(@Validated @RequestBody UserPasswordRequest userPasswordRequest, BindingResult result) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         User user = userService.getUserById(userPasswordRequest.getUserId());
-        if (user == null) {
+        if (Objects.isNull(user)) {
             return new ObjectDataResponse(StatusCode.Data_Not_Exist,"用户不存在");
         }
         int flag = userService.updatePassword(userPasswordRequest.getNewPassword(), userPasswordRequest.getOldPassword(), user);

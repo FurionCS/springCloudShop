@@ -2,19 +2,23 @@ package com.spring.domain.model;
 
 import com.spring.domain.type.IntegralChangeStatus;
 import com.spring.domain.type.IntegralChangeType;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.sql.Timestamp;
 
 /**
  * 积分改变
- * Created by ErnestCheng on 2017/10/11.
+ * @author cs
+ * @date 2017/10/11
  */
 @Data
 @ToString
 @NoArgsConstructor
+@Accessors(chain = true)
 public class IntegralChange {
     /**
      * 积分改变id

@@ -43,9 +43,9 @@ public class ProductStockTccController {
     @RequestMapping(value="/productStock/reservation",method = RequestMethod.POST)
     public ObjectDataResponse reserve(@Valid @RequestBody StockReservationRequest stockReservationRequest, BindingResult result) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         ProductStockTcc productStockTcc=productStockTccService.trying(stockReservationRequest.getProductId(),stockReservationRequest.getNum());
-        Participant participant=new Participant();
-        participant.setExpireTime(productStockTcc.getExpireTime());
-        participant.setUri("http://"+applicationName+"/productStock/reservation/"+productStockTcc.getId());
+        Participant participant=Participant.builder()
+                .expireTime(productStockTcc.getExpireTime())
+                .uri("http://"+applicationName+"/productStock/reservation/"+productStockTcc.getId()).build();
         return new ObjectDataResponse(participant);
     }
 

@@ -1,7 +1,8 @@
 package com.spring.domain.model;
 
-import com.sun.scenario.effect.Offset;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
@@ -11,6 +12,8 @@ import java.time.OffsetDateTime;
  * @Date 2017/6/23.
  */
 @Data
+@NoArgsConstructor
+@Builder
 public class UserRole {
     /**
      * 用户角色id

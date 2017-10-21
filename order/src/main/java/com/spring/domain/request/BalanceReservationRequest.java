@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public class BalanceReservationRequest extends RestfulRequest {
 
     private static final long serialVersionUID = -7315046960598963993L;

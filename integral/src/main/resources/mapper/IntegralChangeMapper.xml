@@ -19,7 +19,7 @@
 
     <insert id="addIntegralChange" useGeneratedKeys="true" keyProperty="id">
         insert into t_integral_change(change_name,change_dep,create_time,update_time,status,math,change_type,code)
-        VALUE (#{changeName,jdbcType=VARCHAR},#{changeDep,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler},#{math,jdbcType=VARCHAR},
+        VALUE (#{changeName,jdbcType=VARCHAR},#{changeDep,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeStatusHandler},#{math,jdbcType=VARCHAR}
           ,#{changeType,jdbcType=INTEGER,typeHandler=com.spring.domain.type.handler.IntegralChangeTypeHandler},#{code,jdbcType=VARCHAR}
         )
     </insert>

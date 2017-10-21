@@ -33,8 +33,6 @@ public class IntegralChangeServiceImpl implements IntegralChangeService {
     public Integer addIntegralChange(IntegralChange integralChange) {
         Preconditions.checkNotNull(integralChange);
         //  新增积分规则
-        integralChange.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
-        integralChange.setUpdateTime(integralChange.getCreateTime());
         Integer flag = integralChangeMapper.addIntegralChange(integralChange);
         if (flag == 1) {
             //插入到redis积分列表中
