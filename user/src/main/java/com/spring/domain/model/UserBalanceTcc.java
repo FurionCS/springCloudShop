@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder

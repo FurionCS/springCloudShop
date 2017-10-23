@@ -1,5 +1,6 @@
 package com.spring.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +9,12 @@ import java.time.OffsetDateTime;
 
 /**
  * @Description 用户角色
- * @Author ErnestCheng
+ * @author ErnestCheng
  * @Date 2017/6/23.
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class UserRole {
     /**
