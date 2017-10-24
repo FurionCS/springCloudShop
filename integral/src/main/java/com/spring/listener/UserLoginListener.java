@@ -28,7 +28,7 @@ import java.util.UUID;
 
 
 @Component
-@RabbitListeners(@RabbitListener(queues = "Q_D_User_Login"))
+@RabbitListeners(@RabbitListener(queues = "Q_T_User_Login"))
 public class UserLoginListener {
 
     private static final Logger LOGGER= Logger.getLogger(UserLoginListener.class);

@@ -6,7 +6,6 @@ import com.spring.domain.model.User;
 import com.spring.domain.model.UserAddr;
 import com.spring.domain.type.UserAddrStatus;
 import com.spring.persistence.UserAddrMapper;
-import com.spring.persistence.UserMapper;
 import com.spring.service.UserAddrService;
 import com.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,12 @@ import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by ErnestCheng on 2017/9/30.
+ * @author cs
+ * @date 2017/09/30
  */
 @Service
 public class UserAddrServiceImpl implements UserAddrService {
@@ -61,7 +59,6 @@ public class UserAddrServiceImpl implements UserAddrService {
         }else{
             return false;
         }
-
     }
 
     @Override
