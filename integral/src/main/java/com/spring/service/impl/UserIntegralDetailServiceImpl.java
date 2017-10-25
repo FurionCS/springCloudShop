@@ -34,6 +34,7 @@ public class UserIntegralDetailServiceImpl implements UserIntegralDetailService 
     public Integer addUserIntegralDetail(UserIntegralDetail userIntegralDetail) {
         Preconditions.checkNotNull(userIntegralDetail);
         //添加用户积分
+        
         int flag = userIntegralDetailMapper.addUserIntegralDetail(userIntegralDetail);
         if (flag > 0) {
             //组装数据

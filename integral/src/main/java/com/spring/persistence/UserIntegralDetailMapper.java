@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserIntegralDetailMapper {
+
     /**
      * 新增用户积分详情
      * @param userIntegralDetail

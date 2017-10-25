@@ -2,9 +2,7 @@ package com.spring.event.publisher;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.spring.domain.dto.RabbitBean;
+import com.spring.domain.config.RabbitBeanConfig;
 import com.spring.event.UserLoginEvent;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,6 @@ public class UserLoginPublisher {
      */
     public void sendUserLoginEvent(String code,Integer userId,String remark){
         UserLoginEvent userLoginEvent =new UserLoginEvent(userId, Timestamp.valueOf(LocalDateTime.now()),remark,code,new BigDecimal(1));
-        rabbitmqTemplate.convertAndSend(RabbitBean.userLoginE,RabbitBean.userLoginR, JSON.toJSONString(userLoginEvent));
+        rabbitmqTemplate.convertAndSend(RabbitBeanConfig.USER_LOGIN_E,"", JSON.toJSONString(userLoginEvent));
     }
-
 }

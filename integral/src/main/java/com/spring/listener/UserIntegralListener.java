@@ -20,7 +20,6 @@ public class UserIntegralListener{
     private UserIntegralService userIntegralService;
 
 
-
     /**
      * 监听器
      * @param userIntegralPublisher
@@ -35,7 +34,7 @@ public class UserIntegralListener{
      */
     @Subscribe
     public void regHandler(UserIntegralEvent userIntegralEvent){
-        //TODO  判断对象是否合法，不合法放入mongo中记录
+        //TODO 判断对象是否合法，不合法放入mongo中记录
         //TODO 合法就更改用户积分
         userIntegralService.updateUserIntegral(userIntegralEvent);
     }

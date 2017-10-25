@@ -26,9 +26,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-
+/**
+ * @author ErnestCheng
+ */
 @Component
-@RabbitListeners(@RabbitListener(queues = "Q_T_User_Login"))
+@RabbitListeners(@RabbitListener(queues = "Q_User_login_Integral"))
 public class UserLoginListener {
 
     private static final Logger LOGGER= Logger.getLogger(UserLoginListener.class);
@@ -72,7 +74,7 @@ public class UserLoginListener {
      * @return
      */
     private Integer  getSource(String math,BigDecimal num){
-        Map map=new HashMap<>();
+        Map map=new HashMap<>(1);
         map.put("num",num);
         return  JavaScriptEngine.getMathFunctionValue(map,math).intValue();
     }

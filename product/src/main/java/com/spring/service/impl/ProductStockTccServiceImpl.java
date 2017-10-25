@@ -99,7 +99,6 @@ public class ProductStockTccServiceImpl implements ProductStockTccService,Applic
         if(productStockTcc==null){
             throw new GlobalException("预留资源不存在",StatusCode.Data_Not_Exist);
         }
-        System.out.println(productStockTcc);
         //如果是Try阶段则进行确认
         if(productStockTcc.getStatus()==TccStatus.TRY){
             int flag=productStockTccMapper.updateProductStockTccStatus(reservationId);
