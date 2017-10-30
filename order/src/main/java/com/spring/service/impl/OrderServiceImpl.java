@@ -95,7 +95,7 @@ public class OrderServiceImpl implements OrderService{
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
-    public ObjectDataResponse<Order> confirm(PaymentRequest request) {
+    public ObjectDataResponse confirm(PaymentRequest request) {
         Preconditions.checkNotNull(request);
         Integer orderId=request.getOrderId();
         //检查订单是否存在
@@ -108,9 +108,15 @@ public class OrderServiceImpl implements OrderService{
             throw new GlobalException("没有预留资源",StatusCode.Data_Not_Exist);
         }
         if(order.getStatus()==OrderStatus.PROCESSING){
-            confirmPhase(order,lop);
+            try {
+                confirmPhase(order, lop);
+                return new ObjectDataResponse(order);
+            }catch (GlobalException g){
+                logger.error(g.getMessage());
+                return new ObjectDataResponse<>(g);
+            }
         }
-        return new ObjectDataResponse<>(order);
+        return new ObjectDataResponse<>("订单状态为："+order.getStatus());
     }
 
     @Override
@@ -214,7 +220,7 @@ public class OrderServiceImpl implements OrderService{
      * @param order
      * @param lop
      */
-    private void confirmPhase(Order order,List<OrderParticipant> lop){
+    private void confirmPhase(Order order,List<OrderParticipant> lop) throws GlobalException{
         ImmutableList<OrderParticipant> links=ImmutableList.copyOf(lop);
         TccRequest tccRequest=new TccRequest(links);
         try{
@@ -227,16 +233,18 @@ public class OrderServiceImpl implements OrderService{
                 // 全部确认预留超时
                 order.setStatus(OrderStatus.TIMEOUT);
                 orderMapper.updateOrder(order);
+                throw new GlobalException("预留超时:"+order.toString());
             } else if (PartialConfirmException.class.isAssignableFrom(exceptionCause)) {
                 order.setStatus(OrderStatus.CONFLICT);
                 orderMapper.updateOrder(order);
                 markdownConfliction(order, e);
             } else {
-                throw e;
+                throw new GlobalException(e.getMessage());
             }
         }
     }
-    private void markdownConfliction(Order order, HystrixRuntimeException e) {
+
+    private void markdownConfliction(Order order, HystrixRuntimeException e) throws GlobalException {
         Preconditions.checkNotNull(order);
         Preconditions.checkNotNull(e);
         final String message = e.getCause().getMessage();
@@ -244,6 +252,7 @@ public class OrderServiceImpl implements OrderService{
         // 错误信息保存到mongodb
         ErrorInfo errorInfo=new ErrorInfo<>(StatusCode.PartialConfirmerror,message,null,order,OffsetDateTime.now());
         errorRepository.insert(errorInfo);
+        throw new GlobalException("order id "+order.getId()+" has come across an confliction. "+ message);
     }
 
     /**

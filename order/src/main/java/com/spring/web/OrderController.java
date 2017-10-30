@@ -56,8 +56,8 @@ public class OrderController {
 
     @ApiOperation(value="支付订单")
     @RequestMapping(value="payOff",method = RequestMethod.POST)
-    public ObjectDataResponse<Order> payOff(@Valid @RequestBody PaymentRequest paymentRequest,BindingResult result){
-        return   orderService.confirm(paymentRequest);
+    public ObjectDataResponse payOff(@Valid @RequestBody PaymentRequest paymentRequest,BindingResult result){
+        return  orderService.confirm(paymentRequest);
     }
 
     @ApiOperation(value ="取消订单")

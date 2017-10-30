@@ -31,7 +31,7 @@ public interface OrderService {
      * @param request
      * @return
      */
-    ObjectDataResponse<Order> confirm(PaymentRequest request);
+    ObjectDataResponse confirm(PaymentRequest request);
 
     /**
      * 取消
