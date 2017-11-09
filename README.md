@@ -6,7 +6,8 @@
     Spring Cloud为开发者提供了快速构建分布式系统中的一些常见工具, 如分布式配置中心, 服务发现与注册中心, 
     智能路由, 服务熔断及降级, 消息总线, 分布式追踪的解决方案等.本次实战以模拟下单流程为背景,采用分布式
     事务中的Try-Confirm-Cancel即TCC模式作为实战演示.
-
+   
+> dubbo 版本　https://github.com/FurionCS/dubbo-shop
 ## 开发环境
 -  MySQL 5.7.17
 -  RabbitMQ 3.6.6
