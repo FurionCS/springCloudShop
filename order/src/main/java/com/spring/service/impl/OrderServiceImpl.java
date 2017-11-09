@@ -196,7 +196,7 @@ public class OrderServiceImpl implements OrderService{
         BalanceReservationRequest balanceReservationRequest=BalanceReservationRequest.builder().userId(order.getUserId()).amount(order.getPrice()).build();
         ObjectDataResponse<Participant> objectDataResponse=userClient.reserve(balanceReservationRequest);
         if(Objects.isNull(objectDataResponse) || Objects.isNull(objectDataResponse.getData())){
-            throw new GlobalException(objectDataResponse.getMessage(),objectDataResponse.getCode());
+            throw new GlobalException("预留余额失败",StatusCode.Fail_Code);
         }
         //添加资源信息
         persistParticipant(objectDataResponse.getData(), order.getId());
