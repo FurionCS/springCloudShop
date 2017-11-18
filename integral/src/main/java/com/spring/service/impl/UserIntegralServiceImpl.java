@@ -1,12 +1,15 @@
 package com.spring.service.impl;
 
 import com.google.common.base.Preconditions;
+import com.spring.common.model.model.RedisKey;
 import com.spring.domain.event.UserIntegralEvent;
 import com.spring.domain.model.UserIntegral;
 import com.spring.domain.type.IntegralChangeType;
 import com.spring.persistence.UserIntegralMapper;
 import com.spring.service.UserIntegralService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -21,14 +24,29 @@ import java.util.UUID;
 @Service
 public class UserIntegralServiceImpl implements UserIntegralService {
 
+    private static final Logger LOGGER= Logger.getLogger(UserIntegralServiceImpl.class);
+
 
     @Autowired
     private UserIntegralMapper userIntegralMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public Integer updateUserIntegral(UserIntegralEvent userIntegralEvent) {
         Preconditions.checkNotNull(userIntegralEvent);
         Preconditions.checkArgument(userIntegralEvent.getUserId() > 0);
+        //获得用户对象锁
+        boolean lock=redisTemplate.opsForValue().setIfAbsent(RedisKey.integralUserIdLock+userIntegralEvent.getUserId(),0);
+        while(!lock){
+            try {
+                Thread.sleep(2);
+                lock=redisTemplate.opsForValue().setIfAbsent(RedisKey.integralUserIdLock+userIntegralEvent.getUserId(),0);
+            } catch (InterruptedException e) {
+                LOGGER.error("线出问题:"+e.getCause());
+            }
+        }
         //先判断有没有这个用户积分记录
         UserIntegral userIntegral = userIntegralMapper.getUserIntegral(userIntegralEvent.getUserId());
         // 如果没有用户积分记录，并且这次改变的积分小于0,则不符合逻辑，抛出异常
@@ -37,8 +55,11 @@ public class UserIntegralServiceImpl implements UserIntegralService {
             //添加
             userIntegral = new UserIntegral(UUID.randomUUID().toString(), userIntegralEvent.getUserId(), Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()),
                     userIntegralEvent.getChangeSource().longValue(), userIntegralEvent.getChangeSource().longValue(), 0L);
-            return userIntegralMapper.addUserIntegral(userIntegral);
+            Integer count=userIntegralMapper.addUserIntegral(userIntegral);
+            redisTemplate.delete(RedisKey.integralUserIdLock+userIntegralEvent.getUserId());
+            return count;
         } else {  //有就更新
+            redisTemplate.delete(RedisKey.integralUserIdLock+userIntegralEvent.getUserId());
             //获得历史积分，只有加积分时，或者红字情况下会改变历史积分
             long hisSource = 0L;
             if (Objects.equals(userIntegralEvent.getChangeTypeStatus(), IntegralChangeType.add) || Objects.equals(userIntegralEvent.getChangeTypeStatus(), IntegralChangeType.red)) {

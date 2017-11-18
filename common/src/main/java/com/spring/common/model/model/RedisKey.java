@@ -34,4 +34,8 @@ public class RedisKey {
      * expamle:shop:integral:
      */
     public static final String integralChange="shop:integral:";
+    /**
+     * expamle:shop:integral:userId:lock:1
+     */
+    public static final String integralUserIdLock="shop:integral:userId:lock:";
 }
